@@ -1,7 +1,21 @@
 from rest_framework import serializers
-from .models import Room
+from django.contrib.auth.models import User, Group
+from .models import Recipe
 
-class RoomSerializer(serializers.ModelSerializer):
+
+class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Room
-        fields = ("id", "code", "host", "guest_can_pause", "votes_to_skip", "created_at")
+        model = Recipe
+        fields = '__all__'
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'groups']
+
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['url', 'name']

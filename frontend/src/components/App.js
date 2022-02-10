@@ -3,7 +3,7 @@ import { render } from "react-dom";
 //import ReactDOM from "react-dom";
 
 const App = () => {
-  return <h1>React connected til django! </h1>;
+  return <h1>React hei Boyus</h1>;
 };
 
 const appDiv = document.getElementById("app");
