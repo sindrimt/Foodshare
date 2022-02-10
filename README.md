@@ -1,3 +1,3 @@
 # FoodShare
 
-Mattias Test Test
+Description of application:
