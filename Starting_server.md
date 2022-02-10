@@ -19,7 +19,7 @@ Installer pythonting
 
 
 **1.** <br>
-(foodshare) : Skriv _npm install_ i mappen som heter foodshare<br>
+(frontend) : Skriv _npm install_ i mappen som heter foodshare<br>
 (foodshare) : Skriv _python3 manage.py runserver_ for å starte djangoserveren
 
 
