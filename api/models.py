@@ -2,6 +2,7 @@ from django.db import models
 import string
 import random
 
+
 class Recipe(models.Model):
     title = models.CharField(max_length=30, unique=True)
     content = models.TextField()
@@ -34,4 +35,3 @@ class Room(models.Model):
     votes_to_skip = models.IntegerField(null = False, default = 1)
     created_at = models.DateTimeField(auto_now_add=True)
  """
-    
