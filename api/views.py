@@ -1,12 +1,8 @@
-from django.shortcuts import render
-from rest_framework import viewsets, generics
-from .serializers import RecipeSerializer
+from django.contrib.auth.models import Group, User
+from rest_framework import generics, permissions, viewsets
+
 from .models import Recipe
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer
-from api import serializers
+from .serializers import GroupSerializer, RecipeSerializer, UserSerializer
 
 
 class RecipeView(viewsets.ModelViewSet):

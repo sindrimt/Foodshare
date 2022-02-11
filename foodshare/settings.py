@@ -76,14 +76,22 @@ WSGI_APPLICATION = "foodshare.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
+    # "old": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "urrhajjk",
+    #     "USER": "urrhajjk",
+    #     "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
+    #     "HOST": "abul.db.elephantsql.com",
+    #     "PORT": "5432",
+    # },
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "urrhajjk",
-        "USER": "urrhajjk",
-        "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
-        "HOST": "abul.db.elephantsql.com",
+        "NAME": "d4hcei9p6hmjv6",
+        "USER": "laxodqlycrpphl",
+        "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
+        "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
         "PORT": "5432",
-    }
+    },
 }
 
 
