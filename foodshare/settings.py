@@ -84,14 +84,18 @@ DATABASES = {
     #     "HOST": "abul.db.elephantsql.com",
     #     "PORT": "5432",
     # },
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "d4hcei9p6hmjv6",
-        "USER": "laxodqlycrpphl",
-        "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
-        "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
-        "PORT": "5432",
-    },
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "d4hcei9p6hmjv6",
+    #     "USER": "laxodqlycrpphl",
+    #     "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
+    #     "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
+    #     "PORT": "5432",
+    # },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
