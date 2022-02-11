@@ -9,17 +9,7 @@ from .serializers import UserSerializer, GroupSerializer
 from api import serializers
 
 
-class RecipeListView(generics.ListAPIView):
-    queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
-
-
-class RecipeView(generics.RetrieveAPIView):
-    queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
-
-
-class RecipeCreateView(generics.CreateAPIView):
+class RecipeView(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 

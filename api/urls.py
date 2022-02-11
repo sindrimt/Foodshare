@@ -2,9 +2,10 @@ from django.urls import path, include
 from rest_framework import routers
 from . import views
 
+router = routers.DefaultRouter()
+router.register("recipes", views.RecipeView)
+
 urlpatterns = [
-    path("recipe_list", views.RecipeListView.as_view()),
-    path("recipe/<int:pk>", views.RecipeView.as_view()),
-    path("recipe_new", views.RecipeCreateView.as_view()),
+    path("", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
