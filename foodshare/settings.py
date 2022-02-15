@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,26 +77,26 @@ WSGI_APPLICATION = "foodshare.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
-    # "old": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": "urrhajjk",
-    #     "USER": "urrhajjk",
-    #     "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
-    #     "HOST": "abul.db.elephantsql.com",
-    #     "PORT": "5432",
-    # },
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": "d4hcei9p6hmjv6",
-    #     "USER": "laxodqlycrpphl",
-    #     "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
-    #     "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
-    #     "PORT": "5432",
-    # },
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "old": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "urrhajjk",
+        "USER": "urrhajjk",
+        "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
+        "HOST": "abul.db.elephantsql.com",
+        "PORT": "5432",
+    },
+    "new": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "d4hcei9p6hmjv6",
+        "USER": "laxodqlycrpphl",
+        "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
+        "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
+        "PORT": "5432",
+    },
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
 }
 
 
@@ -134,6 +135,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+# User generated media
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
