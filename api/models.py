@@ -13,7 +13,7 @@ class Recipe(models.Model):
     image = models.ImageField(
         gettext_lazy("Image"),
         upload_to=upload_to,
-        default="recipes/default.jpg",
+        default="recipes/default.jpeg",
         blank=True,
     )
 
