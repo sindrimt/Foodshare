@@ -9,18 +9,18 @@ import { Link } from "react-router-dom";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const RecipeCreated = () => {
-    return (
+  return (
     <Grid container spacing={1}>
-        <Grid item xs={12} align="center">
-            <Typography component="h2" variant="h2" id="title">
-                Recipe succesfully created!
-            </Typography>
-            <Button color="primary" variant="contained" to="/" component={Link}>
-                 OK
-            </Button>
-        </Grid>
+      <Grid item xs={12} align="center">
+        <Typography component="h2" variant="h2" id="title">
+          Recipe succesfully created!
+        </Typography>
+        <Button color="primary" variant="contained" to="/" component={Link}>
+          OK
+        </Button>
+      </Grid>
     </Grid>
-    );
-}
+  );
+};
 
 export default RecipeCreated;
