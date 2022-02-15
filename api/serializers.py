@@ -8,7 +8,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = "__all__"
 
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
