@@ -1,0 +1,154 @@
+.app__navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: black;
+  color: white;
+
+  padding: 1rem 2rem;
+}
+
+.app__navbar-logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 999999;
+}
+.app__navbar-logo:hover {
+  cursor: pointer;
+}
+
+.app__navbar-logo img {
+  width: 150px;
+  z-index: 999999;
+}
+
+.app__navbar-links {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  list-style: none;
+}
+
+.app__navbar-links li {
+  margin: 0 1rem;
+  cursor: pointer;
+}
+
+.app__navbar-links li:hover {
+  border-bottom: 1px solid lightblue;
+}
+
+.app__navbar-login {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.app__navbar-login a {
+  margin: 0 1rem;
+  text-decoration: none;
+}
+.app__navbar-login {
+  margin: 0;
+  text-decoration: none;
+}
+
+.app__navbar-login a:hover {
+  border-bottom: 1px solid lightblue;
+}
+
+.app__navbar-login div {
+  width: 1px;
+  height: 30px;
+  background-color: lightblue;
+}
+
+.app__navbar-smallscreen {
+  display: none;
+}
+
+.app__navbar-smallscreen_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: black;
+  transition: 0.5s ease;
+
+  flex-direction: column;
+  z-index: 69;
+}
+
+.app__navbar-smallscreen-links {
+  list-style: none;
+  font-size: 35px;
+}
+
+/* If the icon or the text is hovered, the border shows only for the text*/
+.app__navbar-smallscreen-links a:hover > .icon-text {
+  border-bottom: 1px solid lightblue;
+}
+
+.icon-text:hover {
+  border-bottom: 1px solid lightblue;
+}
+
+.app__navbar-smallscreen_overlay .overlay__close {
+  cursor: pointer;
+  position: absolute;
+  top: 17px;
+  right: 30px;
+}
+
+@media screen and (max-width: 1150px) {
+  .app__navbar-links {
+    display: none;
+  }
+
+  .app__navbar-smallscreen {
+    cursor: pointer;
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 2000px) {
+  .app__navbar-logo img {
+    width: 135px;
+  }
+}
+
+/* @media screen and (max-width: 1000px) {
+  .app__navbar-smallscreen-links {
+    font-size: 30px;
+  }
+} */
+@media screen and (max-width: 650px) {
+  .app__navbar {
+    padding: 1rem;
+  }
+  .app__navbar-smallscreen-links {
+    font-size: 25px;
+  }
+
+  .app__navbar-logo img {
+    width: 110px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .app__navbar-login {
+    display: none;
+  }
+}
+
+.flex__center {
+  line-height: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
