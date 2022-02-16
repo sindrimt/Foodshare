@@ -15,6 +15,9 @@
   align-items: center;
   z-index: 999999;
 }
+.app__navbar-logo:hover {
+  cursor: pointer;
+}
 
 .app__navbar-logo img {
   width: 150px;

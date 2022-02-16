@@ -19,7 +19,9 @@ const Navbar = () => {
   return (
     <nav className="app__navbar">
       <div className="app__navbar-logo">
-        <img src={foodshare} alt="Logo" />
+        <Link to="/">
+          <img src={foodshare} alt="Logo" />
+        </Link>
         {/* <h4>Logo</h4> */}
       </div>
       <ul className="app__navbar-links">
