@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import HomePage from "./HomePage";
+import Navbar from "./Navbar";
 
 //import ReactDOM from "react-dom";
 
 const App = () => {
-  return <HomePage />;
+  return (
+    <>
+      {/* <Navbar /> */}
+      <HomePage />
+    </>
+  );
 };
 
 /*export default class App extends Component {
