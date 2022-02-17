@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import CreateRecipePage from "./CreateRecipePage";
 import HomePageDisplay from "./HomePageDisplay";
 import RecipeCreated from "./RecipeCreated";
+import Navbar from "./Navbar";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,13 +14,16 @@ import {
 
 const HomePage = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePageDisplay />} />
-        <Route path="/recipe" element={<CreateRecipePage />} />
-        <Route path="recipe/created" element={<RecipeCreated />} />
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePageDisplay />} />
+          <Route path="/recipe" element={<CreateRecipePage />} />
+          <Route path="recipe/created" element={<RecipeCreated />} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 

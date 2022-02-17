@@ -16,6 +16,7 @@ module.exports = {
           loader: "babel-loader",
         },
       },
+      { test: /\.png$/, use: "url-loader?mimetype=image/png" },
     ],
   },
   optimization: {
