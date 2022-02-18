@@ -14,23 +14,14 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import { useHistory } from "react-router";
-
 const HomePage = () => {
   /*  const [url, setUrl] = useState(window.location.pathname);
   console.log(url); */
 
-  const history = useHistory();
-
-  useEffect(() => {
-    return history.listen((location) => {
-      console.log(`You changed the page to: ${location.pathname}`);
-    });
-  }, [history]);
-
   return (
     <>
       <Router>
+        {/* {url != "/login" && <Navbar />} Vis navbar alle steder utenom på login page*/}
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePageDisplay />} />

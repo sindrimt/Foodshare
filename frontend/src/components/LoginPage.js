@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 //import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { maxHeight } from "@mui/system";
 
 function Copyright(props) {
   return (
@@ -22,8 +23,11 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link
+        color="inherit"
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+      >
+        Foodshare
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -120,12 +124,18 @@ export default function LoginPage() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link
+                    href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+                    variant="body2"
+                  >
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link
+                    href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+                    variant="body2"
+                  >
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
