@@ -29,7 +29,7 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/">About</Link>
+          <Link to="/browse-recipes">Browse Recipes</Link>
         </li>
         <li>
           <Link to="recipe">Create Recipe</Link>

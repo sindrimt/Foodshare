@@ -3,6 +3,8 @@ import CreateRecipePage from "./CreateRecipePage";
 import HomePageDisplay from "./HomePageDisplay";
 import RecipeCreated from "./RecipeCreated";
 import Navbar from "./Navbar";
+import CardContainer from "./CardContainer";
+
 
 import {
   BrowserRouter as Router,
@@ -21,6 +23,7 @@ const HomePage = () => {
           <Route path="/" element={<HomePageDisplay />} />
           <Route path="/recipe" element={<CreateRecipePage />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
+          <Route path="/browse-recipes" element={<CardContainer />} />
         </Routes>
       </Router>
     </>
