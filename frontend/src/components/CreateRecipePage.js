@@ -1,74 +1,106 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import { Link } from "react-router-dom";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import axiosInstance from "../../axios";
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 const CreateRecipePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [image, setImage] = useState(null);
 
   function handleCreateButtonPressed(e) {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title,
-        content,
-      }),
-    };
-    fetch("/api/recipes/", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("image", image[0]);
+    axiosInstance.post("recipes/", formData);
+    window.location.reload();
   }
 
+  const classes = useStyles();
+
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={12} align="center">
-        <Typography component="h2" variant="h2" id="title">
-          Create recipe
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Create new recipe
         </Typography>
-        <Grid item xs={12} align="center">
-          <TextField
-            variant="outlined"
-            label="Recipe title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={12} align="center">
-          <TextField
-            multiline={true}
-            minRows="5"
-            variant="outlined"
-            label="Recipe description"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            style={{ width: 500 }}
-          />
-        </Grid>
-        <Grid item xs={12} align="center">
+        <form className={classes.form} noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="title"
+                label="Recipe title"
+                name="title"
+                autoComplete="title"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="content"
+                label="Content"
+                name="content"
+                autoComplete="content"
+                onChange={(e) => setContent(e.target.value)}
+                multiline
+                rows={4}
+              />
+            </Grid>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="post-image"
+              onChange={(e) => {
+                setImage(e.target.files);
+                console.log(e.target.files);
+              }}
+              name="image"
+              type="file"
+            />
+          </Grid>
           <Button
-            color="primary"
+            type="submit"
+            fullWidth
             variant="contained"
-            to="created"
-            component={Link}
-            onClick={() => handleCreateButtonPressed()}
+            color="primary"
+            className={classes.submit}
+            onClick={handleCreateButtonPressed}
           >
-            Create
+            Create Post
           </Button>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Button color="secondary" variant="contained" to="/" component={Link}>
-            Back
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
+        </form>
+      </div>
+    </Container>
   );
 };
 
