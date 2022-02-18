@@ -4,6 +4,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register("recipes", views.RecipeView)
+router.register("categories", views.CategoryView)
 
 urlpatterns = [
     path("", include(router.urls)),
