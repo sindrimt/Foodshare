@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
+import CardContainer from "./CardContainer";
 import HomePage from "./HomePage";
 import Navbar from "./Navbar";
 
@@ -9,7 +10,7 @@ const App = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <HomePage />
+      <HomePage/>
     </>
   );
 };
