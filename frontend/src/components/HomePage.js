@@ -13,6 +13,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
+import { LogInPage } from "./LoginPage";
 
 const HomePage = () => {
   return (
@@ -21,6 +22,7 @@ const HomePage = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePageDisplay />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/recipe" element={<CreateRecipePage />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
           <Route path="/browse-recipes" element={<CardContainer />} />

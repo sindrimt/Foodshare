@@ -39,7 +39,7 @@ const Navbar = () => {
         </li>
       </ul>
       <div className="app__navbar-login ">
-        <Link to="/">Log In / Register</Link>
+        <Link to="/login">Log In / Register</Link>
         <div />
         <a>
           {/* <CgProfile size={25} /> */}
