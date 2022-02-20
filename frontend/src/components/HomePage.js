@@ -5,7 +5,6 @@ import RecipeCreated from "./RecipeCreated";
 import Navbar from "./Navbar";
 import CardContainer from "./CardContainer";
 
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,7 +12,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-import { LogInPage } from "./LoginPage";
+import { LoginPage } from "./LoginPage";
 
 const HomePage = () => {
   return (
