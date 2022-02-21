@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -6,7 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import axiosInstance from "../../axios";
+import API from "../axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,14 +30,30 @@ const CreateRecipePage = () => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
 
+  const navigate = useNavigate();
+
   function handleCreateButtonPressed(e) {
     e.preventDefault();
+
     let formData = new FormData();
+
     formData.append("title", title);
     formData.append("content", content);
-    formData.append("image", image[0]);
-    axiosInstance.post("recipes/", formData);
-    window.location.reload();
+    if (image) {
+      formData.append("image", image[0]);
+    }
+
+    API.post("recipes/", formData)
+      .then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      .then(navigate("/created"));
+    //.then(window.location.reload());
   }
 
   const classes = useStyles();

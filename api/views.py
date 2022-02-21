@@ -1,11 +1,15 @@
 from django.contrib.auth.models import User
-from rest_framework import generics, permissions, viewsets, response, status
-from rest_framework.views import APIView
+from rest_framework import permissions, viewsets, generics
 from rest_framework.response import Response
 
-
 from .models import Category, Recipe
-from .serializers import RecipeSerializer, CategorySerializer, UserSerializer
+from .permissions import AuthorOrAdmin
+from .serializers import (
+    CategorySerializer,
+    RecipeSerializer,
+    UserSerializer,
+    RegisterSerializer,
+)
 
 
 class RecipeView(viewsets.ModelViewSet):
@@ -17,13 +21,53 @@ class RecipeView(viewsets.ModelViewSet):
         "category",
     )
 
+    def get_permissions(self):
+
+        if self.action in ["list", "retrieve"]:
+            permission_classes = [permissions.AllowAny]
+
+        else:
+            permission_classes = [AuthorOrAdmin]
+
+        return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+    def get_permissions(self):
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by("-date_joined")
+        if self.action in ["list", "retrieve"]:
+            permission_classes = [permissions.AllowAny]
+
+        else:
+            permission_classes = [permissions.IsAdminUser]
+
+        return [permission() for permission in permission_classes]
+
+
+class UserView(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+
+
+class RegisterApi(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {
+                "user": UserSerializer(
+                    user, context=self.get_serializer_context()
+                ).data,
+                "message": "User Created Successfully.  Now log in to get your token",
+            }
+        )
