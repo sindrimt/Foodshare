@@ -23,13 +23,13 @@ class RecipeView(viewsets.ModelViewSet):
 
     def get_permissions(self):
 
-        if self.action in ["list", "retrieve"]:
+        if self.action in ["list", "retrieve"]:  # anyone can read
             permission_classes = [permissions.AllowAny]
 
-        elif self.action in ["post"]:
+        elif self.action in ["post"]:  # must be logged in to post
             permission_classes = [permissions.IsAuthenticated]
 
-        else:
+        else:  # authors and admins can edit and delete
             permission_classes = [AuthorOrAdmin]
 
         return [permission() for permission in permission_classes]
@@ -44,7 +44,7 @@ class CategoryView(viewsets.ModelViewSet):
 
     def get_permissions(self):
 
-        if self.action in ["retrieve", "list"]:
+        if self.action in ["retrieve", "list"]:  # read only actions
             permission_classes = [permissions.AllowAny]
 
         else:
