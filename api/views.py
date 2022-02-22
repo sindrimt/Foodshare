@@ -23,8 +23,11 @@ class RecipeView(viewsets.ModelViewSet):
 
     def get_permissions(self):
 
-        if self.action in ["list", "retrieve"]:
+        if self.action not in ["list", "retrieve"]:
             permission_classes = [permissions.AllowAny]
+
+        elif self.action in ["post"]:
+            permission_classes = [permissions.IsAuthenticated]
 
         else:
             permission_classes = [AuthorOrAdmin]
