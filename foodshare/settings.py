@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "django_filters",
-    "crispy_forms",
+    "rest_registration",  # account managemenet
+    "django_filters",  # search and filters
+    "crispy_forms",  # filters in browsable api
+    # "django.contrib.staticfiles",  # required for serving swagger ui's css/js files
+    "drf_yasg",  # api docs generation
     "api.apps.ApiConfig",
     "frontend",
 ]
@@ -173,3 +176,9 @@ SESSION_COOKIE_HTTPONLY = True
 # PROD ONLY
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
+
+REST_REGISTRATION = {
+    "REGISTER_VERIFICATION_ENABLED": False,
+    "REGISTER_EMAIL_VERIFICATION_ENABLED": False,
+    "RESET_PASSWORD_VERIFICATION_ENABLED": False,
+}

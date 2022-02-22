@@ -39,7 +39,7 @@ const CreateRecipePage = () => {
 
     formData.append("title", title);
     formData.append("content", content);
-    if (image) {
+    if (image !== null) {
       formData.append("image", image[0]);
     }
 
@@ -53,7 +53,6 @@ const CreateRecipePage = () => {
         }
       )
       .then(navigate("/created"));
-    //.then(window.location.reload());
   }
 
   const classes = useStyles();
