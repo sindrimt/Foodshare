@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import CreateRecipePage from "./CreateRecipePage";
 import HomePageDisplay from "./HomePageDisplay";
 import RecipeCreated from "./RecipeCreated";
 import Navbar from "./Navbar";
 import CardContainer from "./CardContainer";
+import LoginPage from "./LoginPage";
 
 import {
   BrowserRouter as Router,
@@ -12,7 +13,6 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-import { LoginPage } from "./LoginPage";
 
 const HomePage = () => {
   return (
