@@ -1,54 +1,42 @@
-import React from 'react';
-import RecipeCard from './Card';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from "react";
+import RecipeCard from "./Card";
 
-
-const useStyles = makeStyles({
-    gridContainer: {
-        paddingLeft: '40px',
-        paddingRight: '40px',
-        paddingTop: '40px',
-        backgroundColor: '#E3F1FF',
-        alignItems: 'center',
-    },
-
-    card: {
-        //egen css for kort men burde stå i card.js
-    }
-});
+import styled from "styled-components";
+import axios from "axios";
 
 const CardContainer = () => {
-    const classes = useStyles();
-    return(
-        <Grid container spacing={4} className={classes.gridContainer} >
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <RecipeCard />
-            </Grid>
-        </Grid>
-    )
-}
+  const url = "api/recipes";
+  const [state, setState] = useState([]);
+
+  useEffect(() => {
+    axios.get(url).then((res) => {
+      const recipes = res.data;
+      setState({ recipes });
+    });
+  }, []);
+
+  return (
+    <GridContainer>
+      {state.recipes?.map((recipe) => (
+        <RecipeCard
+          key={recipe.id}
+          title={recipe.title}
+          description={recipe.content}
+          createdAt={recipe.created}
+          image={recipe.image}
+        />
+      ))}
+    </GridContainer>
+  );
+};
+
+const GridContainer = styled.section`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  padding: 3rem;
+  place-items: center;
+  column-gap: 2rem;
+  row-gap: 3rem;
+`;
 
 export default CardContainer;

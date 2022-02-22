@@ -2,10 +2,10 @@ import { TextField, Button } from "@material-ui/core";
 
 import React from "react";
 
-export const LogInPage = () => {
+export const LoginPage = () => {
   return (
-        <div className="outer">
-      <div className = "inner">
+    <div className="outer">
+      <div className="inner">
         Log In
         <TextField id="outlined-basic" label="Username" variant="outlined" />
         <TextField id="outlined-basic" label="Password" variant="outlined" />
