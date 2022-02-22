@@ -6,5 +6,5 @@ urlpatterns = [
     path("recipe", index),
     path("created", index),
     path("browse-recipes", index),
-    path("login", index)
+    path("login", index),
 ]

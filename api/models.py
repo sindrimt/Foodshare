@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -22,6 +23,9 @@ class Recipe(models.Model):
         upload_to=upload_to,
         default="recipes/default.jpeg",
         blank=True,
+    )
+    author = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE, related_name="recipes"
     )
 
     def __str__(self):

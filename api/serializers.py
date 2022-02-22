@@ -1,6 +1,6 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
-from django.db.models import Count
+from rest_framework import serializers
+
 from .models import Category, Recipe
 
 
@@ -20,7 +20,37 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["url", "username", "email", "groups"]
+        fields = ["id", "email", "username", "first_name", "last_name", "password"]
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            validated_data["username"],
+            password=validated_data["password"],
+        )
+        return user
+
+
+class UserSerializer(serializers.ModelSerializer):
+    recipes = serializers.HyperlinkedRelatedField(
+        many=True, view_name="recipes-detail", read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "username",
+            "first_name",
+            "last_name",
+            "date_joined",
+            "last_login",
+            "is_superuser",
+            "recipes",
+        ]
