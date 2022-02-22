@@ -1,2 +1,3 @@
 # FoodShare
 
+Description of application:
