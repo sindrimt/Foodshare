@@ -3,6 +3,8 @@ import RecipeCard from "./Card";
 
 import styled from "styled-components";
 import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
+import { AnimateSharedLayout } from "framer-motion";
 
 const CardContainer = () => {
   const url = "api/recipes";
@@ -64,27 +66,33 @@ const CardContainer = () => {
           }}
         />
       </form>
-      <GridContainer>
-        {state.recipes?.map((recipe) => (
-          <RecipeCard
-            key={recipe.id}
-            title={recipe.title}
-            description={recipe.content}
-            createdAt={recipe.created}
-            image={recipe.image}
-          />
-        ))}
+      <AnimateSharedLayout>
+        <motion.div layout>
+          <GridContainer>
+            {/* <AnimatePresence> */}
+            {state.recipes?.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                title={recipe.title}
+                description={recipe.content}
+                createdAt={recipe.created}
+                image={recipe.image}
+              />
+            ))}
 
-        {filtered?.map((card) => {
-          return (
-            <RecipeCard
-              key={card.id}
-              title={card.title}
-              image={"https://image.tmdb.org/t/p/w500" + card.backdrop_path}
-            />
-          );
-        })}
-      </GridContainer>
+            {filtered?.map((card) => {
+              return (
+                <RecipeCard
+                  key={card.id}
+                  title={card.title}
+                  image={"https://image.tmdb.org/t/p/w500" + card.backdrop_path}
+                />
+              );
+            })}
+            {/*  </AnimatePresence> */}
+          </GridContainer>
+        </motion.div>
+      </AnimateSharedLayout>
     </>
   );
 };
