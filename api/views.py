@@ -1,24 +1,33 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets, generics
+from rest_framework import permissions, viewsets, generics, filters
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Category, Recipe
-from .permissions import AuthorOrAdmin
+from .permissions import IsAuthor, IsAuthorOrAdmin
 from .serializers import (
     CategorySerializer,
     RecipeSerializer,
     UserSerializer,
-    RegisterSerializer,
 )
 
 
 class RecipeView(viewsets.ModelViewSet):
+    """
+    List of all recipes. Go to /recipes/<id>/ to modify or delete
+    """
+
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+
     filterset_fields = (
+        "category",
+        "author",
+    )
+
+    search_fields = (
         "title",
         "content",
-        "category",
     )
 
     def get_permissions(self):
@@ -29,8 +38,8 @@ class RecipeView(viewsets.ModelViewSet):
         elif self.action in ["post"]:  # must be logged in to post
             permission_classes = [permissions.IsAuthenticated]
 
-        else:  # authors and admins can edit and delete
-            permission_classes = [AuthorOrAdmin]
+        else:
+            permission_classes = [IsAuthorOrAdmin]
 
         return [permission() for permission in permission_classes]
 
@@ -39,6 +48,10 @@ class RecipeView(viewsets.ModelViewSet):
 
 
 class CategoryView(viewsets.ModelViewSet):
+    """
+    List of all categories. Go to /category/<id>/ to modify or delete (admin only)
+    """
+
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -54,5 +67,19 @@ class CategoryView(viewsets.ModelViewSet):
 
 
 class UserView(viewsets.ReadOnlyModelViewSet):
+    """
+    To do stuff:
+        api/ accounts/ register/
+        api/ accounts/ verify-registration/
+        api/ accounts/ send-reset-password-link/
+        api/ accounts/ reset-password/
+        api/ accounts/ login/
+        api/ accounts/ logout/
+        api/ accounts/ profile/
+        api/ accounts/ change-password/
+        api/ accounts/ register-email/
+        api/ accounts/ verify-email/
+    """
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
