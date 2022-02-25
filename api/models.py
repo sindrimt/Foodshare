@@ -48,3 +48,39 @@ class Recipe(models.Model):
 
     class Meta:
         ordering = ["-created"]
+
+
+class Like(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["recipe, user"]  # users can only like a recipe once
+
+    def __str__(self):
+        return f"{self.user} liked {self.recipe}"
+
+
+class Comment(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    content = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    # def __str__(self):
+    #     TODO: imeplement
+
+
+class UserFollowing(models.Model):
+    followed = models.ForeignKey("User", related_name="following")
+    following = models.ForeignKey("User", related_name="followers")
+
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["followed, following"]
+
+    def __str__(self):
+        return f"{self.following} follows {self.followed}"
