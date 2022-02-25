@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "storages",  # AWS image storage
     "whitenoise.runserver_nostatic",
     "rest_framework",
     "rest_registration",  # account managemenet
@@ -106,11 +107,41 @@ DATABASES = {
     },
 }
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "frontend", "static"),
+    # os.path.join(BASE_DIR, "static"),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# used by heroku
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# User generated media
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
 # automatic postgres db on heroku
 import dj_database_url
 
-if print(bool(dj_database_url.config())):
+
+if bool(dj_database_url.config()):
     DATABASES["default"] = dj_database_url.config()
+
+    # AWS
+    AWS_ACCESS_KEY_ID = "AKIASOJRONFX76XCEL5R"
+    AWS_SECRET_ACCESS_KEY = "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"
+    AWS_STORAGE_BUCKET_NAME = "foodshare-images"
+    AWS_S3_SIGNATURE_VERSION = "s3v4"
+    AWS_S3_REGION_NAME = "eu-north-1"
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    AWS_S3_VERIFY = True
+    DEFAULT_FILE_STORAGE = "foodshare.storage_backends.AWS"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -142,23 +173,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_URL = "/static/"
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "frontend", "static"),
-    # os.path.join(BASE_DIR, "static"),
-)
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-# used by heroku
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
-# User generated media
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
