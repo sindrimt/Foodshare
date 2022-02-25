@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
     "rest_framework",
     "rest_registration",  # account managemenet
     "django_filters",  # search and filters
@@ -83,28 +84,33 @@ WSGI_APPLICATION = "foodshare.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
-    "old": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "urrhajjk",
-        "USER": "urrhajjk",
-        "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
-        "HOST": "abul.db.elephantsql.com",
-        "PORT": "5432",
-    },
-    "new": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "d4hcei9p6hmjv6",
-        "USER": "laxodqlycrpphl",
-        "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
-        "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
-        "PORT": "5432",
-    },
+    # "old": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "urrhajjk",
+    #     "USER": "urrhajjk",
+    #     "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
+    #     "HOST": "abul.db.elephantsql.com",
+    #     "PORT": "5432",
+    # },
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "d4hcei9p6hmjv6",
+    #     "USER": "laxodqlycrpphl",
+    #     "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
+    #     "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
+    #     "PORT": "5432",
+    # },
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     },
 }
 
+# automatic postgres db on heroku
+import dj_database_url
+
+if print(bool(dj_database_url.config())):
+    DATABASES["default"] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -142,8 +148,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "frontend"),
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "frontend", "static"),
+    # os.path.join(BASE_DIR, "static"),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 

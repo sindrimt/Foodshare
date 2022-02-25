@@ -12,6 +12,9 @@ class Category(models.Model):
     def __str__(self):
         return str(self.name)
 
+    class Meta:
+        verbose_name_plural = "categories"
+
 
 class Recipe(models.Model):
     title = models.CharField(

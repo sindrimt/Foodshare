@@ -19,6 +19,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     category_name = serializers.CharField(
         source="category.name",
+        read_only=True,
         default="",
     )
 
