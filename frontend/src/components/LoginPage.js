@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { maxHeight } from "@mui/system";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -38,14 +39,26 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    //let formData = new FormData();
+
+    axios
+      .post("/api/accounts/login/", {
+        login: username,
+        password: password,
+      })
+      .then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   };
 
   return (
@@ -99,6 +112,7 @@ export default function LoginPage() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -109,6 +123,7 @@ export default function LoginPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
