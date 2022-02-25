@@ -6,36 +6,36 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
 //import { useDebounce } from "use-debounce";
-import { useDebounce } from "../hooks/useDebounce";
+import { useDebounce } from "use-debounce";
 import { TextField } from "@mui/material";
 
 const CardContainer = () => {
-  const url = "api/recipes";
-  const [state, setState] = useState([]);
   const [popular, setPopular] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [text, setText] = useState("");
   const [debouncedValue] = useDebounce(text, 300);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     axios.get(url).then((res) => {
       const recipes = res.data;
       setState({ recipes });
     });
-  }, []);
+  }, []); */
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    const result = await axios.get(
-      "http://api.themoviedb.org/3/movie/popular?api_key=ad1ac1d7621db8c39803075fc3658091"
-    );
+    const url = "api/recipes/";
+    const result = await axios.get(url);
+
     const dataList = result.data;
-    console.log(dataList.results);
-    setPopular(dataList.results);
-    setFiltered(dataList.results);
+    console.log("==============");
+    console.log(dataList);
+    console.log("==============");
+    setPopular(dataList);
+    setFiltered(dataList);
   };
   // Updates input from the search field every 300ms
   useEffect(() => {
@@ -55,7 +55,7 @@ const CardContainer = () => {
       return card.title.toLowerCase().includes(text);
     });
     setFiltered(filter);
-    console.log(filtered);
+    //console.log(filtered);
   };
 
   // When you press enter on search (kind of useless)
@@ -66,7 +66,7 @@ const CardContainer = () => {
       return card.title.toLowerCase().includes(text);
     });
     setFiltered(filter);
-    console.log(filtered);
+    //console.log(filtered);
   };
 
   return (
@@ -74,13 +74,11 @@ const CardContainer = () => {
       <FormContainer>
         <form onSubmit={handleSubmit}>
           <TextField
+            onChange={(e) => setText(e.target.value)}
             id="standard-basic"
             label="Search"
             variant="standard"
             type="text"
-            onChange={(e) => {
-              setText(e.target.value.toLowerCase());
-            }}
           />
         </form>
       </FormContainer>
@@ -88,7 +86,7 @@ const CardContainer = () => {
         <motion.div layout>
           <GridContainer>
             {/* <AnimatePresence> */}
-            {state.recipes?.map((recipe) => (
+            {/* {state.recipes?.map((recipe) => (
               <RecipeCard
                 key={recipe.id}
                 title={recipe.title}
@@ -96,14 +94,15 @@ const CardContainer = () => {
                 createdAt={recipe.created}
                 image={recipe.image}
               />
-            ))}
+            ))} */}
 
             {filtered?.map((card) => {
               return (
                 <RecipeCard
                   key={card.id}
                   title={card.title}
-                  image={"https://image.tmdb.org/t/p/w500" + card.backdrop_path}
+                  description={card.content}
+                  image={card.image}
                 />
               );
             })}
