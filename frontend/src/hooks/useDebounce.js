@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function useDebounce() {
-  const [typingTimeout, setTypingTimeout] = useState("");
+export const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
-  function debounce(func, wait) {
-    clearTimeout(typingTimeout);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-    const timeout = setTimeout(() => {
-      func();
-    }, wait);
-    setTypingTimeout(timeout);
-  }
-  return debounce;
-}
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value]);
+
+  return debouncedValue;
+};
