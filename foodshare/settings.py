@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -38,18 +40,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
     "rest_framework",
     "rest_registration",  # account managemenet
     "django_filters",  # search and filters
     "crispy_forms",  # filters in browsable api
-    # "django.contrib.staticfiles",  # required for serving swagger ui's css/js files
-    "drf_yasg",  # api docs generation
     "api.apps.ApiConfig",
     "frontend",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -82,28 +84,33 @@ WSGI_APPLICATION = "foodshare.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
-    "old": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "urrhajjk",
-        "USER": "urrhajjk",
-        "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
-        "HOST": "abul.db.elephantsql.com",
-        "PORT": "5432",
-    },
-    "new": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "d4hcei9p6hmjv6",
-        "USER": "laxodqlycrpphl",
-        "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
-        "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
-        "PORT": "5432",
-    },
+    # "old": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "urrhajjk",
+    #     "USER": "urrhajjk",
+    #     "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
+    #     "HOST": "abul.db.elephantsql.com",
+    #     "PORT": "5432",
+    # },
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "d4hcei9p6hmjv6",
+    #     "USER": "laxodqlycrpphl",
+    #     "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
+    #     "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
+    #     "PORT": "5432",
+    # },
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     },
 }
 
+# automatic postgres db on heroku
+import dj_database_url
+
+if print(bool(dj_database_url.config())):
+    DATABASES["default"] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -140,7 +147,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = (BASE_DIR.joinpath("frontend", "static"),)
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "frontend", "static"),
+    # os.path.join(BASE_DIR, "static"),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# used by heroku
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # User generated media
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -153,14 +167,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Pagination allows you to control how many objects per page are returned.
 REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         # "rest_framework.permissions.AllowAny",
         # "rest_framework.permissions.IsAuthenticated",
     ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        # "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
     # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -182,3 +199,7 @@ REST_REGISTRATION = {
     "REGISTER_EMAIL_VERIFICATION_ENABLED": False,
     "RESET_PASSWORD_VERIFICATION_ENABLED": False,
 }
+
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

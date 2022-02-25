@@ -4,37 +4,29 @@ from rest_framework import serializers
 from .models import Category, Recipe
 
 
-class RecipeSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source="category.name", read_only=True)
-
-    class Meta:
-        model = Recipe
-        fields = "__all__"
-        read_only_fields = ["author"]  # this is set automatically
-
-
 class CategorySerializer(serializers.ModelSerializer):
-    recipe_count = serializers.IntegerField(source="recipe_set.count", read_only=True)
+
+    recipe_count = serializers.IntegerField(
+        source="recipes.count", read_only=True, default=-1  # in case of problems
+    )
 
     class Meta:
         model = Category
         fields = "__all__"
 
 
-class RegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "email", "username", "first_name", "last_name", "password"]
-        extra_kwargs = {
-            "password": {"write_only": True},
-        }
+class RecipeSerializer(serializers.ModelSerializer):
 
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            validated_data["username"],
-            password=validated_data["password"],
-        )
-        return user
+    category_name = serializers.CharField(
+        source="category.name",
+        read_only=True,
+        default="",
+    )
+
+    class Meta:
+        model = Recipe
+        fields = "__all__"
+        read_only_fields = ["author"]  # this is set automatically
 
 
 class UserSerializer(serializers.ModelSerializer):
