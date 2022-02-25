@@ -11,6 +11,13 @@ import {
 } from "@material-ui/core";
 
 const RecipeCard = (props) => {
+  const styles = {
+    media: {
+      width: "320px",
+      height: "200px",
+      objectFit: "contain",
+    },
+  };
   return (
     <AnimateSharedLayout>
       <motion.div
@@ -19,16 +26,16 @@ const RecipeCard = (props) => {
         initial={{ opacity: 0 }}
         exit={{ opacity: 0 }} */
       >
-        <Card style={{ maxWidth: "400px" }}>
+        <Card>
           <CardHeader
             title={props.title}
             subheader={props.createdAt}
           ></CardHeader>
           <CardMedia
             component="img"
-            height="194"
+            style={styles.media}
             image={props.image}
-            alt="Spaghetti"
+            alt="Image"
           />
           <CardContent className="recipe_card">
             <Typography id="text" color="textSecondary">
