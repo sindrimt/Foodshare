@@ -5,10 +5,15 @@ import styled from "styled-components";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
+import { useDebounce } from "use-debounce";
 
 const CardContainer = () => {
   const url = "api/recipes";
   const [state, setState] = useState([]);
+  const [popular, setPopular] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [text, setText] = useState("");
+  const [debouncedValue] = useDebounce(text, 300);
 
   useEffect(() => {
     axios.get(url).then((res) => {
@@ -16,12 +21,6 @@ const CardContainer = () => {
       setState({ recipes });
     });
   }, []);
-  // ========
-
-  const [popular, setPopular] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [activeGenre, setActiveGenre] = useState(0);
-  const [text, setText] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -36,15 +35,28 @@ const CardContainer = () => {
     setPopular(dataList.results);
     setFiltered(dataList.results);
   };
-
+  // Updates input from the search field every 300ms
   useEffect(() => {
+    if (debouncedValue) filterFunction();
+  }, [debouncedValue]);
+
+  // Checks if the search field is empty, and clears the filter if it is
+  useEffect(() => {
+    if (text == "") {
+      filterFunction();
+    }
+  }, [text]);
+
+  // Filters the movies based on title
+  const filterFunction = () => {
     const filter = popular?.filter((card) => {
       return card.title.toLowerCase().includes(text);
     });
     setFiltered(filter);
     console.log(filtered);
-  }, [text]);
+  };
 
+  // When you press enter on search (kind of useless)
   const handleSubmit = (event) => {
     event.preventDefault();
 
