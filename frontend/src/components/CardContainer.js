@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
 //import { useDebounce } from "use-debounce";
 import { useDebounce } from "../hooks/useDebounce";
+import { TextField } from "@mui/material";
 
 const CardContainer = () => {
   const url = "api/recipes";
@@ -70,15 +71,19 @@ const CardContainer = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="search"
-          onChange={(e) => {
-            setText(e.target.value.toLowerCase());
-          }}
-        />
-      </form>
+      <FormContainer>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            id="standard-basic"
+            label="Search"
+            variant="standard"
+            type="text"
+            onChange={(e) => {
+              setText(e.target.value.toLowerCase());
+            }}
+          />
+        </form>
+      </FormContainer>
       <AnimateSharedLayout>
         <motion.div layout>
           <GridContainer>
@@ -117,6 +122,11 @@ const GridContainer = styled.section`
   place-items: center;
   column-gap: 2rem;
   row-gap: 3rem;
+`;
+
+const FormContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 export default CardContainer;
