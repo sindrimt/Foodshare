@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-def upload_to(instance, filename):
-    return "recipes/{filename}".format(filename=filename)
+# def upload_to(instance, filename):
+#     return "recipes/{filename}".format(filename=filename)
 
 
 class Category(models.Model):
@@ -34,8 +34,8 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         "Image",
-        upload_to=upload_to,
-        default="recipes/default.jpeg",
+        # upload_to=upload_to,
+        default="default.jpeg",
         blank=True,
         null=True,
     )
