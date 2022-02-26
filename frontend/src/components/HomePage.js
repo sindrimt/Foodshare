@@ -1,10 +1,11 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useContext } from "react";
 import CreateRecipePage from "./CreateRecipePage";
 import HomePageDisplay from "./HomePageDisplay";
 import RecipeCreated from "./RecipeCreated";
 import Navbar from "./Navbar";
 import CardContainer from "./CardContainer";
 import LoginPage from "./LoginPage";
+import { UserContext } from "../context/UserContext";
 
 import {
   BrowserRouter as Router,
