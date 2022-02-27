@@ -39,7 +39,7 @@ class Recipe(models.Model):
         blank=True,
         null=True,
     )
-    author = models.ForeignKey(
+    user = models.ForeignKey(
         User, null=True, on_delete=models.CASCADE, related_name="recipes"
     )
 
@@ -52,19 +52,21 @@ class Recipe(models.Model):
 
 class Like(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="likes")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ["recipe, user"]  # users can only like a recipe once
+        unique_together = ["recipe", "user"]  # users can only like a recipe once
 
     def __str__(self):
         return f"{self.user} liked {self.recipe}"
 
 
 class Comment(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="likes")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name="comments"
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
 
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -74,13 +76,15 @@ class Comment(models.Model):
 
 
 class UserFollowing(models.Model):
-    followed = models.ForeignKey("User", related_name="following")
-    following = models.ForeignKey("User", related_name="followers")
+    follows = models.ForeignKey(
+        User, related_name="followers", on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
 
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ["followed, following"]
+        unique_together = ["user", "follows"]
 
     def __str__(self):
-        return f"{self.following} follows {self.followed}"
+        return f"{self.user} follows {self.follows}"

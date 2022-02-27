@@ -1,14 +1,16 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets, generics, filters
+from rest_framework import permissions, viewsets, generics, filters, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .models import Category, Recipe
+from .models import Category, Recipe, UserFollowing, Like, Comment
 from .permissions import IsAuthor, IsAuthorOrAdmin
 from .serializers import (
     CategorySerializer,
     RecipeSerializer,
     UserSerializer,
+    CommentSerializer,
 )
 
 
@@ -22,7 +24,7 @@ class RecipeView(viewsets.ModelViewSet):
 
     filterset_fields = (
         "category",
-        "author",
+        "user",
     )
 
     search_fields = (
@@ -44,7 +46,34 @@ class RecipeView(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(user=self.request.user)
+
+
+class CommentView(viewsets.ModelViewSet):
+
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    filterset_fields = (
+        "recipe",
+        "user",
+    )
+
+    def get_permissions(self):
+
+        if self.action in ["list", "retrieve"]:  # anyone can read
+            permission_classes = [permissions.AllowAny]
+
+        elif self.action in ["post"]:  # must be logged in to post
+            permission_classes = [permissions.IsAuthenticated]
+
+        else:
+            permission_classes = [IsAuthorOrAdmin]
+
+        return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class CategoryView(viewsets.ModelViewSet):

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Category, Recipe
+from .models import Category, Recipe, Comment, Like, UserFollowing
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -23,10 +23,31 @@ class RecipeSerializer(serializers.ModelSerializer):
         default="",
     )
 
+    comment_count = serializers.IntegerField(
+        source="comments.count", read_only=True, default=-1
+    )
+
+    like_count = serializers.IntegerField(
+        source="likes.count", read_only=True, default=-1
+    )
+
+    is_liked = serializers.SerializerMethodField()
+
     class Meta:
         model = Recipe
         fields = "__all__"
-        read_only_fields = ["author"]  # this is set automatically
+        read_only_fields = ["user"]  # this is set automatically
+
+    def get_is_liked(self, obj):
+        user = self.context["request"].user
+        return Like.objects.filter(recipe=obj, user=user).exists()
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+        read_only_fields = ["user"]
 
 
 class UserSerializer(serializers.ModelSerializer):
