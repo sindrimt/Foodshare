@@ -1,12 +1,12 @@
+from urllib import request
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, filters, generics
+from django_filters.rest_framework import DjangoFilterBackend
 
-from .models import Category, Comment, Like, Recipe, UserFollowing
+from .models import Comment, Recipe, UserFollowing
 from .permissions import IsAuthor, IsAuthorOrAdmin
 from .serializers import (
-    CategorySerializer,
     CommentSerializer,
-    LikeSerializer,
     RecipeSerializer,
     UserSerializer,
 )
@@ -14,17 +14,23 @@ from .serializers import (
 
 class RecipeView(viewsets.ModelViewSet):
     """
-    List of all recipes. Go to /recipes/<id>/ to modify or delete
+    List of all recipes. Go to /recipes/<id>/ to modify or delete,
+    Tags must be formatted as proper JSON lists, e.g. ["frokost", "kjøtt"]
     """
 
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
-    filterset_fields = ("category", "user")
+    filterset_fields = (
+        "user",
+        "tags__name",
+    )
+    # https://stackoverflow.com/questions/41279335/filter-by-multiple-django-taggit-tags-with-django-rest-framework
 
     search_fields = (
         "title",
         "content",
+        "tags__name",
     )
 
     def get_permissions(self):
@@ -32,7 +38,7 @@ class RecipeView(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:  # anyone can read
             permission_classes = [permissions.AllowAny]
 
-        elif self.action in ["post"]:  # must be logged in to interact
+        elif self.action in ["create"]:  # must be logged in to interact
             permission_classes = [permissions.IsAuthenticated]
 
         else:
@@ -61,7 +67,7 @@ class CommentView(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:  # anyone can read
             permission_classes = [permissions.AllowAny]
 
-        elif self.action in ["post"]:  # must be logged in to post
+        elif self.action in ["create"]:  # must be logged in to post
             permission_classes = [permissions.IsAuthenticated]
 
         else:
@@ -71,37 +77,6 @@ class CommentView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-
-class LikeView(viewsets.ModelViewSet):
-    serializer_class = LikeSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        # can only view personal likes
-        return Like.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-class CategoryView(viewsets.ModelViewSet):
-    """
-    List of all categories. Go to /category/<id>/ to modify or delete (admin only)
-    """
-
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
-    def get_permissions(self):
-
-        if self.action in ["retrieve", "list"]:  # read only actions
-            permission_classes = [permissions.AllowAny]
-
-        else:
-            permission_classes = [permissions.IsAdminUser]
-
-        return [permission() for permission in permission_classes]
 
 
 class UserView(viewsets.ReadOnlyModelViewSet):

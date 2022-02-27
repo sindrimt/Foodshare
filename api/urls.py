@@ -11,8 +11,5 @@ urlpatterns = [
 router = routers.DefaultRouter()
 router.register("recipes", views.RecipeView, basename="recipes")
 router.register("comments", views.CommentView, basename="comments")
-router.register("categories", views.CategoryView, basename="categories")
 router.register("accounts", views.UserView, basename="accounts")
-router.register("likes", views.LikeView, basename="likes")
-
 urlpatterns += router.urls

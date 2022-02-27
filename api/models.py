@@ -1,44 +1,43 @@
 from django.contrib.auth.models import User
 from django.db import models
-
-
-# def upload_to(instance, filename):
-#     return "recipes/{filename}".format(filename=filename)
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return str(self.name)
-
-    class Meta:
-        verbose_name_plural = "categories"
+from taggit.managers import TaggableManager
 
 
 class Recipe(models.Model):
+
     title = models.CharField(
-        max_length=50,
+        max_length=32,
         unique=True,
         help_text="Recipe title, must be unqiue and no more than 50 characters",
     )
+
+    summary = models.CharField(max_length=256)
+
     content = models.TextField(blank=True)
+
+    prep_time = models.IntegerField(blank=True)
+
     created = models.DateTimeField(auto_now_add=True, editable=False)
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.PROTECT,
-        related_name="recipes",
-        blank=True,
-        null=True,
-        help_text="Foreign key to category",
-    )
+
+    tags = TaggableManager()
+
     image = models.ImageField(
         "Image",
         # upload_to=upload_to,
         default="default.jpeg",
     )
+
     user = models.ForeignKey(
-        User, null=True, on_delete=models.CASCADE, related_name="recipes"
+        User,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="recipes",
+    )
+
+    liked_by = models.ManyToManyField(
+        User,
+        related_name="liked_recipes",
+        blank=True,  # can have zero likes
     )
 
     def __str__(self):
@@ -48,25 +47,22 @@ class Recipe(models.Model):
         ordering = ["-created"]
 
 
-class Like(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="likes")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ["recipe", "user"]  # users can only like a recipe once
-
-    def __str__(self):
-        return f"{self.user} liked {self.recipe}"
-
-
 class Comment(models.Model):
+
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, related_name="comments"
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name="comments",
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="comments",
+    )
 
     content = models.TextField()
+
     created = models.DateTimeField(auto_now_add=True)
 
     # def __str__(self):
@@ -74,10 +70,18 @@ class Comment(models.Model):
 
 
 class UserFollowing(models.Model):
+
     follows = models.ForeignKey(
-        User, related_name="followers", on_delete=models.CASCADE
+        User,
+        related_name="followers",
+        on_delete=models.CASCADE,
     )
-    user = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
+
+    user = models.ForeignKey(
+        User,
+        related_name="following",
+        on_delete=models.CASCADE,
+    )
 
     created = models.DateTimeField(auto_now_add=True)
 
