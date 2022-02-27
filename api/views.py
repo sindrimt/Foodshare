@@ -1,19 +1,14 @@
-from asyncio.proactor_events import _ProactorWritePipeTransport
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets, generics, filters, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from rest_framework import permissions, viewsets
 
-# from django_filters.rest_framework import DjangoFilterBackend
-
-from .models import Category, Recipe, UserFollowing, Like, Comment
+from .models import Category, Comment, Like, Recipe, UserFollowing
 from .permissions import IsAuthor, IsAuthorOrAdmin
 from .serializers import (
     CategorySerializer,
-    RecipeSerializer,
-    UserSerializer,
     CommentSerializer,
     LikeSerializer,
+    RecipeSerializer,
+    UserSerializer,
 )
 
 
