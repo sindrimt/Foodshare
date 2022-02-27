@@ -1,14 +1,15 @@
-from urllib import request
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets, filters, generics
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions, viewsets, generics
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
-from .models import Comment, Recipe, UserFollowing
+from .models import Comment, Recipe, UserFollow
 from .permissions import IsAuthor, IsAuthorOrAdmin
 from .serializers import (
     CommentSerializer,
     RecipeSerializer,
     UserSerializer,
+    UserFollowSerializer,
 )
 
 
@@ -33,12 +34,22 @@ class RecipeView(viewsets.ModelViewSet):
         "tags__name",
     )
 
+    # def get_queryset(self, *args, **kwargs):
+    #     user = self.request.user
+    #     return super().get_queryset(*args, **kwargs).filter(user__followers__user=user)
+
+    @action(detail=False)
+    def followed(self, request):
+        recipes = Recipe.objects.filter(user__followers__user=request.user)
+        serializer = self.get_serializer(recipes, many=True)
+        return Response(serializer.data)
+
     def get_permissions(self):
 
         if self.action in ["list", "retrieve"]:  # anyone can read
             permission_classes = [permissions.AllowAny]
 
-        elif self.action in ["create"]:  # must be logged in to interact
+        elif self.action in ["create", "followed"]:  # must be logged in to interact
             permission_classes = [permissions.IsAuthenticated]
 
         else:
@@ -96,3 +107,15 @@ class UserView(viewsets.ReadOnlyModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class UserFollowView(viewsets.ModelViewSet):
+    queryset = UserFollow.objects.all()
+    serializer_class = UserFollowSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        # cant see whom other people follow
+        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 
-from .models import Recipe, Comment
+from .models import Recipe, Comment, UserFollow
 
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -61,3 +61,10 @@ class UserSerializer(serializers.ModelSerializer):
             "is_superuser",
             "recipes",
         ]
+
+
+class UserFollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFollow
+        fields = "__all__"
+        read_only_fields = ["user"]

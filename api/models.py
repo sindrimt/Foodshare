@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from taggit.managers import TaggableManager
 
+from django.contrib.auth.models import AbstractUser
+
 
 class Recipe(models.Model):
 
@@ -69,7 +71,7 @@ class Comment(models.Model):
     #     TODO: imeplement
 
 
-class UserFollowing(models.Model):
+class UserFollow(models.Model):
 
     follows = models.ForeignKey(
         User,
