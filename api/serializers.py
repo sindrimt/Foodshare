@@ -50,6 +50,13 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ["user"]
 
 
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = "__all__"
+        read_only_fields = ["user"]
+
+
 class UserSerializer(serializers.ModelSerializer):
     recipes = serializers.HyperlinkedRelatedField(
         many=True, view_name="recipes-detail", read_only=True

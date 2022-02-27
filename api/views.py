@@ -1,8 +1,10 @@
+from asyncio.proactor_events import _ProactorWritePipeTransport
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets, generics, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
+
+# from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Category, Recipe, UserFollowing, Like, Comment
 from .permissions import IsAuthor, IsAuthorOrAdmin
@@ -11,6 +13,7 @@ from .serializers import (
     RecipeSerializer,
     UserSerializer,
     CommentSerializer,
+    LikeSerializer,
 )
 
 
@@ -22,10 +25,7 @@ class RecipeView(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
-    filterset_fields = (
-        "category",
-        "user",
-    )
+    filterset_fields = ("category", "user")
 
     search_fields = (
         "title",
@@ -37,7 +37,7 @@ class RecipeView(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:  # anyone can read
             permission_classes = [permissions.AllowAny]
 
-        elif self.action in ["post"]:  # must be logged in to post
+        elif self.action in ["post"]:  # must be logged in to interact
             permission_classes = [permissions.IsAuthenticated]
 
         else:
@@ -59,6 +59,8 @@ class CommentView(viewsets.ModelViewSet):
         "user",
     )
 
+    search_fields = None  # needed for filters to work
+
     def get_permissions(self):
 
         if self.action in ["list", "retrieve"]:  # anyone can read
@@ -71,6 +73,18 @@ class CommentView(viewsets.ModelViewSet):
             permission_classes = [IsAuthorOrAdmin]
 
         return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class LikeView(viewsets.ModelViewSet):
+    serializer_class = LikeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # can only view personal likes
+        return Like.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -36,8 +36,6 @@ class Recipe(models.Model):
         "Image",
         # upload_to=upload_to,
         default="default.jpeg",
-        blank=True,
-        null=True,
     )
     user = models.ForeignKey(
         User, null=True, on_delete=models.CASCADE, related_name="recipes"
