@@ -104,6 +104,11 @@ class LikeView(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
 
+    filterset_fields = (
+        "user",
+        "recipe",
+    )
+
     def get_queryset(self):
         return Like.objects.filter(user=self.request.user)
 
@@ -142,6 +147,8 @@ class UserView(viewsets.ReadOnlyModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    search_fields = ("email", "username", "first_name", "last_name")
 
     @action(detail=True)
     def follow(self, request, pk=None):

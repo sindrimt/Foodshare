@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
@@ -68,6 +69,14 @@ class UserSerializer(serializers.ModelSerializer):
         many=True, view_name="recipes-detail", read_only=True
     )
 
+    followers = serializers.IntegerField(
+        source="followers.count", default=0, read_only=True
+    )
+
+    following = serializers.IntegerField(
+        source="following.count", default=0, read_only=True
+    )
+
     class Meta:
         model = User
         fields = [
@@ -80,6 +89,8 @@ class UserSerializer(serializers.ModelSerializer):
             "last_login",
             "is_superuser",
             "recipes",
+            "followers",
+            "following",
         ]
 
 
