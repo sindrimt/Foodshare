@@ -39,6 +39,7 @@ const CreateRecipePage = () => {
 
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("tags", []); // stupid tags plugin needs empty list
     if (image !== null) {
       formData.append("image", image[0]);
     }

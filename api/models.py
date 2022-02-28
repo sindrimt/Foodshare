@@ -13,15 +13,15 @@ class Recipe(models.Model):
         help_text="Recipe title, must be unqiue and no more than 50 characters",
     )
 
-    summary = models.CharField(max_length=256)
+    summary = models.CharField(max_length=256, blank=True)
 
     content = models.TextField(blank=True)
 
-    prep_time = models.IntegerField(blank=True)
+    prep_time = models.IntegerField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     image = models.ImageField(
         "Image",
