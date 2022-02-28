@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets, generics
+from rest_framework import permissions, viewsets, generics, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -90,7 +90,7 @@ class CommentView(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class UserView(viewsets.ReadOnlyModelViewSet):
+class UserView(viewsets.ModelViewSet):
     """
     To do stuff:
         api/ accounts/ register/
@@ -103,19 +103,91 @@ class UserView(viewsets.ReadOnlyModelViewSet):
         api/ accounts/ change-password/
         api/ accounts/ register-email/
         api/ accounts/ verify-email/
+        api/ accounts/ follow
     """
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    @action(detail=True)
+    def follow(self, request, pk=None):
+        follows = self.get_object()
+        user = request.user
 
-class UserFollowView(viewsets.ModelViewSet):
+        try:
+            relationship = UserFollow.objects.get(follows=follows, user=user)
+
+        except UserFollow.DoesNotExist:
+            return Response(
+                data={"message": "Currently not following"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = UserFollowSerializer(relationship)
+        return Response(serializer.data, status=status.HTTP_302_FOUND)
+
+    @follow.mapping.post
+    def new_follow(self, request, pk=None):
+        follows = self.get_object()
+        user = request.user
+
+        try:
+            UserFollow.objects.get(follows=follows, user=user)
+            return Response(
+                data={"message": "Currently following"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except UserFollow.DoesNotExist:
+            new_relationsship = UserFollow(follows=follows, user=user)
+            new_relationsship.save()
+            return Response(
+                data={"message": "Successfully followed."},
+                status=status.HTTP_201_CREATED,
+            )
+
+    @follow.mapping.delete
+    def unfollow(self, request, pk=None):
+        follows = self.get_object()
+        user = request.user
+
+        try:
+            relationship = UserFollow.objects.get(follows=follows, user=user)
+
+        except UserFollow.DoesNotExist:
+            return Response(
+                data={"message": "Currently not following"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        relationship.delete()
+        return Response(
+            data={"message": "Successfully unfollowed"},
+            status=status.HTTP_200_OK,
+        )
+
+    def get_permissions(self):
+
+        if self.action in ["list", "retrieve"]:
+            permission_classes = [permissions.AllowAny]
+
+        elif self.action in ["follow", "new_follow", "unfollow"]:
+            permission_classes = [permissions.IsAuthenticated]
+
+        else:
+            permission_classes = [permissions.IsAdminUser]
+
+        return [permission() for permission in permission_classes]
+
+
+class UserFollowView(viewsets.ReadOnlyModelViewSet):
+    """
+    You can not follow the same user several times.
+    """
+
     queryset = UserFollow.objects.all()
     serializer_class = UserFollowSerializer
 
-    def get_queryset(self, *args, **kwargs):
-        # cant see whom other people follow
-        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
+    filterset_fields = ("user", "follows")
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
