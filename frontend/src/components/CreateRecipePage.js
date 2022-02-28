@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
+import Autocomplete from "@mui/material/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import API from "../axios";
@@ -29,6 +30,7 @@ const CreateRecipePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [tags, setTags] = useState([]);
 
   const navigate = useNavigate();
 
@@ -39,7 +41,8 @@ const CreateRecipePage = () => {
 
     formData.append("title", title);
     formData.append("content", content);
-    formData.append("tags", []); // stupid tags plugin needs empty list
+    formData.append("tags", JSON.stringify(tags));
+
     if (image !== null) {
       formData.append("image", image[0]);
     }
@@ -53,7 +56,7 @@ const CreateRecipePage = () => {
           console.log(error);
         }
       )
-      .then(navigate("/created"));
+      .then(navigate("created"));
   }
 
   const classes = useStyles();
@@ -88,9 +91,30 @@ const CreateRecipePage = () => {
                 label="Content"
                 name="content"
                 autoComplete="content"
-                onChange={(e) => setContent(e.target.value)}
+                onChange={(e) => {
+                  setContent(e.target.value);
+                  console.log(tags);
+                }}
                 multiline
                 rows={4}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                freeSolo
+                id="tags"
+                options={["Julemat"]}
+                defaultValue={[]}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Tags"
+                    placeholder="Frokost"
+                  />
+                )}
+                onChange={(e, value) => setTags(value)}
               />
             </Grid>
             <input
