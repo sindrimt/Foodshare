@@ -36,12 +36,6 @@ class Recipe(models.Model):
         related_name="recipes",
     )
 
-    liked_by = models.ManyToManyField(
-        User,
-        related_name="liked_recipes",
-        blank=True,  # can have zero likes
-    )
-
     def __str__(self):
         return str(self.title)
 
@@ -66,6 +60,29 @@ class Comment(models.Model):
     content = models.TextField()
 
     created = models.DateTimeField(auto_now_add=True)
+
+    # def __str__(self):
+    #     TODO: imeplement
+
+
+class Like(models.Model):
+
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name="likes",
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="likes",
+    )
+
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["user", "recipe"]
 
     # def __str__(self):
     #     TODO: imeplement

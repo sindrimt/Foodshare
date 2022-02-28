@@ -1,22 +1,26 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets, generics, mixins, status
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Comment, Recipe, UserFollow
-from .permissions import IsAuthor, IsAuthorOrAdmin
+from .models import Comment, Like, Recipe, UserFollow
+from .permissions import IsAuthorOrAdmin
 from .serializers import (
     CommentSerializer,
+    LikeSerializer,
     RecipeSerializer,
-    UserSerializer,
     UserFollowSerializer,
+    UserSerializer,
 )
 
 
 class RecipeView(viewsets.ModelViewSet):
     """
-    List of all recipes. Go to /recipes/<id>/ to modify or delete,
-    Tags must be formatted as proper JSON lists, e.g. ["frokost", "kjøtt"]
+    /recipes/<id>/ to modify or delete.
+    /recipes/liked/ for recipes liked by the currently logged in user.
+    /recipes/liked/ for recipes written by people whom the current follow.
+
+    NB: Tags must be formatted as proper JSON lists, e.g. ["frokost", "kjøtt"]
     """
 
     queryset = Recipe.objects.all()
@@ -34,13 +38,15 @@ class RecipeView(viewsets.ModelViewSet):
         "tags__name",
     )
 
-    # def get_queryset(self, *args, **kwargs):
-    #     user = self.request.user
-    #     return super().get_queryset(*args, **kwargs).filter(user__followers__user=user)
-
     @action(detail=False)
     def followed(self, request):
         recipes = Recipe.objects.filter(user__followers__user=request.user)
+        serializer = self.get_serializer(recipes, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False)
+    def liked(self, request):
+        recipes = Recipe.objects.filter(likes__user=request.user)
         serializer = self.get_serializer(recipes, many=True)
         return Response(serializer.data)
 
@@ -49,7 +55,7 @@ class RecipeView(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:  # anyone can read
             permission_classes = [permissions.AllowAny]
 
-        elif self.action in ["create", "followed"]:  # must be logged in to interact
+        elif self.action in ["create", "followed", "liked"]:
             permission_classes = [permissions.IsAuthenticated]
 
         else:
@@ -90,7 +96,35 @@ class CommentView(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class UserView(viewsets.ModelViewSet):
+class LikeView(viewsets.ModelViewSet):
+    """
+    Attempting to like the same recipe twice will not work, but you will not get a proper error message.
+    """
+
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+
+    def get_queryset(self):
+        return Like.objects.filter(user=self.request.user)
+
+    def get_permissions(self):
+
+        if self.action in ["list", "retrieve"]:  # anyone can read
+            permission_classes = [permissions.AllowAny]
+
+        elif self.action in ["create"]:  # must be logged in to post
+            permission_classes = [permissions.IsAuthenticated]
+
+        else:
+            permission_classes = [IsAuthorOrAdmin]
+
+        return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class UserView(viewsets.ReadOnlyModelViewSet):
     """
     To do stuff:
         api/ accounts/ register/
@@ -103,7 +137,7 @@ class UserView(viewsets.ModelViewSet):
         api/ accounts/ change-password/
         api/ accounts/ register-email/
         api/ accounts/ verify-email/
-        api/ accounts/ follow
+        api/ accounts/ <id>/ follow/ (the online form is a little wierd here, but the API works)
     """
 
     queryset = User.objects.all()

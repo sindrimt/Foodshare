@@ -1,4 +1,3 @@
-from sys import builtin_module_names
 from django.urls import include, path
 from rest_framework import routers
 from . import views
@@ -11,6 +10,7 @@ urlpatterns = [
 router = routers.DefaultRouter()
 router.register("recipes", views.RecipeView, basename="recipes")
 router.register("comments", views.CommentView, basename="comments")
+router.register("likes", views.LikeView, basename="likes")
 router.register("accounts", views.UserView, basename="accounts")
-router.register("follows", views.UserFollowView)
+router.register("follows", views.UserFollowView, basename="follows")
 urlpatterns += router.urls

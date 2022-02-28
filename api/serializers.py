@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 
-from .models import Recipe, Comment, UserFollow
+from .models import Recipe, Comment, Like, UserFollow
 
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
     )
 
     like_count = serializers.IntegerField(
-        source="liked_by.count",
+        source="likes.count",
         read_only=True,
         default=-1,
     )
@@ -25,13 +25,26 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        exclude = ("liked_by",)
+        fields = [
+            "id",
+            "title",
+            "summary",
+            "content",
+            "prep_time",
+            "image",
+            "user",
+            "created",
+            "tags",
+            "like_count",
+            "is_liked",
+            "comment_count",
+        ]
         read_only_fields = ["user"]  # this is set automatically
 
     def get_is_liked(self, obj):
         user = self.context["request"].user
         if user.is_authenticated:
-            return user.liked_recipes.filter(id=obj.id).exists()
+            return Like.objects.filter(user=user, recipe=obj).exists()
         return False
 
 
@@ -39,6 +52,13 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
+        read_only_fields = ["user"]
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ["id", "recipe", "user", "created"]
         read_only_fields = ["user"]
 
 
@@ -66,5 +86,5 @@ class UserSerializer(serializers.ModelSerializer):
 class UserFollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFollow
-        fields = "__all__"
+        fields = ["follows", "user", "created"]
         read_only_fields = ["user"]
