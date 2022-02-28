@@ -30,6 +30,8 @@ const CreateRecipePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [summary, setSummary] = useState("");
+  const [prepTime, setPrepTime] = useState(0);
   const [tags, setTags] = useState([]);
 
   const navigate = useNavigate();
@@ -41,6 +43,8 @@ const CreateRecipePage = () => {
 
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("summary", summary);
+    formData.append("prep_time", prepTime);
     formData.append("tags", JSON.stringify(tags));
 
     if (image !== null) {
@@ -87,18 +91,44 @@ const CreateRecipePage = () => {
                 variant="outlined"
                 required
                 fullWidth
+                id="summary"
+                label="Summary"
+                name="summary"
+                autoComplete="summary"
+                onChange={(e) => setSummary(e.target.value)}
+                multiline
+                rows={2}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
                 id="content"
                 label="Content"
                 name="content"
                 autoComplete="content"
-                onChange={(e) => {
-                  setContent(e.target.value);
-                  console.log(tags);
-                }}
+                onChange={(e) => setContent(e.target.value)}
                 multiline
-                rows={4}
+                rows={10}
               />
             </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                type="number"
+                fullWidth
+                id="prepTime"
+                label="Preperation time"
+                name="prepTime"
+                autoComplete="prepTime"
+                onChange={(e) => setPrepTime(e.target.value)}
+              />
+            </Grid>
+
             <Grid item xs={12}>
               <Autocomplete
                 multiple
