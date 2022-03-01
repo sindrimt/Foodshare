@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import {
   IoMdPerson,
@@ -8,13 +8,36 @@ import {
   IoMdBook,
   IoMdMegaphone,
 } from "react-icons/io";
+import axios from "axios";
 
 import { Link } from "react-router-dom";
 import foodshare from "../../static/images/foodshare.png";
+import { UserContext } from "../context/UserContext";
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const { loggedIn, setLoggedIn } = useContext(UserContext);
+
   const iconColor = "#bff8ff";
+
+  const logOut = () => {
+    console.log("logged out");
+    const url = "/api/accounts/logout/";
+
+    axios
+      .post(url, {
+        revoke_token: false,
+      })
+      .then(
+        (response) => {
+          console.log(response);
+          setLoggedIn(false);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
 
   return (
     <nav className="app__navbar">
@@ -39,7 +62,14 @@ const Navbar = () => {
         </li>
       </ul>
       <div className="app__navbar-login ">
-        <Link to="/login">Log In / Register</Link>
+        {loggedIn ? (
+          <Link to="/" onClick={() => logOut()}>
+            Sign Out
+          </Link>
+        ) : (
+          <Link to="/login">Log In / Register</Link>
+        )}
+
         <div />
         <a>
           {/* <CgProfile size={25} /> */}

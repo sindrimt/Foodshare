@@ -11,7 +11,7 @@ class IsAuthorOrAdmin(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         # must be author or admin
-        if obj.author == request.user or request.user.is_superuser:
+        if obj.user == request.user or request.user.is_superuser:
             return True
 
         return False
@@ -27,7 +27,7 @@ class IsAuthor(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         # must be author
-        if obj.author == request.user:
+        if obj.user == request.user:
             return True
 
         return False

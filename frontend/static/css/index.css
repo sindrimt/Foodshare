@@ -9,6 +9,14 @@
   scroll-behavior: smooth;
 }
 
+body::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+/* 
+body {
+  overflow-y: hidden;
+} */
+
 a {
   color: unset;
   text-decoration: none;
@@ -36,3 +44,7 @@ a {
 #title {
   margin-top: 10px;
 } */
+
+.test {
+  overflow-y: hidden;
+}

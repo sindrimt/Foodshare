@@ -1,37 +1,86 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from taggit.serializers import TaggitSerializer, TagListSerializerField
 
-from .models import Category, Recipe
-
-
-class CategorySerializer(serializers.ModelSerializer):
-
-    recipe_count = serializers.IntegerField(
-        source="recipes.count", read_only=True, default=-1  # in case of problems
-    )
-
-    class Meta:
-        model = Category
-        fields = "__all__"
+from .models import Comment, Like, Recipe, UserFollow
 
 
-class RecipeSerializer(serializers.ModelSerializer):
+class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
 
-    category_name = serializers.CharField(
-        source="category.name",
+    comment_count = serializers.IntegerField(
+        source="comments.count",
         read_only=True,
-        default="",
+        default=-1,
     )
+
+    like_count = serializers.IntegerField(
+        source="likes.count",
+        read_only=True,
+        default=-1,
+    )
+
+    username = serializers.CharField(
+        source="user.username",
+        read_only=True,
+        default="N/A",
+    )
+
+    tags = TagListSerializerField()
+
+    is_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
+        fields = [
+            "id",
+            "title",
+            "summary",
+            "content",
+            "prep_time",
+            "image",
+            "user",
+            "username",
+            "created",
+            "tags",
+            "like_count",
+            "is_liked",
+            "comment_count",
+        ]
+        read_only_fields = ["user"]  # this is set automatically
+
+    def get_is_liked(self, obj):
+        user = self.context["request"].user
+        if user.is_authenticated:
+            return Like.objects.filter(user=user, recipe=obj).exists()
+        return False
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
         fields = "__all__"
-        read_only_fields = ["author"]  # this is set automatically
+        read_only_fields = ["user"]
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ["id", "recipe", "user", "created"]
+        read_only_fields = ["user"]
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     recipes = serializers.HyperlinkedRelatedField(
         many=True, view_name="recipes-detail", read_only=True
+    )
+
+    followers = serializers.IntegerField(
+        source="followers.count", default=0, read_only=True
+    )
+
+    following = serializers.IntegerField(
+        source="following.count", default=0, read_only=True
     )
 
     class Meta:
@@ -46,4 +95,13 @@ class UserSerializer(serializers.ModelSerializer):
             "last_login",
             "is_superuser",
             "recipes",
+            "followers",
+            "following",
         ]
+
+
+class UserFollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFollow
+        fields = ["follows", "user", "created"]
+        read_only_fields = ["user"]

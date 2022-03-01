@@ -1,10 +1,8 @@
 from django.test import TestCase
 from ..models import Recipe
 
-# Create your tests here.
 
 class RecipeTest(TestCase):
-
     def create_recipe(self, title="test title", content="test content"):
         return Recipe.objects.create(title=title, content=content)
 

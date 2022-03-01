@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
+import Autocomplete from "@mui/material/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import API from "../axios";
+import { UserContext } from "../context/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,6 +31,11 @@ const CreateRecipePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [summary, setSummary] = useState("");
+  const [prepTime, setPrepTime] = useState(0);
+  const [tags, setTags] = useState([]);
+  const { loggedIn, setLoggedIn } = useContext(UserContext);
+  console.log(loggedIn);
 
   const navigate = useNavigate();
 
@@ -39,6 +46,10 @@ const CreateRecipePage = () => {
 
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("summary", summary);
+    formData.append("prep_time", prepTime);
+    formData.append("tags", JSON.stringify(tags));
+
     if (image !== null) {
       formData.append("image", image[0]);
     }
@@ -52,7 +63,7 @@ const CreateRecipePage = () => {
           console.log(error);
         }
       )
-      .then(navigate("/created"));
+      .then(navigate("created"));
   }
 
   const classes = useStyles();
@@ -83,13 +94,60 @@ const CreateRecipePage = () => {
                 variant="outlined"
                 required
                 fullWidth
+                id="summary"
+                label="Summary"
+                name="summary"
+                autoComplete="summary"
+                onChange={(e) => setSummary(e.target.value)}
+                multiline
+                rows={2}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
                 id="content"
                 label="Content"
                 name="content"
                 autoComplete="content"
                 onChange={(e) => setContent(e.target.value)}
                 multiline
-                rows={4}
+                rows={10}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                type="number"
+                fullWidth
+                id="prepTime"
+                label="Preperation time"
+                name="prepTime"
+                autoComplete="prepTime"
+                onChange={(e) => setPrepTime(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                freeSolo
+                id="tags"
+                options={["Julemat"]}
+                defaultValue={[]}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Tags"
+                    placeholder="Frokost"
+                  />
+                )}
+                onChange={(e, value) => setTags(value)}
               />
             </Grid>
             <input
