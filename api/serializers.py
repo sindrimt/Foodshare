@@ -1,4 +1,3 @@
-from email.policy import default
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer

@@ -2,15 +2,13 @@ from django.contrib.auth.models import User
 from django.db import models
 from taggit.managers import TaggableManager
 
-from django.contrib.auth.models import AbstractUser
-
 
 class Recipe(models.Model):
 
     title = models.CharField(
         max_length=32,
         unique=True,
-        help_text="Recipe title, must be unqiue and no more than 50 characters",
+        help_text="Recipe title, must be unqiue and no more than 50 chars",
     )
 
     summary = models.CharField(max_length=256, blank=True)

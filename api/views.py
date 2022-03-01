@@ -98,7 +98,8 @@ class CommentView(viewsets.ModelViewSet):
 
 class LikeView(viewsets.ModelViewSet):
     """
-    Attempting to like the same recipe twice will not work, but you will not get a proper error message.
+    Attempting to like the same recipe twice will not work,
+        but you will not get a proper error message.
     """
 
     queryset = Like.objects.all()
@@ -142,7 +143,8 @@ class UserView(viewsets.ReadOnlyModelViewSet):
         api/ accounts/ change-password/
         api/ accounts/ register-email/
         api/ accounts/ verify-email/
-        api/ accounts/ <id>/ follow/ (the online form is a little wierd here, but the API works)
+        api/ accounts/ <id>/ follow/ (the online form is a little wierd here,
+            but the API works)
     """
 
     queryset = User.objects.all()
