@@ -66,7 +66,7 @@ const TestCard = (props) => {
               style={{ whiteSpace: "pre-line" }}
               align="justify"
             >
-              {props.content}
+              {props.summary}
             </Typography>
           </CardContent>
           <CardActions className={classes.cardActions}>
@@ -75,7 +75,7 @@ const TestCard = (props) => {
               color="primary"
               onClick={() => console.log("liked post")}
             >
-              <ThumbUpAltIcon fontSize="small" /> Like 69
+              <ThumbUpAltIcon fontSize="small" /> {" " + props.likes}
             </Button>
             <Button
               size="small"
