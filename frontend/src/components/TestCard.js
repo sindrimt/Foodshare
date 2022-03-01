@@ -48,7 +48,8 @@ const TestCard = (props) => {
           </div>
           <div className={classes.details}>
             <Typography variant="body2" color="textSecondary" component="h2">
-              #tag 1 #tag 2
+              {props.tags.map((s) => "#" + s).join(", ")}
+              {/* prepend all elements with a # and display nicely */}
             </Typography>
           </div>
           <Typography
