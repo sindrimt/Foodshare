@@ -31,14 +31,11 @@ const CreateRecipePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
-<<<<<<< HEAD
   const [summary, setSummary] = useState("");
   const [prepTime, setPrepTime] = useState(0);
   const [tags, setTags] = useState([]);
-=======
   const { loggedIn, setLoggedIn } = useContext(UserContext);
   console.log(loggedIn);
->>>>>>> Development
 
   const navigate = useNavigate();
 

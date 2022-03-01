@@ -19,6 +19,8 @@ import useStyles from "./styles";
 const TestCard = (props) => {
   const classes = useStyles();
 
+  console.log(props);
+
   return (
     <AnimateSharedLayout>
       <motion.div layout>
