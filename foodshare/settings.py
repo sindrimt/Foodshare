@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from pathlib import Path
 import os
-import django_heroku
+from pathlib import Path
 
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,7 +128,6 @@ MEDIA_URL = "/media/"
 # automatic postgres db on heroku
 import dj_database_url
 
-
 if bool(dj_database_url.config()):
     DATABASES["default"] = dj_database_url.config()
 
@@ -195,7 +194,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
     ),
-    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DATETIME_FORMAT": "%Y-%m-%d %H:%M",  # can add :%S for seconds
+    # "DEFAULT_PAGINATION_CLASS":
+    # "rest_framework.pagination.PageNumberPagination",
     # "PAGE_SIZE": 10,
 }
 
