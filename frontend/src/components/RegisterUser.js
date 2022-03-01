@@ -28,15 +28,20 @@ const RegisterUser = () => {
     event.preventDefault();
     console.log(formValues);
 
-    axios.post(url, formValues).then(
-      (response) => {
-        console.log("omg it worked");
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (formValues.password != formValues.password_confirm) {
+      console.log("Passwords are not the same!");
+      return;
+    } else {
+      axios.post(url, formValues).then(
+        (response) => {
+          console.log("omg it worked");
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   };
 
   return (
