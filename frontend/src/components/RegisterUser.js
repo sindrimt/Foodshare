@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import styled from "styled-components";
 
 const defaultValues = {
   password: "",
@@ -15,6 +17,7 @@ const defaultValues = {
 const RegisterUser = () => {
   const [formValues, setFormValues] = useState(defaultValues);
   const url = "/api/accounts/register/";
+  const [error, setError] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +26,8 @@ const RegisterUser = () => {
       [name]: value,
     });
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,11 +39,13 @@ const RegisterUser = () => {
     } else {
       axios.post(url, formValues).then(
         (response) => {
+          navigate("user-created");
           console.log("omg it worked");
           console.log(response);
         },
         (error) => {
           console.log(error.response.data);
+          setError(true);
         }
       );
     }
@@ -47,6 +54,8 @@ const RegisterUser = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Grid container alignItems="center" justify="center" direction="column">
+        {error ? <Error>Not Accepted</Error> : ""}
+
         <Grid item>
           <TextField
             id="name-input"
@@ -108,6 +117,7 @@ const RegisterUser = () => {
           />
         </Grid>
 
+        <br />
         <Button variant="contained" color="primary" type="submit">
           Submit
         </Button>
@@ -115,4 +125,10 @@ const RegisterUser = () => {
     </form>
   );
 };
+
+const Error = styled.div`
+  color: red;
+  padding-top: 12px;
+`;
+
 export default RegisterUser;

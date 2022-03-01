@@ -51,10 +51,6 @@ export default function LoginPage() {
   const [logInFailed, setLoginFailed] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
-  console.log("================================");
-  console.log(logInSuccess);
-  console.log("================================");
-
   const handleSubmit = (event) => {
     event.preventDefault();
     //let formData = new FormData();
@@ -67,6 +63,7 @@ export default function LoginPage() {
       .then(
         (response) => {
           console.log(response);
+          console.log("Login Success");
           setLoggedIn(true);
           setLoginSuccess(true);
         },
@@ -193,12 +190,12 @@ export default function LoginPage() {
                   </Button>
                   <Grid container>
                     <Grid item xs>
-                      <LinkDom to="/create-recipe">
+                      <LinkDom to="/register">
                         <Link variant="body2">Forgot password?</Link>
                       </LinkDom>
                     </Grid>
                     <Grid item>
-                      <LinkDom to="/create-recipe">
+                      <LinkDom to="/register">
                         <Link variant="body2">
                           {"Don't have an account? Sign Up"}
                         </Link>

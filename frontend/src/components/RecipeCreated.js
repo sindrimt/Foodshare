@@ -15,6 +15,7 @@ const RecipeCreated = () => {
         <Typography component="h2" variant="h2" id="title">
           Recipe succesfully created!
         </Typography>
+        <br />
         <Button color="primary" variant="contained" to="/" component={Link}>
           OK
         </Button>
