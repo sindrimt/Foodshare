@@ -64,7 +64,7 @@ const TestCard = (props) => {
               color="textSecondary"
               component="p"
               style={{ whiteSpace: "pre-line" }}
-              align="justify"
+              align="justifyContent"
             >
               {props.summary}
             </Typography>
