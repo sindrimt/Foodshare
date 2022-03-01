@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import HomePage from "./HomePage";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
+import styled from "styled-components";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);

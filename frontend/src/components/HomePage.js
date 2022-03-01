@@ -5,7 +5,7 @@ import RecipeCreated from "./RecipeCreated";
 import Navbar from "./Navbar";
 import CardContainer from "./CardContainer";
 import LoginPage from "./LoginPage";
-import { UserContext } from "../context/UserContext";
+import styled from "styled-components";
 
 import {
   BrowserRouter as Router,

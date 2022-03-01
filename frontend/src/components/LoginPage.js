@@ -12,7 +12,7 @@ import Grid from "@mui/material/Grid";
 //import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { maxHeight } from "@mui/system";
+import { height, maxHeight } from "@mui/system";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import styled from "styled-components";
@@ -47,6 +47,7 @@ export default function LoginPage() {
   const { loggedIn, setLoggedIn, logInSuccess, setLoginSuccess } =
     useContext(UserContext);
   const [logInFailed, setLoginFailed] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   console.log("================================");
   console.log(logInSuccess);
@@ -86,12 +87,24 @@ export default function LoginPage() {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("https://foodish-api.herokuapp.com/api/")
+      .then((response) => {
+        console.log(response.data.image);
+        setImageUrl(response.data.image);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <>
       {logInSuccess ? (
         <LoggedIn />
       ) : (
-        <ThemeProvider theme={theme}>
+        <LoginContainer>
           <Grid container component="main" sx={{ height: "100vh" }}>
             <CssBaseline />
             <Grid
@@ -100,7 +113,7 @@ export default function LoginPage() {
               sm={4}
               md={7}
               sx={{
-                backgroundImage: "url(https://source.unsplash.com/random)",
+                backgroundImage: `url(${imageUrl})`,
                 backgroundRepeat: "no-repeat",
                 backgroundColor: (t) =>
                   t.palette.mode === "light"
@@ -108,6 +121,7 @@ export default function LoginPage() {
                     : t.palette.grey[900],
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                //filter: "blur(1px)",
               }}
             />
             <Grid
@@ -198,7 +212,7 @@ export default function LoginPage() {
               </Box>
             </Grid>
           </Grid>
-        </ThemeProvider>
+        </LoginContainer>
       )}
     </>
   );
@@ -207,4 +221,7 @@ export default function LoginPage() {
 const LoginStatus = styled.div`
   color: red;
   padding: 5px;
+`;
+const LoginContainer = styled.div`
+  overflow: hidden;
 `;

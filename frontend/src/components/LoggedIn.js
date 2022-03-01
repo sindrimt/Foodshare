@@ -13,7 +13,7 @@ const LoginContainer = styled.div`
   position: relative;
   font-size: 25px;
   top: 50%;
-  left: 55%;
+  left: 58%;
   transform: translate(-50%, -50%);
   width: 500px;
   padding: 3rem;
