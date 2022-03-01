@@ -59,8 +59,11 @@ class Comment(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
 
-    # def __str__(self):
-    #     TODO: implement
+    def __str__(self):
+        content = self.content[:20]
+        if len(self.content) > 20:
+            content += "..."
+        return f"{self.user} om {self.recipe}: {content}"
 
 
 class Like(models.Model):
