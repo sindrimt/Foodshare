@@ -54,16 +54,16 @@ const CreateRecipePage = () => {
       formData.append("image", image[0]);
     }
 
-    API.post("recipes/", formData)
-      .then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      )
-      .then(navigate("created"));
+    API.post("recipes/", formData).then(
+      (response) => {
+        console.log(response);
+        navigate("created");
+      },
+      (error) => {
+        console.log("You are not logged in");
+        console.log(error);
+      }
+    );
   }
 
   const classes = useStyles();
