@@ -9,6 +9,8 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { Link as LinkDom } from "react-router-dom";
+
 //import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -191,20 +193,16 @@ export default function LoginPage() {
                   </Button>
                   <Grid container>
                     <Grid item xs>
-                      <Link
-                        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
-                        variant="body2"
-                      >
-                        Forgot password?
-                      </Link>
+                      <LinkDom to="/create-recipe">
+                        <Link variant="body2">Forgot password?</Link>
+                      </LinkDom>
                     </Grid>
                     <Grid item>
-                      <Link
-                        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
-                        variant="body2"
-                      >
-                        {"Don't have an account? Sign Up"}
-                      </Link>
+                      <LinkDom to="/create-recipe">
+                        <Link variant="body2">
+                          {"Don't have an account? Sign Up"}
+                        </Link>
+                      </LinkDom>
                     </Grid>
                   </Grid>
                   <Copyright sx={{ mt: 5 }} />
