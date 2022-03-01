@@ -108,6 +108,10 @@ const CardContainer = () => {
                 <TestCard
                   key={card.id}
                   title={card.title}
+                  summary={card.summary}
+                  prepTime={card.prep_time}
+                  author={card.username}
+                  tags={card.tags}
                   content={card.content}
                   image={card.image}
                   created={card.created}
