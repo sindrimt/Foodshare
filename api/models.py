@@ -60,7 +60,7 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     # def __str__(self):
-    #     TODO: imeplement
+    #     TODO: implement
 
 
 class Like(models.Model):
