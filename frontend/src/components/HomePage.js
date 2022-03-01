@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import CardContainer from "./CardContainer";
 import LoginPage from "./LoginPage";
 import RegisterUser from "./RegisterUser";
+import UserCreated from "./UserCreated";
 
 import {
   BrowserRouter as Router,
@@ -25,8 +26,9 @@ const HomePage = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/recipe" element={<CreateRecipePage />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
+          <Route path="register/user-created" element={<UserCreated />} />
           <Route path="/browse-recipes" element={<CardContainer />} />
-          <Route path="/create-recipe" element={<RegisterUser />} />
+          <Route path="/register" element={<RegisterUser />} />
         </Routes>
       </Router>
     </>
