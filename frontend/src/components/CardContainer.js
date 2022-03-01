@@ -115,6 +115,7 @@ const CardContainer = () => {
                   content={card.content}
                   image={card.image}
                   created={card.created}
+                  likes={card.like_count}
                 />
               );
             })}
