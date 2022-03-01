@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from taggit.serializers import TagListSerializerField, TaggitSerializer
+from taggit.serializers import TaggitSerializer, TagListSerializerField
 
-from .models import Recipe, Comment, Like, UserFollow
+from .models import Comment, Like, Recipe, UserFollow
 
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -19,6 +19,12 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         default=-1,
     )
 
+    username = serializers.CharField(
+        source="user.username",
+        read_only=True,
+        default="N/A",
+    )
+
     tags = TagListSerializerField()
 
     is_liked = serializers.SerializerMethodField()
@@ -33,6 +39,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
             "prep_time",
             "image",
             "user",
+            "username",
             "created",
             "tags",
             "like_count",
