@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -9,6 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import API from "../axios";
+import { UserContext } from "../context/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,9 +31,14 @@ const CreateRecipePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+<<<<<<< HEAD
   const [summary, setSummary] = useState("");
   const [prepTime, setPrepTime] = useState(0);
   const [tags, setTags] = useState([]);
+=======
+  const { loggedIn, setLoggedIn } = useContext(UserContext);
+  console.log(loggedIn);
+>>>>>>> Development
 
   const navigate = useNavigate();
 

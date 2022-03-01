@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RecipeCard from "./Card";
+import TestCard from "./TestCard";
 
 import styled from "styled-components";
 import axios from "axios";
@@ -85,6 +86,7 @@ const CardContainer = () => {
       <AnimateSharedLayout>
         <motion.div layout>
           <GridContainer>
+            {/*  <TestCard /> */}
             {/* <AnimatePresence> */}
             {/* {state.recipes?.map((recipe) => (
               <RecipeCard
@@ -95,14 +97,20 @@ const CardContainer = () => {
                 image={recipe.image}
               />
             ))} */}
-
             {filtered?.map((card) => {
               return (
-                <RecipeCard
+                /* <RecipeCard
                   key={card.id}
                   title={card.title}
                   description={card.content}
                   image={card.image}
+                />*/
+                <TestCard
+                  key={card.id}
+                  title={card.title}
+                  content={card.content}
+                  image={card.image}
+                  created={card.created}
                 />
               );
             })}
