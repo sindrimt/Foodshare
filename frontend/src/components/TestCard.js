@@ -59,7 +59,13 @@ const TestCard = (props) => {
             {props.title}
           </Typography>
           <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              style={{ whiteSpace: "pre-line" }}
+              align="justify"
+            >
               {props.content}
             </Typography>
           </CardContent>
