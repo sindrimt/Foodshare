@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Recipe
+from ..models import Recipe
 
 # Create your tests here.
 
@@ -15,3 +15,4 @@ class RecipeTest(TestCase):
     def test_recipe_title(self):
         test_object = self.create_recipe()
         self.assertEquals(test_object.title, "test title")
+        self.assertEquals(test_object.content, "test content")
