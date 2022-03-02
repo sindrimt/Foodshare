@@ -49,7 +49,19 @@ INSTALLED_APPS = [
     "crispy_forms",  # filters in browsable api
     "api.apps.ApiConfig",
     "frontend",
+    #"django_nose" #test coverage app, currently not working
 ]
+
+# This is settins for test coverage apps, but not currently working
+# Need to add "pip install" --> coverage=3.6, django-nose when working
+
+#TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
+#
+#NOSE_ARGS = [
+#    "--with-coverage",
+#    "--cover-package=api"
+#]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

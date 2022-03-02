@@ -1,14 +1,26 @@
 from multiprocessing import context
+from operator import imod
 from urllib import request
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, Client
+from django.urls import reverse
 from ..views import RecipeView
-"""
-class RecipeViewTest(TestCase):
-    def test_recipe_set_in_context(self):
-        request = RequestFactory.get('')
-        view = RecipeView()
-        view.setup(request)
+from ..models import Recipe
+import json
 
-        context = view.get_context_data()
-        self.assertIn('recipes', context)
-"""
+
+class TestViews(TestCase):
+
+    def test_recipe_view(self):
+        client = Client()
+
+        response = client.get('/api/recipes/')
+
+        self.assertEquals(response.status_code, 200)
+
+
+    def test_user_view(self):
+        client = Client()
+
+        response = client.get('/api/accounts/')
+
+        self.assertEquals(response.status_code, 200)
