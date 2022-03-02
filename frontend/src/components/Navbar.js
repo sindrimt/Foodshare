@@ -57,9 +57,9 @@ const Navbar = () => {
         <li>
           <Link to="recipe">Create Recipe</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/">Contact</Link>
-        </li>
+        </li> */}
       </ul>
       <div className="app__navbar-login ">
         {loggedIn ? (
@@ -99,7 +99,7 @@ const Navbar = () => {
               <li>
                 <Link to="/" onClick={() => setToggleMenu(false)}>
                   <IoMdBook color={iconColor} />
-                  <span className="icon-text"> About</span>
+                  <span className="icon-text"> Browse Recipes</span>
                 </Link>
               </li>
               <li>
@@ -108,12 +108,12 @@ const Navbar = () => {
                   <span className="icon-text"> Create Recipe</span>
                 </Link>
               </li>
-              <li>
+              {/*  <li>
                 <Link to="/" onClick={() => setToggleMenu(false)}>
                   <IoMdMegaphone color={iconColor} />
                   <span className="icon-text"> Contact</span>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         )}
