@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from taggit.models import Tag
 
 from .models import Comment, Like, Recipe, UserFollow
 from .permissions import IsAuthorOrAdmin
@@ -9,9 +10,15 @@ from .serializers import (
     CommentSerializer,
     LikeSerializer,
     RecipeSerializer,
+    TagListSerializer,
     UserFollowSerializer,
     UserSerializer,
 )
+
+
+class TagsView(viewsets.ReadOnlyModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagListSerializer
 
 
 class RecipeView(viewsets.ModelViewSet):
@@ -143,8 +150,7 @@ class UserView(viewsets.ReadOnlyModelViewSet):
         api/ accounts/ change-password/
         api/ accounts/ register-email/
         api/ accounts/ verify-email/
-        api/ accounts/ <id>/ follow/ (the online form is a little wierd here,
-            but the API works)
+        api/ accounts/ <id>/ follow/
     """
 
     queryset = User.objects.all()
@@ -177,7 +183,7 @@ class UserView(viewsets.ReadOnlyModelViewSet):
         try:
             UserFollow.objects.get(follows=follows, user=user)
             return Response(
-                data={"message": "Currently following"},
+                data={"message": "Error, already following."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         except UserFollow.DoesNotExist:
@@ -224,13 +230,10 @@ class UserView(viewsets.ReadOnlyModelViewSet):
 
 class UserFollowView(viewsets.ReadOnlyModelViewSet):
     """
-    You can not follow the same user several times.
+    Read only.
     """
 
     queryset = UserFollow.objects.all()
     serializer_class = UserFollowSerializer
 
     filterset_fields = ("user", "follows")
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
