@@ -107,6 +107,7 @@ const CardContainer = () => {
                 />*/
                 <TestCard
                   key={card.id}
+                  id={card.id}
                   title={card.title}
                   summary={card.summary}
                   prepTime={card.prep_time}
@@ -116,6 +117,7 @@ const CardContainer = () => {
                   image={card.image}
                   created={card.created}
                   likes={card.like_count}
+                  isLiked={card.is_liked}
                 />
               );
             })}

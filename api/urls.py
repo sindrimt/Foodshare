@@ -1,5 +1,6 @@
 from django.urls import include, path
 from rest_framework import routers
+
 from . import views
 
 urlpatterns = [
@@ -16,4 +17,5 @@ router.register("comments", views.CommentView, basename="comments")
 router.register("likes", views.LikeView, basename="likes")
 router.register("accounts", views.UserView, basename="accounts")
 router.register("follows", views.UserFollowView, basename="follows")
+router.register("tags", views.TagsView)
 urlpatterns += router.urls
