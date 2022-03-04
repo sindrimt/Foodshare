@@ -33,6 +33,7 @@
     "react-router-dom": "^6.2.1",
     "styled-components": "^5.3.3",
     "url-loader": "^4.1.1",
-    "use-debounce": "^7.0.1"
+    "use-debounce": "^7.0.1",
+    "yup": "^0.32.11"
   }
 }

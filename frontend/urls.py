@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .views import index
 
 urlpatterns = [
@@ -7,4 +8,5 @@ urlpatterns = [
     path("created", index),
     path("browse-recipes", index),
     path("login", index),
+    path("profile", index),
 ]
