@@ -17,7 +17,7 @@ from .serializers import (
 
 
 class TagsView(viewsets.ReadOnlyModelViewSet):
-    queryset = Tag.objects.all()
+    queryset = Recipe.tags.most_common()
     serializer_class = TagListSerializer
 
 
