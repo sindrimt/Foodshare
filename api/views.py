@@ -24,8 +24,9 @@ class TagsView(viewsets.ReadOnlyModelViewSet):
 class RecipeView(viewsets.ModelViewSet):
     """
     /recipes/<id>/ to modify or delete.
-    /recipes/liked/ for recipes liked by the currently logged in user.
-    /recipes/liked/ for recipes written by people whom the current follow.
+    /recipes/<id>/like/ to like or unlike.
+    /recipes/is_liked/ for recipes liked by the currently logged in user.
+    /recipes/by_followed/ for recipes written by people whom the current follow.
 
     NB: Tags must be formatted as proper JSON lists, e.g. ["frokost", "kjøtt"]
     """
@@ -46,23 +47,86 @@ class RecipeView(viewsets.ModelViewSet):
     )
 
     @action(detail=False)
-    def followed(self, request):
+    def by_followed(self, request):
         recipes = Recipe.objects.filter(user__followers__user=request.user)
         serializer = self.get_serializer(recipes, many=True)
         return Response(serializer.data)
 
     @action(detail=False)
-    def liked(self, request):
+    def is_liked(self, request):
         recipes = Recipe.objects.filter(likes__user=request.user)
         serializer = self.get_serializer(recipes, many=True)
         return Response(serializer.data)
+
+    @action(detail=True)
+    def like(self, request, pk=None):
+        recipe = self.get_object()
+        user = request.user
+
+        try:
+            like_obj = Like.objects.get(recipe=recipe, user=user)
+
+        except Like.DoesNotExist:
+            return Response(
+                data={"message": "Currently not liked."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = LikeSerializer(like_obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @like.mapping.post
+    def add_like(self, request, pk=None):
+        recipe = self.get_object()
+        user = request.user
+
+        try:
+            Like.objects.get(recipe=recipe, user=user)
+            return Response(
+                data={"message": "Error, already liked."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Like.DoesNotExist:
+            new_like = Like(recipe=recipe, user=user)
+            new_like.save()
+            return Response(
+                data={"message": "Successfully liked."},
+                status=status.HTTP_201_CREATED,
+            )
+
+    @like.mapping.delete
+    def del_like(self, request, pk=None):
+        recipe = self.get_object()
+        user = request.user
+
+        try:
+            old_like = Like.objects.get(recipe=recipe, user=user)
+
+        except Like.DoesNotExist:
+            return Response(
+                data={"message": "Error, no like to remove."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        old_like.delete()
+        return Response(
+            data={"message": "Successfully unliked."},
+            status=status.HTTP_200_OK,
+        )
 
     def get_permissions(self):
 
         if self.action in ["list", "retrieve"]:  # anyone can read
             permission_classes = [permissions.AllowAny]
 
-        elif self.action in ["create", "followed", "liked"]:
+        elif self.action in [
+            "create",
+            "by_followed",
+            "is_liked",
+            "like",
+            "add_like",
+            "del_like",
+        ]:
             permission_classes = [permissions.IsAuthenticated]
 
         else:
@@ -173,7 +237,7 @@ class UserView(viewsets.ReadOnlyModelViewSet):
             )
 
         serializer = UserFollowSerializer(relationship)
-        return Response(serializer.data, status=status.HTTP_302_FOUND)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @follow.mapping.post
     def new_follow(self, request, pk=None):
