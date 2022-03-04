@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardActions,
@@ -15,6 +15,62 @@ import { motion } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
 
 import useStyles from "./styles";
+
+import API from "../axios";
+
+const LikeButton = (props) => {
+  const [liked, setLiked] = useState(props.isLiked);
+  const [likes, setLikes] = useState(props.likes);
+
+  function handleLikePressed() {
+    if (liked) {
+      API.delete("recipes/" + props.id + "/like/").then(
+        (message) => console.log(message),
+        setLiked(false),
+        setLikes(likes - 1)
+      );
+    } else {
+      API.post("recipes/" + props.id + "/like/").then(
+        (message) => console.log(message),
+        setLiked(true),
+        setLikes(likes + 1)
+      );
+    }
+  }
+
+  useEffect(() => {}, [liked, likes]);
+
+  return (
+    <Button
+      size="small"
+      color={liked ? "primary" : "secondary"}
+      onClick={handleLikePressed}
+    >
+      <ThumbUpAltIcon fontSize="small" /> {" " + likes}
+    </Button>
+  );
+};
+
+const DeleteButton = (props) => {
+  const [deleted, setDeleted] = useState(false);
+  function handleDeletePressed() {
+    API.delete("recipes/" + props.id).then(
+      (message) => console.log(message),
+      setDeleted(true)
+    );
+  }
+
+  return (
+    <Button
+      size="small"
+      color="primary"
+      disabled={deleted ? true : false}
+      onClick={handleDeletePressed}
+    >
+      <DeleteIcon fontSize="small" /> Delete
+    </Button>
+  );
+};
 
 const TestCard = (props) => {
   const classes = useStyles();
@@ -41,7 +97,7 @@ const TestCard = (props) => {
               size="small"
               onClick={() => console.log("clicked")}
             >
-              <MoreHorizIcon fontSize="default" />
+              <MoreHorizIcon fontSize="medium" />
             </Button>
           </div>
           <div className={classes.details}>
@@ -64,26 +120,19 @@ const TestCard = (props) => {
               color="textSecondary"
               component="p"
               style={{ whiteSpace: "pre-line" }}
-              align="justifyContent"
+              align="justify"
             >
               {props.summary}
             </Typography>
           </CardContent>
           <CardActions className={classes.cardActions}>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => console.log("liked post")}
-            >
-              <ThumbUpAltIcon fontSize="small" /> {" " + props.likes}
-            </Button>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => console.log("post deleted")}
-            >
-              <DeleteIcon fontSize="small" /> Delete
-            </Button>
+            <LikeButton
+              key={props.key}
+              id={props.id}
+              likes={props.likes}
+              isLiked={props.isLiked}
+            />
+            <DeleteButton key={props.id} id={props.id} />
           </CardActions>
         </Card>
       </motion.div>
