@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import API from "../axios";
 import { UserContext } from "../context/UserContext";
+import Popup from "./Popup";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,7 +36,8 @@ const CreateRecipePage = () => {
   const [prepTime, setPrepTime] = useState(0);
   const [tags, setTags] = useState([]);
   const { loggedIn, setLoggedIn } = useContext(UserContext);
-  console.log(loggedIn);
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -56,12 +58,13 @@ const CreateRecipePage = () => {
 
     API.post("recipes/", formData).then(
       (response) => {
-        console.log(response);
-        navigate("created");
+        //navigate("created");
+        setError(false);
+        setOpen(true);
       },
       (error) => {
-        console.log("You are not logged in");
-        console.log(error);
+        setError(true);
+        setOpen(true);
       }
     );
   }
@@ -172,6 +175,12 @@ const CreateRecipePage = () => {
           >
             Create Post
           </Button>
+          <Popup
+            open={open}
+            setOpen={setOpen}
+            type={error ? "error" : "success"}
+            message={error ? "Error Creating Recipe!" : "Recipe Created!"}
+          />
         </form>
       </div>
     </Container>
