@@ -2,12 +2,8 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
-import styled from "styled-components";
-import { MdTaskAlt, MdClose } from "react-icons/md";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import Popup from "./Popup";
 
 const defaultValues = {
   username: "",
@@ -16,22 +12,10 @@ const defaultValues = {
   email: "",
 };
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
 const Profile = () => {
   const [formValues, setFormValues] = useState(defaultValues);
   const url = "/api/accounts/profile/";
   const [open, setOpen] = useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -121,55 +105,16 @@ const Profile = () => {
             Update Profile
           </Button>
         </Grid>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert
-            onClose={handleClose}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Profile Updated!
-          </Alert>
-        </Snackbar>
+        {/* Popup component (requires open, setOpen state in parent component, type = ("success" or "error") and message) */}
+        <Popup
+          open={open}
+          setOpen={setOpen}
+          type="success"
+          message="Profile Updated!"
+        />
       </form>
     </>
   );
 };
-
-const Accepted = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  bottom: 15px;
-  left: 10px;
-  width: 320px;
-  border-radius: 5px;
-  height: 60px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  overflow: hidden;
-`;
-
-const Icon = styled.div`
-  position: relative;
-  padding-left: 10px;
-  display: flex;
-  align-items: center;
-  padding-right: 8px;
-`;
-const Close = styled.section`
-  position: absolute;
-  height: 65%;
-  right: 22px;
-  align-items: center;
-  border-left: 1px solid gray;
-`;
-
-const LeftLine = styled.div`
-  position: absolute;
-  display: flex;
-  height: 100%;
-  width: 5px;
-  left: 0;
-  background-color: #41c057;
-`;
 
 export default Profile;
