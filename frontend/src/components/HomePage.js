@@ -7,6 +7,7 @@ import CardContainer from "./CardContainer";
 import LoginPage from "./LoginPage";
 import RegisterUser from "./RegisterUser";
 import UserCreated from "./UserCreated";
+import NotFound from "./pages/NotFound";
 
 import {
   BrowserRouter as Router,
@@ -29,6 +30,7 @@ const HomePage = () => {
           <Route path="register/user-created" element={<UserCreated />} />
           <Route path="/browse-recipes" element={<CardContainer />} />
           <Route path="/register" element={<RegisterUser />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>
