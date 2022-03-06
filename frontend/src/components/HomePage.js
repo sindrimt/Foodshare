@@ -7,7 +7,7 @@ import CardContainer from "./CardContainer";
 import LoginPage from "./LoginPage";
 import RegisterUser from "./RegisterUser";
 import UserCreated from "./UserCreated";
-import NotFound from "./pages/NotFound";
+import NotFound from "../pages/NotFound";
 
 import {
   BrowserRouter as Router,
