@@ -8,6 +8,7 @@ import LoginPage from "./LoginPage";
 import RegisterUser from "./RegisterUser";
 import UserCreated from "./UserCreated";
 import Profile from "./Profile";
+import NotFound from "../pages/NotFound";
 
 import {
   BrowserRouter as Router,
@@ -31,6 +32,7 @@ const HomePage = () => {
           <Route path="/browse-recipes" element={<CardContainer />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>

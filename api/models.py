@@ -19,7 +19,7 @@ class Recipe(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
 
-    tags = TaggableManager(blank=True)
+    tags = TaggableManager(blank=True, related_name="recipes")
 
     image = models.ImageField(
         "Image",
@@ -91,15 +91,15 @@ class Like(models.Model):
 
 class UserFollow(models.Model):
 
-    follows = models.ForeignKey(
-        User,
-        related_name="followers",
-        on_delete=models.CASCADE,
-    )
-
     user = models.ForeignKey(
         User,
         related_name="following",
+        on_delete=models.CASCADE,
+    )
+
+    follows = models.ForeignKey(
+        User,
+        related_name="followers",
         on_delete=models.CASCADE,
     )
 

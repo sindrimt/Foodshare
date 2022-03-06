@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -38,8 +38,16 @@ const CreateRecipePage = () => {
   const { loggedIn, setLoggedIn } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [options, setOptions] = useState([]);
+  console.log(loggedIn);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    API.get("/tags/").then((response) =>
+      setOptions(response.data.map((tag) => tag.name))
+    );
+  }, []);
 
   function handleCreateButtonPressed(e) {
     e.preventDefault();
@@ -140,15 +148,10 @@ const CreateRecipePage = () => {
                 multiple
                 freeSolo
                 id="tags"
-                options={["Julemat"]}
+                options={options}
                 defaultValue={[]}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Tags"
-                    placeholder="Frokost"
-                  />
+                  <TextField {...params} variant="standard" label="Tags" />
                 )}
                 onChange={(e, value) => setTags(value)}
               />

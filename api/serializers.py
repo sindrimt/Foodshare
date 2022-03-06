@@ -1,8 +1,22 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
+from taggit.models import Tag
 from taggit.serializers import TaggitSerializer, TagListSerializerField
 
 from .models import Comment, Like, Recipe, UserFollow
+
+
+class TagListSerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Tag
+        fields = ("id", "name", "count")
+
+    def get_count(self, obj):
+        return Recipe.objects.filter(tags=obj).count()
 
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -63,10 +77,21 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class LikeSerializer(serializers.ModelSerializer):
+
+    user = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(), read_only=True
+    )
+
     class Meta:
         model = Like
         fields = ["id", "recipe", "user", "created"]
         read_only_fields = ["user"]
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Like.objects.all(),
+                fields=["user", "recipe"],
+            )
+        ]
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -101,7 +126,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserFollowSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(), read_only=True
+    )
+
     class Meta:
         model = UserFollow
-        fields = ["follows", "user", "created"]
+        fields = "__all__"
         read_only_fields = ["user"]
+        validators = [
+            UniqueTogetherValidator(
+                queryset=UserFollow.objects.all(),
+                fields=["user", "follows"],
+            )
+        ]

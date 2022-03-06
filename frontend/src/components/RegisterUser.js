@@ -44,8 +44,8 @@ const RegisterUser = () => {
           console.log(response);
         },
         (error) => {
+          console.log(error.response.data);
           setError(true);
-          console.log(error);
         }
       );
     }
