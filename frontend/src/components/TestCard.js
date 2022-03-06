@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Card,
   CardActions,
@@ -18,9 +18,15 @@ import useStyles from "./styles";
 
 import API from "../axios";
 
+import { UserContext } from "../context/UserContext";
+import { green, lightGreen } from "@mui/material/colors";
+//import { createContext } from "react";
+//import { LoggedIn } from "./LoggedIn";
+
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
+  const { loggedIn } = useContext(UserContext);
 
   function handleLikePressed() {
     if (liked) {
@@ -40,18 +46,29 @@ const LikeButton = (props) => {
 
   useEffect(() => {}, [liked, likes]);
 
-  return (
-    <Button
-      size="small"
-      color={liked ? "primary" : "secondary"}
-      onClick={handleLikePressed}
-    >
-      <ThumbUpAltIcon fontSize="small" /> {" " + likes}
-    </Button>
-  );
-};
+  if (loggedIn) {
+    return (
+      <Button
+        size="small"
+        color={liked ? "primary" : "secondary"}
+        onClick={handleLikePressed}
+      >
+        <ThumbUpAltIcon fontSize="small" /> {" " + likes}
+      </Button>
+    );
+  } else {
+    return (
+      <Button
+        size="small"
+      >
+        <ThumbUpAltIcon fontSize="small" /> {" " + likes}
+      </Button>
+    );
+  };
+  }
 
 const DeleteButton = (props) => {
+  const { loggedIn } = useContext(UserContext);
   const [deleted, setDeleted] = useState(false);
   function handleDeletePressed() {
     API.delete("recipes/" + props.id).then(
@@ -60,17 +77,24 @@ const DeleteButton = (props) => {
     );
   }
 
-  return (
-    <Button
-      size="small"
-      color="primary"
-      disabled={deleted ? true : false}
-      onClick={handleDeletePressed}
-    >
-      <DeleteIcon fontSize="small" /> Delete
-    </Button>
-  );
-};
+  if (loggedIn) {
+    return (
+      <Button
+        size="small"
+        color="primary"
+        disabled={deleted ? true : false}
+        onClick={handleDeletePressed}
+      >
+        <DeleteIcon fontSize="small" /> Delete
+      </Button>
+    );
+  } else {
+    return (
+      <div></div>
+    )
+  };
+  }
+
 
 const TestCard = (props) => {
   const classes = useStyles();
