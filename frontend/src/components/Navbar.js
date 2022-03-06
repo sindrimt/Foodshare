@@ -73,7 +73,7 @@ const Navbar = () => {
         <div />
         <a>
           {/* <CgProfile size={25} /> */}
-          <Link to="/">
+          <Link to="/profile">
             <IoMdPerson size={25} />
           </Link>
         </a>
@@ -108,12 +108,12 @@ const Navbar = () => {
                   <span className="icon-text"> Create Recipe</span>
                 </Link>
               </li>
-              {/*  <li>
-                <Link to="/" onClick={() => setToggleMenu(false)}>
+              <li>
+                <Link to="/profile" onClick={() => setToggleMenu(false)}>
                   <IoMdMegaphone color={iconColor} />
-                  <span className="icon-text"> Contact</span>
+                  <span className="icon-text"> Profile</span>
                 </Link>
-              </li> */}
+              </li>
             </ul>
           </div>
         )}
