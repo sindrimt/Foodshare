@@ -16,6 +16,7 @@ const Profile = () => {
   const [formValues, setFormValues] = useState(defaultValues);
   const url = "/api/accounts/profile/";
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,14 +33,12 @@ const Profile = () => {
     axios
       .patch(url, formValues)
       .then((response) => {
-        console.log("suksess");
-        console.log(response);
+        setError(false);
         setOpen(true);
       })
       .catch((error) => {
-        console.log("error");
-        console.log(error.message);
-        //TODO Legg til Error melding
+        setError(true);
+        setOpen(true);
       });
   };
   return (
@@ -109,8 +108,10 @@ const Profile = () => {
         <Popup
           open={open}
           setOpen={setOpen}
-          type="success"
-          message="Profile Updated!"
+          type={error ? "error" : "success"}
+          message={
+            error ? "Error Updating Profile" : "Profile Successfully Updated!"
+          }
         />
       </form>
     </>

@@ -25,7 +25,7 @@ const Popup = ({ open, setOpen, type, message }) => {
           variant="outlined"
           severity={type}
           sx={{
-            width: "280px",
+            width: "300px",
           }}
         >
           {message}
