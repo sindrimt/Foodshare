@@ -27,4 +27,4 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # must be last for 404 not to overwrite media urls
-urlpatterns += path("", include("frontend.urls"))
+urlpatterns += [path("", include("frontend.urls"))]
