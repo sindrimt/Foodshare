@@ -19,6 +19,7 @@ const CardContainer = () => {
   const [tags, setTags] = useState([]);
   const [text, setText] = useState("");
   const [debouncedValue] = useDebounce(text, 300);
+  const [debouncedValueTag] = useDebounce(tagFilter, 300);
 
   useEffect(() => {
     fetchData();
@@ -50,21 +51,23 @@ const CardContainer = () => {
   };
   // Updates input from the search field every 300ms
   useEffect(() => {
-    if (debouncedValue) filterFunction();
+    if (debouncedValue) filterFunction(tagFilter);
   }, [debouncedValue]);
 
   // Checks if the search field is empty, and clears the filter if it is
   useEffect(() => {
     if (text == "") {
-      filterFunction();
+      filterFunction(tagFilter);
     }
   }, [text]);
 
   // Filters the recipes on title and on tagname
-  const filterFunction = () => {
+  const filterFunction = (allValue) => {
     const filter = popular?.filter((card) => {
+      if (allValue === "") return card.title.toLowerCase().includes(text);
       return (
-        card.title.toLowerCase().includes(text) && card.tags.includes(tagFilter)
+        card.title.toLowerCase().includes(text) &&
+        card.tags?.includes(tagFilter)
       );
     });
     setFiltered(filter);
@@ -73,16 +76,17 @@ const CardContainer = () => {
   // When you press enter on search (kind of useless)
   const handleSubmit = (event) => {
     event.preventDefault();
-    filterFunction();
+    filterFunction(tagFilter);
   };
 
   const handleChange = (event) => {
+    console.log(event.target.value);
     setTagFilter(event.target.value);
   };
   /* Kjører hver gang tag blir oppdatert */
   /* Fins sikkert en bedre måte å gjøre det på, men idc :P */
   useEffect(() => {
-    filterFunction();
+    filterFunction(tagFilter);
   }, [tagFilter]);
 
   return (
