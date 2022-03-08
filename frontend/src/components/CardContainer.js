@@ -8,6 +8,7 @@ import { useDebounce } from "use-debounce";
 import { TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
@@ -64,7 +65,7 @@ const CardContainer = () => {
   // Filters the recipes on title and on tagname
   const filterFunction = (allValue) => {
     const filter = popular?.filter((card) => {
-      if (allValue === "") return card.title.toLowerCase().includes(text);
+      if (allValue === "All") return card.title.toLowerCase().includes(text);
       return (
         card.title.toLowerCase().includes(text) &&
         card.tags?.includes(tagFilter)
@@ -97,18 +98,18 @@ const CardContainer = () => {
             Filter
           </InputLabel>
           <Select value={tagFilter} onChange={handleChange} label="Tags">
-            {/* <Stack spacing={1}> */}
-            {/* Stack Fungerer tydeligvis ikke for some reason >:( */}
-
-            <MenuItem value="">All</MenuItem>
+            {/* <DropDown> */}
+            <MenuItem value="All" sx={{ width: "100%" }}>
+              All
+            </MenuItem>
+            {/* </DropDown> */}
 
             {/* Rendrer hver tag i dropdownen */}
             {tags?.map((tag) => (
-              <MenuItem key={tag.id} value={tag.name}>
+              <MenuItem key={tag.id} value={tag.name} sx={{ width: "100%" }}>
                 {tag.name}
               </MenuItem>
             ))}
-            {/* </Stack> */}
           </Select>
         </FormControl>
         <form onSubmit={handleSubmit}>
@@ -178,6 +179,12 @@ const GridContainer = styled.section`
 
 const FormContainer = styled.div`
   display: flex;
+  justify-content: center;
+`;
+
+const DropDown = styled.span`
+  display: flex;
+  align-items: center;
   justify-content: center;
 `;
 
