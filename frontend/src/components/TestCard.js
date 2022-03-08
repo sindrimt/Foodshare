@@ -10,6 +10,7 @@ import {
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Rating from "@mui/material/Rating";
 
 import { motion } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
@@ -65,7 +66,26 @@ const LikeButton = (props) => {
   }
 };
 
-const DeleteButton = (props) => {
+const RatingComponent = () => {
+
+  const { loggedIn } = useContext(UserContext);
+
+  if (loggedIn) {
+    return (
+      <Rating name="simple-controlled" value={1} 
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}
+
+  />);
+  } else {
+    return (
+      <Rating name="simple-controlled" value={2} disabled
+  />);
+  }
+}
+
+/*const DeleteButton = (props) => {
   const { loggedIn } = useContext(UserContext);
   const [deleted, setDeleted] = useState(false);
   function handleDeletePressed() {
@@ -89,7 +109,7 @@ const DeleteButton = (props) => {
   } else {
     return <div></div>;
   }
-};
+}; */
 
 const TestCard = (props) => {
   const classes = useStyles();
@@ -151,8 +171,8 @@ const TestCard = (props) => {
               likes={props.likes}
               isLiked={props.isLiked}
             />
-            <DeleteButton
-              /* key={props.id} er denne nødvendig?*/ id={props.id}
+            <RatingComponent
+              /* key={props.id} er denne nødvendig? id={props.id} */
             />
           </CardActions>
         </Card>
