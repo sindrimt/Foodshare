@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.db.models import Count
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from taggit.models import Tag
@@ -51,6 +50,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
             "summary",
             "content",
             "prep_time",
+            "ingredients",
             "image",
             "user",
             "username",
@@ -67,6 +67,21 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         if user.is_authenticated:
             return Like.objects.filter(user=user, recipe=obj).exists()
         return False
+
+    # def create(self, validated_data):
+    #     ingredients_data = validated_data.pop("ingredients")
+    #     recipe = Recipe.objects.create(**validated_data)
+    #     for ingredient_data in ingredients_data:
+    #         Ingredient.objects.create(recipe=recipe, **ingredient_data)
+    #     return recipe
+
+    # def update(self, instance, validated_data):
+    #     ingredients_data = validated_data.pop("ingredients")
+    #     for ingredient_data in ingredients_data:
+    #         serializer = IngredientSerializer(data=ingredient_data)
+
+    #         if serializer.is_valid():
+    #             ingredient = serialiser.i
 
 
 class CommentSerializer(serializers.ModelSerializer):

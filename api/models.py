@@ -1,3 +1,5 @@
+from email.policy import default
+
 from django.contrib.auth.models import User
 from django.db import models
 from taggit.managers import TaggableManager
@@ -34,6 +36,8 @@ class Recipe(models.Model):
         related_name="recipes",
     )
 
+    ingredients = models.JSONField(default=dict)
+
     def __str__(self):
         return str(self.title)
 
@@ -56,6 +60,8 @@ class Comment(models.Model):
     )
 
     content = models.TextField()
+
+    rating = models.IntegerField(default=-1)
 
     created = models.DateTimeField(auto_now_add=True)
 
