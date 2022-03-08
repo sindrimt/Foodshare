@@ -58,14 +58,12 @@ const LikeButton = (props) => {
     );
   } else {
     return (
-      <Button
-        size="small"
-      >
+      <Button size="small">
         <ThumbUpAltIcon fontSize="small" /> {" " + likes}
       </Button>
     );
-  };
   }
+};
 
 const DeleteButton = (props) => {
   const { loggedIn } = useContext(UserContext);
@@ -89,12 +87,9 @@ const DeleteButton = (props) => {
       </Button>
     );
   } else {
-    return (
-      <div></div>
-    )
-  };
+    return <div></div>;
   }
-
+};
 
 const TestCard = (props) => {
   const classes = useStyles();
@@ -151,12 +146,14 @@ const TestCard = (props) => {
           </CardContent>
           <CardActions className={classes.cardActions}>
             <LikeButton
-              key={props.key}
+              /* key={props.key} er denne nødvendig?*/
               id={props.id}
               likes={props.likes}
               isLiked={props.isLiked}
             />
-            <DeleteButton key={props.id} id={props.id} />
+            <DeleteButton
+              /* key={props.id} er denne nødvendig?*/ id={props.id}
+            />
           </CardActions>
         </Card>
       </motion.div>
