@@ -17,6 +17,7 @@ import { AnimateSharedLayout } from "framer-motion";
 import useStyles from "./styles";
 
 import API from "../axios";
+import axios from "axios";
 
 import { UserContext } from "../context/UserContext";
 import { green, lightGreen } from "@mui/material/colors";
@@ -26,12 +27,17 @@ import { green, lightGreen } from "@mui/material/colors";
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
-  const { loggedIn } = useContext(UserContext);
+
+  const { loggedIn, isLiked, setIsLiked } = useContext(UserContext);
 
   function handleLikePressed() {
     if (liked) {
+      API.get(`recipes/${props.id}/`).then((recipe) => {
+        //console.log(recipe.data.title);
+        setIsLiked(recipe.data.title);
+      });
       API.delete("recipes/" + props.id + "/like/").then(
-        (message) => console.log(message),
+        (message) => console.log(message.data),
         setLiked(false),
         setLikes(likes - 1)
       );
@@ -45,6 +51,10 @@ const LikeButton = (props) => {
   }
 
   useEffect(() => {}, [liked, likes]);
+
+  /*   useEffect(() => {
+    setUpdateLike(!updateLike);
+  }, [props.is_liked]); */
 
   if (loggedIn) {
     return (
@@ -93,6 +103,8 @@ const DeleteButton = (props) => {
 
 const TestCard = (props) => {
   const classes = useStyles();
+
+  //TODO Drill props til parent
 
   return (
     <AnimateSharedLayout>
