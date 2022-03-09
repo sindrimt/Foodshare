@@ -18,7 +18,6 @@ const App = () => {
       .then((response) => {
         console.log("Du er logget inn!");
         setLoggedIn(true);
-        console.log(response.data);
         setCurrentUser(response.data);
       })
       .catch((error) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import API from "../axios";
 import Stack from "@mui/material/Stack";
 import Typography from "@material-ui/core/Typography";
@@ -9,26 +9,22 @@ const ProfilePage = () => {
   const [posts, setPosts] = useState([]);
   const { currentUser } = useContext(UserContext);
 
+  const fetchPosts = () => {
+    const url = "recipes/?user=" + currentUser.id;
+    console.log(currentUser);
+    API.get(url).then((response) => setPosts(response.data));
+  };
+
   useEffect(() => {
     fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    const url = "recipes/?user=" + 1;
-    const result = await API.get(url);
-
-    const dataList = result.data;
-
-    setPosts(dataList);
-  };
+  }, [currentUser]);
 
   return (
     <Stack spacing={2} alignItems="center">
-      <Typography variant="h3"> Profile page </Typography>
-      <Typography variant="h4"> My posts </Typography>
-      <Typography variant="h5">
-        {"username = " + currentUser.username}
+      <Typography variant="h3">
+        {currentUser.first_name + currentUser.last_name + "'s recipes"}
       </Typography>
+      <Typography variant="h5">{"@" + currentUser.username}</Typography>
       <RecipeGrid posts={posts} />
     </Stack>
   );
