@@ -8,7 +8,7 @@ import styled from "styled-components";
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [logInSuccess, setLoginSuccess] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
     // Create context => lagre om man er logget inn i state (true eller false)
@@ -18,8 +18,8 @@ const App = () => {
       .then((response) => {
         console.log("Du er logget inn!");
         setLoggedIn(true);
-        console.log("CURRENT USER: " + response.data.username);
-        setCurrentUser(response.data.username);
+        console.log(response.data);
+        setCurrentUser(response.data);
       })
       .catch((error) => {
         console.log(error.response);

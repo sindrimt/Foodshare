@@ -7,9 +7,7 @@ import { UserContext } from "../context/UserContext";
 
 const ProfilePage = () => {
   const [posts, setPosts] = useState([]);
-  const { loggedIn, setLoggedIn, logInSuccess, setLoginSuccess, currentUser } =
-    useContext(UserContext);
-  const [user, setUser] = useState("");
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
     fetchPosts();
@@ -18,8 +16,6 @@ const ProfilePage = () => {
   const fetchPosts = async () => {
     const url = "recipes/?user=" + 1;
     const result = await API.get(url);
-
-    setUser(currentUser);
 
     const dataList = result.data;
 
@@ -30,7 +26,9 @@ const ProfilePage = () => {
     <Stack spacing={2} alignItems="center">
       <Typography variant="h3"> Profile page </Typography>
       <Typography variant="h4"> My posts </Typography>
-      <Typography variant="h5"> {"username = " + currentUser}</Typography>
+      <Typography variant="h5">
+        {"username = " + currentUser.username}
+      </Typography>
       <RecipeGrid posts={posts} />
     </Stack>
   );
