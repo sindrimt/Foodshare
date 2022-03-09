@@ -10,6 +10,7 @@ import UserCreated from "./UserCreated";
 import Profile from "./Profile";
 import NotFound from "../pages/NotFound";
 import ProfilePage from "../pages/ProfilePage";
+import LikedRecipes from "./LikedRecipes";
 
 import {
   BrowserRouter as Router,
@@ -34,6 +35,7 @@ const HomePage = () => {
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/me" element={<ProfilePage />} />
+          <Route path="/profile/liked-recipes" element={<LikedRecipes />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

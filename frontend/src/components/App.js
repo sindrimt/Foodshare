@@ -9,10 +9,9 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [logInSuccess, setLoginSuccess] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [isLiked, setIsLiked] = useState("");
 
   useEffect(() => {
-    // Create context => lagre om man er logget inn i state (true eller false)
-    //TODO Husk å set setLoggedIn til å være false når man logger ut
     axios
       .get("api/accounts/profile/")
       .then((response) => {
@@ -37,6 +36,8 @@ const App = () => {
           logInSuccess,
           setLoginSuccess,
           currentUser,
+          isLiked,
+          setIsLiked,
         }}
       >
         <HomePage />
