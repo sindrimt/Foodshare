@@ -1,5 +1,3 @@
-from email.policy import default
-
 from django.contrib.auth.models import User
 from django.db import models
 from taggit.managers import TaggableManager
@@ -61,9 +59,12 @@ class Comment(models.Model):
 
     content = models.TextField()
 
-    rating = models.IntegerField(default=-1)
+    rating = models.IntegerField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["user", "recipe"]
 
     def __str__(self):
         content = self.content[:20]
