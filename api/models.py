@@ -34,13 +34,27 @@ class Recipe(models.Model):
         related_name="recipes",
     )
 
-    ingredients = models.JSONField(default=dict)
-
     def __str__(self):
         return str(self.title)
 
     class Meta:
         ordering = ["-created"]
+
+
+class Ingredient(models.Model):
+
+    name = models.CharField(max_length=128)
+
+    amount = models.PositiveIntegerField(default=1)
+
+    unit = models.CharField(max_length=4, default="stk.")
+
+    recipe = models.ForeignKey(
+        Recipe, related_name="ingredients", on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f"{self.name}: {self.amount} {self.unit}"
 
 
 class Comment(models.Model):
