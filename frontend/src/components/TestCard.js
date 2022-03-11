@@ -150,7 +150,7 @@ const TestCard = (props) => {
             >
               <MoreHorizIcon fontSize="medium" />
             </Button>
-            <CommentBox></CommentBox>
+            <CommentBox recipe={props.id} />
           </div>
           <div className={classes.details}>
             <Typography variant="body2" color="textSecondary" component="h2">

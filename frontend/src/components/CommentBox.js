@@ -19,7 +19,11 @@ const CommentBox = (props) => {
   };
 
   const handlePost = () => {
-    API.post("comments/", {});
+    API.post("comments/", {
+      content: comment,
+      rating: rating,
+      recipe: props.recipe,
+    }).then(setOpen(false));
   };
 
   const handleClose = () => {
@@ -53,7 +57,7 @@ const CommentBox = (props) => {
             onChange={(e, newRating) => setRating(newRating)}
           />
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Post</Button>
+          <Button onClick={handlePost}>Post</Button>
         </DialogActions>
       </Dialog>
     </div>
