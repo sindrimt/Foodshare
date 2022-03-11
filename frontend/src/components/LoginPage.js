@@ -46,8 +46,18 @@ const theme = createTheme();
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loggedIn, setLoggedIn, logInSuccess, setLoginSuccess } =
-    useContext(UserContext);
+
+  const {
+    loggedIn,
+    setLoggedIn,
+    logInSuccess,
+    setLoginSuccess,
+    setCurrentUser,
+    currentUser,
+    isLiked,
+    setIsLiked,
+  } = useContext(UserContext);
+
   const [logInFailed, setLoginFailed] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
@@ -66,6 +76,18 @@ export default function LoginPage() {
           console.log("Login Success");
           setLoggedIn(true);
           setLoginSuccess(true);
+
+          // Når man logger inn henter man brukernavnet
+          // Sikkert en annen måte å gjøre det på, men funker ig :D
+          axios
+            .get("api/accounts/profile/")
+            .then((response) => {
+              console.log(response.data);
+              setCurrentUser(response.data);
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
         },
         (error) => {
           console.log(error);

@@ -52,7 +52,7 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/browse-recipes">Browse Recipes</Link>
+          <Link to="/browse">Browse Recipes</Link>
         </li>
         <li>
           <Link to="recipe">Create Recipe</Link>
@@ -73,7 +73,7 @@ const Navbar = () => {
         <div />
         <a>
           {/* <CgProfile size={25} /> */}
-          <Link to="/profile">
+          <Link to="/me">
             <IoMdPerson size={25} />
           </Link>
         </a>
