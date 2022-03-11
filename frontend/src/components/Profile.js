@@ -6,6 +6,11 @@ import Button from "@mui/material/Button";
 import Popup from "./Popup";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const defaultValues = {
   username: "",
@@ -43,6 +48,21 @@ const Profile = () => {
         setOpen(true);
       });
   };
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDelete = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <>
       <br />
@@ -97,14 +117,23 @@ const Profile = () => {
           </Grid>
 
           <br />
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Update Profile
-          </Button>
+          <ButtonContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Update Profile
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleClickOpenDialog}
+            >
+              Delete Profile
+            </Button>
+          </ButtonContainer>
         </Grid>
         {/* Popup component (requires open, setOpen state in parent component, type = ("success" or "error") and message) */}
         <Popup
@@ -115,9 +144,38 @@ const Profile = () => {
             error ? "Error Updating Profile" : "Profile Successfully Updated!"
           }
         />
+        <Dialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            You are about to <span style={{ color: "red" }}>Delete</span> your
+            Profile
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete your profile?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Disagree</Button>
+            <Button onClick={handleDelete} autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </form>
     </>
   );
 };
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
 
 export default Profile;
