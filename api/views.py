@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from taggit.models import Tag
 
 from .models import Comment, Like, Recipe, UserFollow
@@ -215,6 +216,7 @@ class UserView(viewsets.ReadOnlyModelViewSet):
         api/ accounts/ register-email/
         api/ accounts/ verify-email/
         api/ accounts/ <id>/ follow/
+        api/ accounts/ delete/
     """
 
     queryset = User.objects.all()
@@ -301,3 +303,14 @@ class UserFollowView(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserFollowSerializer
 
     filterset_fields = ("user", "follows")
+
+
+class DeleteAccountView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+
+        user = self.request.user
+        user.delete()
+
+        return Response({"result": "user delete"})
