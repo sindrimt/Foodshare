@@ -77,23 +77,22 @@ const LikeButton = (props) => {
 };
 
 const RatingComponent = () => {
-
   const { loggedIn } = useContext(UserContext);
 
   if (loggedIn) {
     return (
-      <Rating name="simple-controlled" value={1} 
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-
-  />);
+      <Rating
+        name="simple-controlled"
+        value={1}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      />
+    );
   } else {
-    return (
-      <Rating name="simple-controlled" value={2} disabled
-  />);
+    return <Rating name="simple-controlled" value={2} disabled />;
   }
-}
+};
 
 /*const DeleteButton = (props) => {
   const { loggedIn } = useContext(UserContext);
@@ -183,8 +182,10 @@ const TestCard = (props) => {
               likes={props.likes}
               isLiked={props.isLiked}
             />
-            <RatingComponent
+            <Rating
               /* key={props.id} er denne nødvendig? id={props.id} */
+              value={props.avgRating}
+              readOnly
             />
           </CardActions>
         </Card>
