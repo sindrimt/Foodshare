@@ -24,6 +24,7 @@ import { UserContext } from "../context/UserContext";
 import { green, lightGreen } from "@mui/material/colors";
 //import { createContext } from "react";
 //import { LoggedIn } from "./LoggedIn";
+import CommentBox from "./CommentBox";
 
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
@@ -77,23 +78,22 @@ const LikeButton = (props) => {
 };
 
 const RatingComponent = () => {
-
   const { loggedIn } = useContext(UserContext);
 
   if (loggedIn) {
     return (
-      <Rating name="simple-controlled" value={1} 
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-
-  />);
+      <Rating
+        name="simple-controlled"
+        value={1}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      />
+    );
   } else {
-    return (
-      <Rating name="simple-controlled" value={2} disabled
-  />);
+    return <Rating name="simple-controlled" value={2} disabled />;
   }
-}
+};
 
 /*const DeleteButton = (props) => {
   const { loggedIn } = useContext(UserContext);
@@ -150,6 +150,7 @@ const TestCard = (props) => {
             >
               <MoreHorizIcon fontSize="medium" />
             </Button>
+            <CommentBox recipe={props.id} />
           </div>
           <div className={classes.details}>
             <Typography variant="body2" color="textSecondary" component="h2">
@@ -183,8 +184,10 @@ const TestCard = (props) => {
               likes={props.likes}
               isLiked={props.isLiked}
             />
-            <RatingComponent
+            <Rating
               /* key={props.id} er denne nødvendig? id={props.id} */
+              value={props.avgRating}
+              readOnly
             />
           </CardActions>
         </Card>
