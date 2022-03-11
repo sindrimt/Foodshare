@@ -11,6 +11,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useNavigate } from "react-router-dom";
 
 const defaultValues = {
   username: "",
@@ -24,6 +25,9 @@ const Profile = () => {
   const url = "/api/accounts/profile/";
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,8 +53,6 @@ const Profile = () => {
       });
   };
 
-  const [openDialog, setOpenDialog] = useState(false);
-
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -60,7 +62,13 @@ const Profile = () => {
   };
 
   const handleDelete = () => {
+    axios.delete("/api/accounts/delete/").then((res) => {
+      console.log(res);
+      console.log("Delete worked");
+    });
     setOpenDialog(false);
+    navigate("/");
+    window.location.reload();
   };
 
   return (
@@ -144,6 +152,7 @@ const Profile = () => {
             error ? "Error Updating Profile" : "Profile Successfully Updated!"
           }
         />
+
         <Dialog
           open={openDialog}
           onClose={handleCloseDialog}
