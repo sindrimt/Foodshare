@@ -11,6 +11,13 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Rating from "@mui/material/Rating";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import TextField from "@material-ui/core/TextField";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
 
 import { motion } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
@@ -25,6 +32,7 @@ import { green, lightGreen } from "@mui/material/colors";
 //import { createContext } from "react";
 //import { LoggedIn } from "./LoggedIn";
 import CommentBox from "./CommentBox";
+import { DialogContentText } from "@mui/material";
 
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
@@ -121,15 +129,45 @@ const RatingComponent = () => {
   }
 }; */
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const TestCard = (props) => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    console.log("handle click open clicked")
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    console.log("handle close clicked")
+    setOpen(false);
+  };
 
   //TODO Drill props til parent
 
   return (
     <AnimateSharedLayout>
       <motion.div layout>
+      <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <img
+      style={{ maxWidth: "100%", height: 'auto' }}
+      src={props.image}
+      alt="image"
+    />
+    <DialogTitle>{props.title}</DialogTitle>
+      <DialogContent>
+          <DialogContentText>
+            {props.author}
+          </DialogContentText>
+        </DialogContent>
+        <CommentBox />
+      </Dialog>
         <Card className={classes.card}>
+          <CardActionArea onClick={handleClickOpen}>
           <CardMedia
             className={classes.media}
             image={props.image}
@@ -143,14 +181,13 @@ const TestCard = (props) => {
             <Typography variant="body2">{props.created}</Typography>
           </div>
           <div className={classes.overlay2}>
-            <Button
+            <Button disabled={true}
               style={{ color: "white" }}
               size="small"
               onClick={() => console.log("clicked")}
             >
               <MoreHorizIcon fontSize="medium" />
             </Button>
-            <CommentBox recipe={props.id} />
           </div>
           <div className={classes.details}>
             <Typography variant="body2" color="textSecondary" component="h2">
@@ -177,6 +214,7 @@ const TestCard = (props) => {
               {props.summary}
             </Typography>
           </CardContent>
+          </CardActionArea>
           <CardActions className={classes.cardActions}>
             <LikeButton
               /* key={props.key} er denne nødvendig?*/

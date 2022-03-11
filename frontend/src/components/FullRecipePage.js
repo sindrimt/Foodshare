@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Rating } from "@mui/material";
 import API from "../axios";
 
-const CommentBox = (props) => {
+const FullRecpePage = (props) => {
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(-1);
@@ -37,7 +37,7 @@ const CommentBox = (props) => {
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Add comment
       </Button>
-      <Dialog open={open} onBackdropClick="false" onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New comment</DialogTitle>
         <DialogContent>
           <TextField
@@ -57,11 +57,11 @@ const CommentBox = (props) => {
             onChange={(e, newRating) => setRating(newRating)}
           />
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handlePost}>Post</Button>
+          <Button onClick={handlePost}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
 
-export default CommentBox;
+export default FullRecipePage;
