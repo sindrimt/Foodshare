@@ -19,23 +19,28 @@ import useStyles from "./styles";
 
 import API from "../axios";
 import axios from "axios";
+import Popup from "./Popup";
 
 import { UserContext } from "../context/UserContext";
 import { green, lightGreen } from "@mui/material/colors";
-//import { createContext } from "react";
-//import { LoggedIn } from "./LoggedIn";
+
 import CommentBox from "./CommentBox";
 
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
 
+  const [open, setOpen] = useState(false);
+
   const { loggedIn, isLiked, setIsLiked } = useContext(UserContext);
+
+  const handleErrorLike = () => {
+    setOpen(true);
+  };
 
   function handleLikePressed() {
     if (liked) {
       API.get(`recipes/${props.id}/`).then((recipe) => {
-        //console.log(recipe.data.title);
         setIsLiked(recipe.data.title);
       });
       API.delete("recipes/" + props.id + "/like/").then(
@@ -54,25 +59,31 @@ const LikeButton = (props) => {
 
   useEffect(() => {}, [liked, likes]);
 
-  /*   useEffect(() => {
-    setUpdateLike(!updateLike);
-  }, [props.is_liked]); */
-
   if (loggedIn) {
     return (
-      <Button
-        size="small"
-        color={liked ? "primary" : "secondary"}
-        onClick={handleLikePressed}
-      >
-        <ThumbUpAltIcon fontSize="small" /> {" " + likes}
-      </Button>
+      <>
+        <Button
+          size="small"
+          color={liked ? "primary" : "secondary"}
+          onClick={handleLikePressed}
+        >
+          <ThumbUpAltIcon fontSize="small" /> {" " + likes}
+        </Button>
+      </>
     );
   } else {
     return (
-      <Button size="small">
-        <ThumbUpAltIcon fontSize="small" /> {" " + likes}
-      </Button>
+      <>
+        <Popup
+          open={open}
+          setOpen={setOpen}
+          type="error"
+          message="Not Logged In"
+        />
+        <Button size="small" onClick={handleErrorLike}>
+          <ThumbUpAltIcon fontSize="small" /> {" " + likes}
+        </Button>
+      </>
     );
   }
 };
@@ -127,72 +138,75 @@ const TestCard = (props) => {
   //TODO Drill props til parent
 
   return (
-    <AnimateSharedLayout>
-      <motion.div layout>
-        <Card className={classes.card}>
-          <CardMedia
-            className={classes.media}
-            image={props.image}
-            title={props.title}
-            alt="image"
-          />
-          <div className={classes.overlay}>
-            <Typography variant="h6">
-              {props.author ? props.author : "Author"}
-            </Typography>
-            <Typography variant="body2">{props.created}</Typography>
-          </div>
-          <div className={classes.overlay2}>
-            <Button
-              style={{ color: "white" }}
-              size="small"
-              onClick={() => console.log("clicked")}
-            >
-              <MoreHorizIcon fontSize="medium" />
-            </Button>
-            <CommentBox recipe={props.id} />
-          </div>
-          <div className={classes.details}>
-            <Typography variant="body2" color="textSecondary" component="h2">
-              {props.tags.map((s) => "#" + s).join(", ")}
-              {/* prepend all elements with a # and display nicely */}
-            </Typography>
-          </div>
-          <Typography
-            className={classes.title}
-            gutterBottom
-            variant="h5"
-            component="h2"
-          >
-            {props.title}
-          </Typography>
-          <CardContent>
+    <>
+      <AnimateSharedLayout>
+        <motion.div layout>
+          <Card className={classes.card}>
+            <CardMedia
+              className={classes.media}
+              image={props.image}
+              title={props.title}
+              alt="image"
+            />
+            <div className={classes.overlay}>
+              <Typography variant="h6">
+                {props.author ? props.author : "Author"}
+              </Typography>
+              <Typography variant="body2">{props.created}</Typography>
+            </div>
+            <div className={classes.overlay2}>
+              <Button
+                style={{ color: "white" }}
+                size="small"
+                onClick={() => console.log("clicked")}
+              >
+                <MoreHorizIcon fontSize="medium" />
+              </Button>
+              <CommentBox recipe={props.id} />
+            </div>
+            <div className={classes.details}>
+              <Typography variant="body2" color="textSecondary" component="h2">
+                {props.tags.map((s) => "#" + s).join(", ")}
+                {/* prepend all elements with a # and display nicely */}
+              </Typography>
+            </div>
             <Typography
-              variant="body2"
-              color="textSecondary"
-              component="p"
-              style={{ whiteSpace: "pre-line" }}
-              align="justify"
+              className={classes.title}
+              gutterBottom
+              variant="h5"
+              component="h2"
             >
-              {props.summary}
+              {props.title}
             </Typography>
-          </CardContent>
-          <CardActions className={classes.cardActions}>
-            <LikeButton
-              /* key={props.key} er denne nødvendig?*/
-              id={props.id}
-              likes={props.likes}
-              isLiked={props.isLiked}
-            />
-            <Rating
-              /* key={props.id} er denne nødvendig? id={props.id} */
-              value={props.avgRating}
-              readOnly
-            />
-          </CardActions>
-        </Card>
-      </motion.div>
-    </AnimateSharedLayout>
+            <CardContent>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="p"
+                style={{ whiteSpace: "pre-line" }}
+                align="justify"
+              >
+                {props.summary}
+              </Typography>
+            </CardContent>
+            <CardActions className={classes.cardActions}>
+              <LikeButton
+                /* key={props.key} er denne nødvendig?*/
+                id={props.id}
+                likes={props.likes}
+                isLiked={props.isLiked}
+              />
+
+              <Rating
+                /* key={props.id} er denne nødvendig? id={props.id} */
+                value={props.avgRating}
+                readOnly
+              />
+            </CardActions>
+          </Card>
+        </motion.div>
+      </AnimateSharedLayout>
+    </>
   );
 };
 
