@@ -9,6 +9,7 @@ urlpatterns = [
         include("rest_framework.urls", namespace="rest_framework"),
     ),
     path("accounts/", include("rest_registration.api.urls")),
+    path("accounts/delete/", views.DeleteAccountView.as_view()),
 ]
 
 router = routers.DefaultRouter()
