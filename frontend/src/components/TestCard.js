@@ -184,8 +184,10 @@ const TestCard = (props) => {
               likes={props.likes}
               isLiked={props.isLiked}
             />
-            <RatingComponent
-            /* key={props.id} er denne nødvendig? id={props.id} */
+            <Rating
+              /* key={props.id} er denne nødvendig? id={props.id} */
+              value={props.avgRating}
+              readOnly
             />
           </CardActions>
         </Card>

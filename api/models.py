@@ -34,6 +34,8 @@ class Recipe(models.Model):
         related_name="recipes",
     )
 
+    ingredients = models.JSONField(default=dict)
+
     def __str__(self):
         return str(self.title)
 
@@ -57,7 +59,12 @@ class Comment(models.Model):
 
     content = models.TextField()
 
+    rating = models.IntegerField(blank=True, null=True)
+
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["user", "recipe"]
 
     def __str__(self):
         content = self.content[:20]

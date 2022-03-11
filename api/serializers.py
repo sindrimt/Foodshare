@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from taggit.models import Tag
@@ -43,6 +43,8 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     is_liked = serializers.SerializerMethodField()
 
+    avg_rating = serializers.SerializerMethodField()
+
     class Meta:
         model = Recipe
         fields = [
@@ -51,6 +53,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
             "summary",
             "content",
             "prep_time",
+            "ingredients",
             "image",
             "user",
             "username",
@@ -59,6 +62,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
             "like_count",
             "is_liked",
             "comment_count",
+            "avg_rating",
         ]
         read_only_fields = ["user"]  # this is set automatically
 
@@ -67,6 +71,25 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         if user.is_authenticated:
             return Like.objects.filter(user=user, recipe=obj).exists()
         return False
+
+    def get_avg_rating(self, obj):
+        # reverse lookup on Reviews using item field
+        return obj.comments.all().aggregate(Avg("rating"))["rating__avg"]
+
+    # def create(self, validated_data):
+    #     ingredients_data = validated_data.pop("ingredients")
+    #     recipe = Recipe.objects.create(**validated_data)
+    #     for ingredient_data in ingredients_data:
+    #         Ingredient.objects.create(recipe=recipe, **ingredient_data)
+    #     return recipe
+
+    # def update(self, instance, validated_data):
+    #     ingredients_data = validated_data.pop("ingredients")
+    #     for ingredient_data in ingredients_data:
+    #         serializer = IngredientSerializer(data=ingredient_data)
+
+    #         if serializer.is_valid():
+    #             ingredient = serialiser.i
 
 
 class CommentSerializer(serializers.ModelSerializer):
