@@ -5,7 +5,7 @@ from rest_framework.validators import UniqueTogetherValidator
 from taggit.models import Tag
 from taggit.serializers import TaggitSerializer, TagListSerializerField
 
-from .models import Comment, Like, Recipe, UserFollow
+from .models import Comment, Ingredient, Like, Recipe, UserFollow
 
 
 class TagListSerializer(serializers.ModelSerializer):
@@ -17,6 +17,12 @@ class TagListSerializer(serializers.ModelSerializer):
 
     def get_count(self, obj):
         return Recipe.objects.filter(tags=obj).count()
+
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient
+        exclude = ("recipe",)
 
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -38,6 +44,8 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         read_only=True,
         default="N/A",
     )
+
+    ingredients = IngredientSerializer(many=True)
 
     tags = TagListSerializerField()
 
@@ -76,20 +84,21 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         # reverse lookup on Reviews using item field
         return obj.comments.all().aggregate(Avg("rating"))["rating__avg"]
 
-    # def create(self, validated_data):
-    #     ingredients_data = validated_data.pop("ingredients")
-    #     recipe = Recipe.objects.create(**validated_data)
-    #     for ingredient_data in ingredients_data:
-    #         Ingredient.objects.create(recipe=recipe, **ingredient_data)
-    #     return recipe
+    def create(self, validated_data):
+        ingredients_data = validated_data.pop("ingredients")
+        recipe = Recipe.objects.create(**validated_data)
+        for ingredient_data in ingredients_data:
+            Ingredient.objects.create(recipe=recipe, **ingredient_data)
+        return recipe
 
-    # def update(self, instance, validated_data):
-    #     ingredients_data = validated_data.pop("ingredients")
-    #     for ingredient_data in ingredients_data:
-    #         serializer = IngredientSerializer(data=ingredient_data)
+    def update(self, obj, validated_data):
+        ingredients_data = validated_data.pop("ingredients")
+        recipe = super().update(obj, validated_data)
 
-    #         if serializer.is_valid():
-    #             ingredient = serialiser.i
+        Ingredient.objects.filter(recipe=recipe).delete()
+        for ingredient_data in ingredients_data:
+            Ingredient.objects.create(recipe=recipe, **ingredient_data)
+        return recipe
 
 
 class CommentSerializer(serializers.ModelSerializer):
