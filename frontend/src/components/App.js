@@ -8,9 +8,9 @@ import styled from "styled-components";
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [logInSuccess, setLoginSuccess] = useState(false);
+  const [isLiked, setIsLiked] = useState("");
+
   useEffect(() => {
-    // Create context => lagre om man er logget inn i state (true eller false)
-    //TODO Husk å set setLoggedIn til å være false når man logger ut
     axios
       .get("api/accounts/profile/")
       .then((response) => {
@@ -28,7 +28,14 @@ const App = () => {
   return (
     <>
       <UserContext.Provider
-        value={{ loggedIn, setLoggedIn, logInSuccess, setLoginSuccess }}
+        value={{
+          loggedIn,
+          setLoggedIn,
+          logInSuccess,
+          setLoginSuccess,
+          isLiked,
+          setIsLiked,
+        }}
       >
         <HomePage />
       </UserContext.Provider>

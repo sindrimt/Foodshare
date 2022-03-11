@@ -10,6 +10,7 @@ import {
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Rating from "@mui/material/Rating";
 
 import { motion } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
@@ -17,6 +18,7 @@ import { AnimateSharedLayout } from "framer-motion";
 import useStyles from "./styles";
 
 import API from "../axios";
+import axios from "axios";
 
 import { UserContext } from "../context/UserContext";
 import { green, lightGreen } from "@mui/material/colors";
@@ -26,12 +28,17 @@ import { green, lightGreen } from "@mui/material/colors";
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
-  const { loggedIn } = useContext(UserContext);
+
+  const { loggedIn, isLiked, setIsLiked } = useContext(UserContext);
 
   function handleLikePressed() {
     if (liked) {
+      API.get(`recipes/${props.id}/`).then((recipe) => {
+        //console.log(recipe.data.title);
+        setIsLiked(recipe.data.title);
+      });
       API.delete("recipes/" + props.id + "/like/").then(
-        (message) => console.log(message),
+        (message) => console.log(message.data),
         setLiked(false),
         setLikes(likes - 1)
       );
@@ -46,6 +53,10 @@ const LikeButton = (props) => {
 
   useEffect(() => {}, [liked, likes]);
 
+  /*   useEffect(() => {
+    setUpdateLike(!updateLike);
+  }, [props.is_liked]); */
+
   if (loggedIn) {
     return (
       <Button
@@ -58,16 +69,33 @@ const LikeButton = (props) => {
     );
   } else {
     return (
-      <Button
-        size="small"
-      >
+      <Button size="small">
         <ThumbUpAltIcon fontSize="small" /> {" " + likes}
       </Button>
     );
-  };
   }
+};
 
-const DeleteButton = (props) => {
+const RatingComponent = () => {
+
+  const { loggedIn } = useContext(UserContext);
+
+  if (loggedIn) {
+    return (
+      <Rating name="simple-controlled" value={1} 
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}
+
+  />);
+  } else {
+    return (
+      <Rating name="simple-controlled" value={2} disabled
+  />);
+  }
+}
+
+/*const DeleteButton = (props) => {
   const { loggedIn } = useContext(UserContext);
   const [deleted, setDeleted] = useState(false);
   function handleDeletePressed() {
@@ -89,15 +117,14 @@ const DeleteButton = (props) => {
       </Button>
     );
   } else {
-    return (
-      <div></div>
-    )
-  };
+    return <div></div>;
   }
-
+}; */
 
 const TestCard = (props) => {
   const classes = useStyles();
+
+  //TODO Drill props til parent
 
   return (
     <AnimateSharedLayout>
@@ -151,12 +178,14 @@ const TestCard = (props) => {
           </CardContent>
           <CardActions className={classes.cardActions}>
             <LikeButton
-              key={props.key}
+              /* key={props.key} er denne nødvendig?*/
               id={props.id}
               likes={props.likes}
               isLiked={props.isLiked}
             />
-            <DeleteButton key={props.id} id={props.id} />
+            <RatingComponent
+              /* key={props.id} er denne nødvendig? id={props.id} */
+            />
           </CardActions>
         </Card>
       </motion.div>

@@ -9,6 +9,7 @@ import RegisterUser from "./RegisterUser";
 import UserCreated from "./UserCreated";
 import Profile from "./Profile";
 import NotFound from "../pages/NotFound";
+import LikedRecipes from "./LikedRecipes";
 
 import {
   BrowserRouter as Router,
@@ -32,6 +33,7 @@ const HomePage = () => {
           <Route path="/browse-recipes" element={<CardContainer />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/liked-recipes" element={<LikedRecipes />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

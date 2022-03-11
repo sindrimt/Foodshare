@@ -4,6 +4,9 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Popup from "./Popup";
+import styled from "styled-components";
+import { MdBookmarkBorder } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const defaultValues = {
   username: "",
@@ -114,8 +117,26 @@ const Profile = () => {
           }
         />
       </form>
+      <Link to="liked-recipes">
+        <SavedIconContainer>
+          <MdBookmarkBorder size={45} />
+        </SavedIconContainer>
+      </Link>
     </>
   );
 };
+
+const SavedIconContainer = styled.div`
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+    transition: 0.25s all ease-in-out;
+    background: lightgrey;
+    padding: 5px;
+  }
+`;
 
 export default Profile;
