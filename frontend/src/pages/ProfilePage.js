@@ -8,6 +8,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import styled from "styled-components";
+import { MdBookmarkBorder } from "react-icons/md";
 
 const ProfilePage = () => {
   const [posts, setPosts] = useState([]);
@@ -40,7 +42,7 @@ const ProfilePage = () => {
             <EditIcon />
             Edit profile
           </Button>
-          <Button
+          {/* <Button
             color="primary"
             variant="contained"
             to="/profile/liked-recipes"
@@ -48,12 +50,30 @@ const ProfilePage = () => {
           >
             <ThumbUpIcon />
             Liked recipes
-          </Button>
+          </Button> */}
         </Stack>
         <RecipeGrid posts={posts} />
       </Stack>
+      <Link to="liked-recipes">
+        <SavedIconContainer>
+          <MdBookmarkBorder size={45} />
+        </SavedIconContainer>
+      </Link>
     </>
   );
 };
+
+const SavedIconContainer = styled.div`
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+    transition: 0.25s all ease-in-out;
+    background: lightgrey;
+    padding: 5px;
+  }
+`;
 
 export default ProfilePage;

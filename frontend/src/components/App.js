@@ -35,6 +35,7 @@ const App = () => {
           setLoggedIn,
           logInSuccess,
           setLoginSuccess,
+          setCurrentUser,
           currentUser,
           isLiked,
           setIsLiked,
