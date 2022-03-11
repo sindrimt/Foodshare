@@ -8,6 +8,7 @@ import styled from "styled-components";
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [logInSuccess, setLoginSuccess] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [isLiked, setIsLiked] = useState("");
 
   useEffect(() => {
@@ -15,13 +16,14 @@ const App = () => {
       .get("api/accounts/profile/")
       .then((response) => {
         console.log("Du er logget inn!");
-        console.log(response);
         setLoggedIn(true);
+        setCurrentUser(response.data);
       })
       .catch((error) => {
         console.log(error.response);
         console.log("Du er IKKE logget inn");
         setLoggedIn(false);
+        setCurrentUser(null);
       });
   }, []);
 
@@ -33,6 +35,7 @@ const App = () => {
           setLoggedIn,
           logInSuccess,
           setLoginSuccess,
+          currentUser,
           isLiked,
           setIsLiked,
         }}
