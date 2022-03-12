@@ -45,7 +45,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         default="N/A",
     )
 
-    ingredients = IngredientSerializer(many=True)
+    ingredients = IngredientSerializer(many=True, required=False)
 
     tags = TagListSerializerField()
 
@@ -85,14 +85,15 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         return obj.comments.all().aggregate(Avg("rating"))["rating__avg"]
 
     def create(self, validated_data):
-        ingredients_data = validated_data.pop("ingredients")
+        print(validated_data)
+        ingredients_data = validated_data.pop("ingredients", [])
         recipe = Recipe.objects.create(**validated_data)
         for ingredient_data in ingredients_data:
             Ingredient.objects.create(recipe=recipe, **ingredient_data)
         return recipe
 
     def update(self, obj, validated_data):
-        ingredients_data = validated_data.pop("ingredients")
+        ingredients_data = validated_data.pop("ingredients", [])
         recipe = super().update(obj, validated_data)
 
         Ingredient.objects.filter(recipe=recipe).delete()

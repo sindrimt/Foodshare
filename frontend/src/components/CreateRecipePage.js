@@ -11,6 +11,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import API from "../axios";
 import { UserContext } from "../context/UserContext";
 import Popup from "./Popup";
+import IngredientField from "./IngredientField";
+import { IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,9 +43,10 @@ const CreateRecipePage = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [options, setOptions] = useState([]);
+  const [ingredients, setIngredients] = useState([
+    { name: "", amount: 0, unit: "stk." },
+  ]);
   console.log(loggedIn);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     API.get("/tags/").then((response) =>
@@ -64,18 +69,57 @@ const CreateRecipePage = () => {
       formData.append("image", image[0]);
     }
 
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
     API.post("recipes/", formData).then(
       (response) => {
-        //navigate("created");
-        setError(false);
-        setOpen(true);
+        console.log(JSON.stringify(response, null, 2));
+        const id = response.data.id;
+        API.patch("recipes/" + id + "/", { ingredients: ingredients }).then(
+          (response) => {
+            console.log(JSON.stringify(response, null, 2));
+            setError(false);
+            setOpen(true);
+          },
+          (error) => {
+            console.log(JSON.stringify(error, null, 2));
+            setError(true);
+            setOpen(true);
+          }
+        );
       },
       (error) => {
+        console.log(JSON.stringify(error, null, 2));
         setError(true);
         setOpen(true);
       }
     );
   }
+
+  const handleAddIngredient = () => {
+    setIngredients([...ingredients, { name: "", amount: 0, unit: "stk." }]);
+  };
+
+  const handleIngredientChange = ({ name, value }, position) => {
+    const newIngredients = [...ingredients];
+    newIngredients.splice(position, 1, {
+      ...ingredients[position],
+      [name]: value,
+    });
+    console.log(name, value);
+    setIngredients(newIngredients);
+  };
+
+  const handleRemoveIngredient = (id) => {
+    const values = [...ingredients];
+    values.splice(
+      values.findIndex((value) => value.id === id),
+      1
+    );
+    setIngredients(values);
+  };
 
   const classes = useStyles();
 
@@ -113,6 +157,31 @@ const CreateRecipePage = () => {
                 multiline
                 rows={2}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <IconButton
+                disabled={ingredients.length < 1}
+                onClick={() =>
+                  handleRemoveIngredient(
+                    ingredients[ingredients.length - 1].name
+                  )
+                }
+              >
+                <RemoveIcon />
+              </IconButton>
+              <IconButton onClick={handleAddIngredient}>
+                <AddIcon />
+              </IconButton>
+              {ingredients.map((ingredient, index) => (
+                <div>
+                  <IngredientField
+                    key={index}
+                    ingredient={ingredient}
+                    onInputChange={handleIngredientChange}
+                    position={index}
+                  />
+                </div>
+              ))}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -176,7 +245,7 @@ const CreateRecipePage = () => {
             className={classes.submit}
             onClick={handleCreateButtonPressed}
           >
-            Create Post
+            Publish recipe
           </Button>
           <Popup
             open={open}
