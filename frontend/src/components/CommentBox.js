@@ -35,10 +35,10 @@ const CommentBox = (props) => {
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Add comment
+        Create review
       </Button>
       <Dialog open={open} onBackdropClick="false" onClose={handleClose}>
-        <DialogTitle>New comment</DialogTitle>
+        <DialogTitle>New review</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

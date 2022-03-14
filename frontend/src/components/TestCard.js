@@ -163,6 +163,14 @@ const TestCard = (props) => {
           <DialogContentText>
             {props.author}
           </DialogContentText>
+          <DialogContentText>
+            {props.summary}
+          </DialogContentText>
+          <Rating
+              /* key={props.id} er denne nødvendig? id={props.id} */
+              value={props.avgRating}
+              readOnly
+            />
         </DialogContent>
         <CommentBox />
       </Dialog>
