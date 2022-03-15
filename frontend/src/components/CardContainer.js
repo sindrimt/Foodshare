@@ -16,7 +16,7 @@ import Stack from "@mui/material/Stack";
 const CardContainer = () => {
   const [popular, setPopular] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [tagFilter, setTagFilter] = useState("");
+  const [tagFilter, setTagFilter] = useState("All");
   const [tags, setTags] = useState([]);
   const [text, setText] = useState("");
   const [debouncedValue] = useDebounce(text, 300);

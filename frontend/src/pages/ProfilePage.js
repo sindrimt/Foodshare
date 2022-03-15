@@ -29,7 +29,12 @@ const ProfilePage = () => {
     <>
       <Stack spacing={2} alignItems="center">
         <Typography variant="h3">
-          {currentUser.first_name + currentUser.last_name + "'s recipes"}
+          {currentUser.first_name === "" || currentUser.last_name === ""
+            ? "Your Recipes"
+            : currentUser.first_name +
+              " " +
+              currentUser.last_name +
+              "'s recipes"}
         </Typography>
         <Typography variant="h5">{"@" + currentUser.username}</Typography>
         <Stack spacing={2} direction="row">

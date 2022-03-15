@@ -19,6 +19,7 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import styled from "styled-components";
 import { LoggedIn } from "./LoggedIn";
+import Popup from "./Popup";
 
 function Copyright(props) {
   return (
@@ -46,6 +47,9 @@ const theme = createTheme();
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
 
   const {
     loggedIn,
@@ -76,6 +80,8 @@ export default function LoginPage() {
           console.log("Login Success");
           setLoggedIn(true);
           setLoginSuccess(true);
+          setError(false);
+          setOpen(true);
 
           // Når man logger inn henter man brukernavnet
           // Sikkert en annen måte å gjøre det på, men funker ig :D
@@ -93,6 +99,8 @@ export default function LoginPage() {
           console.log(error);
           console.log("failed login");
           setLoginFailed(true);
+          setError(true);
+          setOpen(true);
         }
       );
   };
@@ -231,6 +239,15 @@ export default function LoginPage() {
           </Grid>
         </LoginContainer>
       )}
+      <Popup
+        open={open}
+        setOpen={setOpen}
+        type={error ? "error" : "success"}
+        message={error ? "Error Loggin in" : "Successfully logged in!"}
+        //
+        // Variant er deafult som "outlined", men kan overskrives med prop:
+        variant={error ? "filled" : "outlined"}
+      />
     </>
   );
 }
