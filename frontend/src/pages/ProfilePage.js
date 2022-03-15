@@ -1,25 +1,46 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
-import API from "../axios";
-import Stack from "@mui/material/Stack";
 import Typography from "@material-ui/core/Typography";
-import RecipeGrid from "../components/RecipeGrid";
-import { UserContext } from "../context/UserContext";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import styled from "styled-components";
+import Stack from "@mui/material/Stack";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { MdBookmarkBorder } from "react-icons/md";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import API from "../axios";
+import RecipeGrid from "../components/RecipeGrid";
+import { UserContext } from "../context/UserContext";
 
 const ProfilePage = () => {
   const [posts, setPosts] = useState([]);
+  const [profileUser, setProfileUser] = useState({});
+
   const { currentUser } = useContext(UserContext);
 
-  const fetchPosts = () => {
-    const url = "recipes/?user=" + currentUser.id;
-    console.log(currentUser);
-    API.get(url).then((response) => setPosts(response.data));
+  const params = useParams();
+
+  const fetchUser = () => {
+    // const url = `api/accounts/1/`;
+    // GET request i current URL
+    axios.get(`/api/accounts/${params.id.toString()}/`).then((response) => setProfileUser(response.data));
   };
+
+  //TODO Fungerer noen få ganger om man refresher mange nok ganger
+  const fetchPosts = () => {
+    if (profileUser.id === undefined) {
+      return;
+    } else {
+      console.log(profileUser.id);
+      const url = "recipes/?user=" + profileUser.id;
+
+      API.get(url).then((response) => setPosts(response.data));
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [currentUser]);
 
   useEffect(() => {
     fetchPosts();
@@ -29,21 +50,13 @@ const ProfilePage = () => {
     <>
       <Stack spacing={2} alignItems="center">
         <Typography variant="h3">
-          {currentUser.first_name === "" || currentUser.last_name === ""
+          {profileUser.first_name === "" || profileUser.last_name === ""
             ? "Your Recipes"
-            : currentUser.first_name +
-              " " +
-              currentUser.last_name +
-              "'s recipes"}
+            : profileUser.first_name + " " + profileUser.last_name + "'s recipes"}
         </Typography>
-        <Typography variant="h5">{"@" + currentUser.username}</Typography>
+        <Typography variant="h5">{"@" + profileUser.username}</Typography>
         <Stack spacing={2} direction="row">
-          <Button
-            color="primary"
-            variant="contained"
-            to="/profile"
-            component={Link}
-          >
+          <Button color="primary" variant="contained" to="/profile" component={Link}>
             <EditIcon />
             Edit profile
           </Button>

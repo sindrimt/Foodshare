@@ -50,4 +50,10 @@ export default makeStyles({
     display: "flex",
     justifyContent: "space-between",
   },
+  underline: {
+    "&:hover": {
+      textDecoration: "underline",
+      cursor: "pointer",
+    },
+  },
 });
