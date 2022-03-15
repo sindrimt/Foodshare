@@ -11,7 +11,6 @@ import Profile from "./Profile";
 import NotFound from "../pages/NotFound";
 import ProfilePage from "../pages/ProfilePage";
 import LikedRecipes from "./LikedRecipes";
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -26,7 +25,7 @@ const HomePage = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePageDisplay />} />
+          <Route path="/" element={<CardContainer />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/recipe" element={<CreateRecipePage />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
@@ -42,5 +41,4 @@ const HomePage = () => {
     </>
   );
 };
-
 export default HomePage;
