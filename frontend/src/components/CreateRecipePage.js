@@ -63,7 +63,8 @@ const CreateRecipePage = () => {
     formData.append("content", content);
     formData.append("summary", summary);
     formData.append("prep_time", prepTime);
-    formData.append("tags", JSON.stringify(tags));
+    //formData.append("tags", JSON.stringify(tags)); // will be added afterwards with ingredients
+    formData.append("tags", "[]"); // stupid django requires tags even if null=true
 
     if (image !== null) {
       formData.append("image", image[0]);
@@ -73,11 +74,16 @@ const CreateRecipePage = () => {
       console.log(pair[0] + ", " + pair[1]);
     }
 
+    // first post recipe with image
     API.post("recipes/", formData).then(
       (response) => {
         console.log(JSON.stringify(response, null, 2));
         const id = response.data.id;
-        API.patch("recipes/" + id + "/", { ingredients: ingredients }).then(
+        // then pray to god and patch with ingredients and tags
+        API.patch("recipes/" + id + "/", {
+          ingredients: ingredients,
+          tags: tags,
+        }).then(
           (response) => {
             console.log(JSON.stringify(response, null, 2));
             setError(false);
