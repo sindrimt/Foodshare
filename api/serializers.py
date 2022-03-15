@@ -85,6 +85,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         return obj.comments.all().aggregate(Avg("rating"))["rating__avg"]
 
     def create(self, validated_data):
+        print(validated_data)
         ingredients_data = validated_data.pop("ingredients", [])
         recipe = Recipe.objects.create(**validated_data)
         for ingredient_data in ingredients_data:
