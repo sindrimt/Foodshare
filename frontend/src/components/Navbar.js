@@ -69,13 +69,16 @@ const Navbar = () => {
         ) : (
           <Link to="/login">Log In / Register</Link>
         )}
-
         <div />
+
         <a>
-          {/* <CgProfile size={25} /> */}
-          <Link to="/me">
-            <IoMdPerson size={25} />
-          </Link>
+          {loggedIn ? (
+            <Link to="/me">
+              <IoMdPerson size={25} />
+            </Link>
+          ) : (
+            ""
+          )}
         </a>
       </div>
       <div className="app__navbar-smallscreen">

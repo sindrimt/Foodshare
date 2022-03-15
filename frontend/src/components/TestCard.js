@@ -26,11 +26,11 @@ import useStyles from "./styles";
 
 import API from "../axios";
 import axios from "axios";
+import Popup from "./Popup";
 
 import { UserContext } from "../context/UserContext";
 import { green, lightGreen } from "@mui/material/colors";
-//import { createContext } from "react";
-//import { LoggedIn } from "./LoggedIn";
+
 import CommentBox from "./CommentBox";
 import { DialogContentText } from "@mui/material";
 
@@ -38,12 +38,17 @@ const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
 
+  const [open, setOpen] = useState(false);
+
   const { loggedIn, isLiked, setIsLiked } = useContext(UserContext);
+
+  const handleErrorLike = () => {
+    setOpen(true);
+  };
 
   function handleLikePressed() {
     if (liked) {
       API.get(`recipes/${props.id}/`).then((recipe) => {
-        //console.log(recipe.data.title);
         setIsLiked(recipe.data.title);
       });
       API.delete("recipes/" + props.id + "/like/").then(
@@ -62,25 +67,31 @@ const LikeButton = (props) => {
 
   useEffect(() => {}, [liked, likes]);
 
-  /*   useEffect(() => {
-    setUpdateLike(!updateLike);
-  }, [props.is_liked]); */
-
   if (loggedIn) {
     return (
-      <Button
-        size="small"
-        color={liked ? "primary" : "secondary"}
-        onClick={handleLikePressed}
-      >
-        <ThumbUpAltIcon fontSize="small" /> {" " + likes}
-      </Button>
+      <>
+        <Button
+          size="small"
+          color={liked ? "primary" : "secondary"}
+          onClick={handleLikePressed}
+        >
+          <ThumbUpAltIcon fontSize="small" /> {" " + likes}
+        </Button>
+      </>
     );
   } else {
     return (
-      <Button size="small">
-        <ThumbUpAltIcon fontSize="small" /> {" " + likes}
-      </Button>
+      <>
+        <Popup
+          open={open}
+          setOpen={setOpen}
+          type="error"
+          message="Not Logged In"
+        />
+        <Button size="small" onClick={handleErrorLike}>
+          <ThumbUpAltIcon fontSize="small" /> {" " + likes}
+        </Button>
+      </>
     );
   }
 };
@@ -213,13 +224,12 @@ const TestCard = (props) => {
           </Typography>
           <CardContent>
             <Typography
-              variant="body2"
-              color="textSecondary"
-              component="p"
-              style={{ whiteSpace: "pre-line" }}
-              align="justify"
+              className={classes.title}
+              gutterBottom
+              variant="h5"
+              component="h2"
             >
-              {props.summary}
+              {props.title}
             </Typography>
           </CardContent>
           </CardActionArea>
