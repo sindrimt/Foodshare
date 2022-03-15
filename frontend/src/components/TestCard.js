@@ -224,12 +224,13 @@ const TestCard = (props) => {
           </Typography>
           <CardContent>
             <Typography
-              className={classes.title}
-              gutterBottom
-              variant="h5"
-              component="h2"
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              style={{ whiteSpace: "pre-line"}}
+              align="justify"
             >
-              {props.title}
+              {props.summary}
             </Typography>
           </CardContent>
           </CardActionArea>
