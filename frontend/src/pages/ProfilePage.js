@@ -26,7 +26,6 @@ const ProfilePage = () => {
     axios.get(`/api/accounts/${params.id.toString()}/`).then((response) => setProfileUser(response.data));
   };
 
-  //TODO Fungerer noen få ganger om man refresher mange nok ganger
   const fetchPosts = () => {
     if (profileUser.id === undefined) {
       return;
@@ -40,11 +39,11 @@ const ProfilePage = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [currentUser]);
+  }, []);
 
   useEffect(() => {
     fetchPosts();
-  }, [currentUser]);
+  }, [profileUser]);
 
   return (
     <>
