@@ -21,7 +21,6 @@ const ProfilePage = () => {
   const params = useParams();
 
   const fetchUser = () => {
-    // const url = `api/accounts/1/`;
     // GET request i current URL
     axios.get(`/api/accounts/${params.id.toString()}/`).then((response) => setProfileUser(response.data));
   };
