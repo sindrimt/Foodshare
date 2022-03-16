@@ -162,7 +162,6 @@ const TestCard = (props) => {
     console.log(currentUser);
     axios.get(`api/accounts/${props.user}/`).then((res) => {
       console.log(res.data);
-      setCurrentUser(res.data);
       navigate(`/me/${props.user}`);
     });
   };
@@ -257,7 +256,7 @@ const TestCard = (props) => {
 };
 
 const AuthorContainer = styled.span`
-  z-index: 10000;
+  z-index: 1;
 `;
 
 export default TestCard;

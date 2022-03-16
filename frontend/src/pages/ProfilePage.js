@@ -47,17 +47,13 @@ const ProfilePage = () => {
   return (
     <>
       <Stack spacing={2} alignItems="center">
-        <Typography variant="h3">
-          {profileUser.first_name === "" || profileUser.last_name === ""
-            ? "Your Recipes"
-            : profileUser.first_name + " " + profileUser.last_name + "'s recipes"}
-        </Typography>
+        <Typography variant="h3">{profileUser.username + "'s recipes"}</Typography>
         <Typography variant="h5">{"@" + profileUser.username}</Typography>
         <Stack spacing={2} direction="row">
-          <Button color="primary" variant="contained" to="/profile" component={Link}>
+          {/* <Button color="primary" variant="contained" to="/profile" component={Link}>
             <EditIcon />
             Edit profile
-          </Button>
+          </Button> */}
           {/* <Button
             color="primary"
             variant="contained"
@@ -70,11 +66,11 @@ const ProfilePage = () => {
         </Stack>
         <RecipeGrid posts={posts} />
       </Stack>
-      <Link to="liked-recipes">
+      {/* <Link to="liked-recipes">
         <SavedIconContainer>
           <MdBookmarkBorder size={45} />
         </SavedIconContainer>
-      </Link>
+      </Link> */}
     </>
   );
 };
