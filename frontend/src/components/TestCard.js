@@ -6,18 +6,18 @@ import {
   CardMedia,
   Button,
   Typography,
-} from "@material-ui/core/";
-import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import DeleteIcon from "@material-ui/icons/Delete";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+} from "@mui/material/";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import DeleteIcon from "@mui/icons-material/Delete";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Rating from "@mui/material/Rating";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import TextField from "@material-ui/core/TextField";
-import DialogActions from "@material-ui/core/DialogActions";
-import Slide from "@material-ui/core/Slide";
+import CardActionArea from "@mui/material/CardActionArea";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import TextField from "@mui/material/TextField";
+import DialogActions from "@mui/material/DialogActions";
+import Slide from "@mui/material/Slide";
 
 import { motion } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
@@ -149,12 +149,12 @@ const TestCard = (props) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
-    console.log("handle click open clicked")
+    console.log("handle click open clicked");
     setOpen(true);
   };
 
   const handleClose = () => {
-    console.log("handle close clicked")
+    console.log("handle close clicked");
     setOpen(false);
   };
 
@@ -163,76 +163,77 @@ const TestCard = (props) => {
   return (
     <AnimateSharedLayout>
       <motion.div layout>
-      <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
-      <img
-      style={{ maxWidth: "100%", height: 'auto' }}
-      src={props.image}
-      alt="image"
-    />
-    <DialogTitle>{props.title}</DialogTitle>
-      <DialogContent>
-          <DialogContentText>
-            {props.author}
-          </DialogContentText>
-          <DialogContentText>
-            {props.summary}
-          </DialogContentText>
-          <Rating
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          TransitionComponent={Transition}
+        >
+          <img
+            style={{ maxWidth: "100%", height: "auto" }}
+            src={props.image}
+            alt="image"
+          />
+          <DialogTitle>{props.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>{props.author}</DialogContentText>
+            <DialogContentText>{props.summary}</DialogContentText>
+            <Rating
               /* key={props.id} er denne nødvendig? id={props.id} */
               value={props.avgRating}
               readOnly
             />
-        </DialogContent>
-        <CommentBox />
-      </Dialog>
+          </DialogContent>
+          <CommentBox />
+        </Dialog>
         <Card className={classes.card}>
           <CardActionArea onClick={handleClickOpen}>
-          <CardMedia
-            className={classes.media}
-            image={props.image}
-            title={props.title}
-            alt="image"
-          />
-          <div className={classes.overlay}>
-            <Typography variant="h6">
-              {props.author ? props.author : "Author"}
-            </Typography>
-            <Typography variant="body2">{props.created}</Typography>
-          </div>
-          <div className={classes.overlay2}>
-            <Button disabled={true}
-              style={{ color: "white" }}
-              size="small"
-              onClick={() => console.log("clicked")}
-            >
-              <MoreHorizIcon fontSize="medium" />
-            </Button>
-          </div>
-          <div className={classes.details}>
-            <Typography variant="body2" color="textSecondary" component="h2">
-              {props.tags.map((s) => "#" + s).join(", ")}
-              {/* prepend all elements with a # and display nicely */}
-            </Typography>
-          </div>
-          <Typography
-            className={classes.title}
-            gutterBottom
-            variant="h5"
-            component="h2"
-          >
-            {props.title}
-          </Typography>
-          <CardContent>
+            <CardMedia
+              className={classes.media}
+              image={props.image}
+              title={props.title}
+              alt="image"
+            />
+            <div className={classes.overlay}>
+              <Typography variant="h6">
+                {props.author ? props.author : "Author"}
+              </Typography>
+              <Typography variant="body2">{props.created}</Typography>
+            </div>
+            <div className={classes.overlay2}>
+              <Button
+                disabled={true}
+                style={{ color: "white" }}
+                size="small"
+                onClick={() => console.log("clicked")}
+              >
+                <MoreHorizIcon fontSize="medium" />
+              </Button>
+            </div>
+            <div className={classes.details}>
+              <Typography variant="body2" color="textSecondary" component="h2">
+                {props.tags.map((s) => "#" + s).join(", ")}
+                {/* prepend all elements with a # and display nicely */}
+              </Typography>
+            </div>
             <Typography
-              variant="body2"
-              color="textSecondary"
-              component="p"
-              style={{ whiteSpace: "pre-line"}}
-              align="justify"
+              className={classes.title}
+              gutterBottom
+              variant="h5"
+              component="h2"
             >
-              {props.summary}
+              {props.title}
             </Typography>
-          </CardContent>
+            <CardContent>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="p"
+                style={{ whiteSpace: "pre-line" }}
+                align="justify"
+              >
+                {props.summary}
+              </Typography>
+            </CardContent>
           </CardActionArea>
           <CardActions className={classes.cardActions}>
             <LikeButton

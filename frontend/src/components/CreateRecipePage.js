@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Container from "@material-ui/core/Container";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Container from "@mui/material/Container";
 import Autocomplete from "@mui/material/Autocomplete";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import makeStyles from '@mui/styles/makeStyles';
+import CssBaseline from "@mui/material/CssBaseline";
 import API from "../axios";
 import { UserContext } from "../context/UserContext";
 import Popup from "./Popup";
@@ -172,10 +172,10 @@ const CreateRecipePage = () => {
                     ingredients[ingredients.length - 1].name
                   )
                 }
-              >
+                size="large">
                 <RemoveIcon />
               </IconButton>
-              <IconButton onClick={handleAddIngredient}>
+              <IconButton onClick={handleAddIngredient} size="large">
                 <AddIcon />
               </IconButton>
               {ingredients.map((ingredient, index) => (
