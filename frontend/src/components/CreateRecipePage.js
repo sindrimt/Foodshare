@@ -15,6 +15,8 @@ import IngredientField from "./IngredientField";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useParams } from "react-router";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateRecipePage = () => {
+const CreateRecipePage = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -46,7 +48,11 @@ const CreateRecipePage = () => {
   const [ingredients, setIngredients] = useState([
     { name: "", amount: 0, unit: "stk." },
   ]);
+  const [recipe, setRecipe] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   console.log(loggedIn);
+  const params = useParams();
 
   useEffect(() => {
     API.get("/tags/").then((response) =>
@@ -127,6 +133,27 @@ const CreateRecipePage = () => {
     setIngredients(values);
   };
 
+  //TODO Denne må rendes ikke bare på page load fordi get request tar tid
+  useEffect(() => {
+    fetchRecipe();
+  }, []);
+
+  const fetchRecipe = async () => {
+    console.log(params.id.toString());
+
+    const url = `/api/recipes/${params.id.toString()}/`;
+    const result = await axios.get(url);
+    console.log(result);
+    const data = result.data;
+    console.log(data);
+    setRecipe(data);
+    console.log(recipe);
+
+    /* const dataRecipe = result.data;
+    console.log(dataRecipe);
+    setRecipe(dataRecipe); */
+  };
+
   const classes = useStyles();
 
   return (
@@ -148,6 +175,7 @@ const CreateRecipePage = () => {
                 name="title"
                 autoComplete="title"
                 onChange={(e) => setTitle(e.target.value)}
+                defaultValue={recipe.title}
               />
             </Grid>
             <Grid item xs={12}>
@@ -162,6 +190,7 @@ const CreateRecipePage = () => {
                 onChange={(e) => setSummary(e.target.value)}
                 multiline
                 rows={2}
+                defaultValue={props.summary}
               />
             </Grid>
             <Grid item xs={12}>
@@ -201,6 +230,7 @@ const CreateRecipePage = () => {
                 onChange={(e) => setContent(e.target.value)}
                 multiline
                 rows={10}
+                defaultValue={props.content}
               />
             </Grid>
 
@@ -215,6 +245,7 @@ const CreateRecipePage = () => {
                 name="prepTime"
                 autoComplete="prepTime"
                 onChange={(e) => setPrepTime(e.target.value)}
+                defaultValue={props.prep_time}
               />
             </Grid>
 
@@ -226,7 +257,12 @@ const CreateRecipePage = () => {
                 options={options}
                 defaultValue={[]}
                 renderInput={(params) => (
-                  <TextField {...params} variant="standard" label="Tags" />
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Tags"
+                    defaultValue={props.tags}
+                  />
                 )}
                 onChange={(e, value) => setTags(value)}
               />
@@ -241,6 +277,7 @@ const CreateRecipePage = () => {
               }}
               name="image"
               type="file"
+              defaultValue={props.image}
             />
           </Grid>
           <Button

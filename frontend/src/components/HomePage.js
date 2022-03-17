@@ -13,7 +13,13 @@ import ProfilePage from "../pages/ProfilePage";
 import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
 
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -23,7 +29,22 @@ const HomePage = () => {
         <Routes>
           <Route path="/" element={<CardContainer />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/recipe" element={<CreateRecipePage />} />
+          <Route
+            path="/recipe"
+            element={
+              <CreateRecipePage
+                title="test"
+                summary="test"
+                content="tomat"
+                prep_time="1"
+                tags="middag"
+              />
+            }
+          />
+          <Route
+            path="/recipe/:id"
+            element={<CreateRecipePage title="test" />}
+          />
           <Route path="recipe/created" element={<RecipeCreated />} />
           <Route path="register/user-created" element={<UserCreated />} />
           <Route path="/browse" element={<CardContainer />} />
