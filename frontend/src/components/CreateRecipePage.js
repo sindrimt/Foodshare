@@ -53,15 +53,12 @@ const CreateRecipePage = (props) => {
 
   const params = useParams();
 
-  let dataTest = {
-    title: "",
-  };
-
   const [isLoading, setLoading] = useState(true);
   const fetchRecipe = () => {
     // GET request i current URL
     axios.get(`/api/recipes/${params.id.toString()}/`).then((response) => {
       setRecipe(response.data);
+      console.log(response.data);
       setLoading(false);
     });
   };
@@ -147,31 +144,10 @@ const CreateRecipePage = (props) => {
     setIngredients(values);
   };
 
-  //TODO Denne må rendes ikke bare på page load fordi get request tar tid
-  /*  useEffect(() => {
-    fetchRecipe();
-  }, []); */
-
-  /*  useEffect(() => {
-    fetchPosts();
-  }, [profileUser]); */
-
-  /* const fetchRecipe = async () => {
-    console.log(params.id.toString());
-
-    const url = `/api/recipes/${params.id.toString()}/`;
-    await axios.get(url).then((response) => {
-      setRecipe(response.data);
-      setLoading(false);
-    });
-
-    /* const dataRecipe = result.data;
-    console.log(dataRecipe);
-    setRecipe(dataRecipe); */
-
   const classes = useStyles();
+  // Renders an empty div while waiting for data
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -270,7 +246,8 @@ const CreateRecipePage = (props) => {
                 options={options}
                 defaultValue={[]}
                 renderInput={(params) => (
-                  <TextField {...params} variant="standard" label="Tags" defaultValue={props.tags} />
+                  //TODO Hvordan render man tags? xD
+                  <TextField {...params} variant="standard" label="Tags" defaultValue={"Boye pls help"} />
                 )}
                 onChange={(e, value) => setTags(value)}
               />
@@ -285,6 +262,7 @@ const CreateRecipePage = (props) => {
               }}
               name="image"
               type="file"
+              //TODO Aksepterer ikke image som er i recipes objektet
               defaultValue={props.image}
             />
           </Grid>
