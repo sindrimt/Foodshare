@@ -4,59 +4,20 @@ import HomePage from "./HomePage";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import styled from "styled-components";
-import { Container, Switch, CssBaseline, adaptV4Theme } from "@mui/material";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
+import { CssBaseline, adaptV4Theme } from "@mui/material";
 import {
-  useTheme,
   ThemeProvider,
   StyledEngineProvider,
   createTheme,
 } from "@mui/material/styles";
-
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-
-function DatkModeButton() {
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "background.default",
-        color: "text.primary",
-        borderRadius: 1,
-        p: 3,
-      }}
-    >
-      {theme.palette.mode} mode
-      <IconButton
-        sx={{ ml: 1 }}
-        onClick={colorMode.toggleColorMode}
-        color="inherit"
-        size="large"
-      >
-        {theme.palette.mode === "dark" ? (
-          <Brightness7Icon />
-        ) : (
-          <Brightness4Icon />
-        )}
-      </IconButton>
-    </Box>
-  );
-}
+import { ColorModeContext } from "../context/ColorModeContext";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [logInSuccess, setLoginSuccess] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isLiked, setIsLiked] = useState("");
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState("light");
 
   const colorMode = useMemo(
     () => ({
@@ -112,7 +73,6 @@ const App = () => {
                 setIsLiked,
               }}
             >
-              <DatkModeButton />
               <CssBaseline />
               <HomePage />
             </UserContext.Provider>

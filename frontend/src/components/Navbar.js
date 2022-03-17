@@ -13,6 +13,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import foodshare from "../../static/images/foodshare.png";
 import { UserContext } from "../context/UserContext";
+import DarkModeButton from "./DarkModeButton";
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -61,6 +62,7 @@ const Navbar = () => {
           <Link to="/">Contact</Link>
         </li> */}
       </ul>
+      <DarkModeButton />
       <div className="app__navbar-login ">
         {loggedIn ? (
           <Link to="/" onClick={() => logOut()}>
