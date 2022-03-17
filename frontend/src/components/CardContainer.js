@@ -12,6 +12,9 @@ import Menu from "@mui/material/Menu";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import IconButton from "@mui/material/IconButton";
+import { Link } from "react-router-dom";
 
 const CardContainer = () => {
   const [popular, setPopular] = useState([]);
@@ -21,15 +24,12 @@ const CardContainer = () => {
   const [text, setText] = useState("");
   const [debouncedValue] = useDebounce(text, 300);
   const [debouncedValueTag] = useDebounce(tagFilter, 300);
-
   useEffect(() => {
     fetchData();
   }, []);
-
   useEffect(() => {
     fetchTags();
   }, []);
-
   const fetchTags = () => {
     axios
       .get("/api/tags/")
@@ -160,6 +160,18 @@ const CardContainer = () => {
             {/*  </AnimatePresence> */}
           </GridContainer>
         </motion.div>
+        <Link to="/recipe">
+          <IconButton
+            style={{
+              position: "fixed",
+              bottom: 20,
+              right: 20,
+              fontSize: 100,
+            }}
+          >
+            <AddBoxIcon color="primary" style={{ fontSize: 100 }} />
+          </IconButton>
+        </Link>
       </AnimateSharedLayout>
     </>
   );

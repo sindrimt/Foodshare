@@ -45,7 +45,7 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         default="N/A",
     )
 
-    ingredients = IngredientSerializer(many=True)
+    ingredients = IngredientSerializer(many=True, required=False)
 
     tags = TagListSerializerField()
 
@@ -85,19 +85,26 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         return obj.comments.all().aggregate(Avg("rating"))["rating__avg"]
 
     def create(self, validated_data):
-        ingredients_data = validated_data.pop("ingredients")
+        print(validated_data)
+        ingredients_data = validated_data.pop("ingredients", [])
         recipe = Recipe.objects.create(**validated_data)
         for ingredient_data in ingredients_data:
             Ingredient.objects.create(recipe=recipe, **ingredient_data)
         return recipe
 
     def update(self, obj, validated_data):
-        ingredients_data = validated_data.pop("ingredients")
-        recipe = super().update(obj, validated_data)
+        # if ingredients, even if empty, delete all and input new
+        if "ingredients" in validated_data:
+            ingredients_data = validated_data.pop("ingredients", [])
+            recipe = super().update(obj, validated_data)
+            Ingredient.objects.filter(recipe=recipe).delete()
+            for ingredient_data in ingredients_data:
+                Ingredient.objects.create(recipe=recipe, **ingredient_data)
 
-        Ingredient.objects.filter(recipe=recipe).delete()
-        for ingredient_data in ingredients_data:
-            Ingredient.objects.create(recipe=recipe, **ingredient_data)
+        # else just use super update
+        else:
+            recipe = super().update(obj, validated_data)
+
         return recipe
 
 

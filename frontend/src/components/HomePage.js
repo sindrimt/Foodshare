@@ -21,7 +21,7 @@ const HomePage = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePageDisplay />} />
+          <Route path="/" element={<CardContainer />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/recipe" element={<CreateRecipePage />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
@@ -38,5 +38,4 @@ const HomePage = () => {
     </>
   );
 };
-
 export default HomePage;

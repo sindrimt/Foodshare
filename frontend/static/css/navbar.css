@@ -3,13 +3,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: black;
+  background: rgb(0, 0, 0);
   color: white;
 
   padding: 1rem 2rem;
+  font-weight: bold;
+  font-size: medium;
 }
 
 .app__navbar-logo {
+  height: 57.3px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -86,7 +89,7 @@
 
 .app__navbar-smallscreen-links {
   list-style: none;
-  font-size: 35px;
+  font-size: 25px;
 }
 
 /* If the icon or the text is hovered, the border shows only for the text*/
