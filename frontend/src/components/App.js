@@ -10,6 +10,8 @@ const App = () => {
   const [logInSuccess, setLoginSuccess] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isLiked, setIsLiked] = useState("");
+  const [deletedPost, setDeletedPost] = useState(true);
+  const [isDeleted, setIsDeleted] = useState("");
 
   useEffect(() => {
     axios
@@ -39,6 +41,10 @@ const App = () => {
           currentUser,
           isLiked,
           setIsLiked,
+          deletedPost,
+          setDeletedPost,
+          isDeleted,
+          setIsDeleted,
         }}
       >
         <HomePage />
