@@ -11,13 +11,9 @@ import Profile from "./Profile";
 import NotFound from "../pages/NotFound";
 import ProfilePage from "../pages/ProfilePage";
 import LikedRecipes from "./LikedRecipes";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import MyProfile from "./MyProfile";
+
+import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -33,7 +29,8 @@ const HomePage = () => {
           <Route path="/browse" element={<CardContainer />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/me" element={<ProfilePage />} />
+          <Route path="/me/:id" element={<ProfilePage />} />
+          <Route path="/me" element={<MyProfile />} />
           <Route path="/me/liked-recipes" element={<LikedRecipes />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
