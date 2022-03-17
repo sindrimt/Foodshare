@@ -3,24 +3,33 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../context/ColorModeContext";
-import { Button } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 
 export default function DarkModeButton() {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   return (
-    <Button
-      variant="contained"
-      onClick={colorMode.toggleColorMode}
-      startIcon={
-        theme.palette.mode === "dark" ? (
+    <Tooltip
+      title={`Switch to ${
+        theme.palette.mode === "light" ? "dark" : "light"
+      } mode`}
+    >
+      <IconButton
+        onClick={() => {
+          colorMode.toggleColorMode();
+          localStorage.setItem(
+            "mode",
+            theme.palette.mode === "light" ? "dark" : "light"
+          );
+        }}
+        color="inherit"
+      >
+        {theme.palette.mode === "dark" ? (
           <Brightness7Icon />
         ) : (
           <Brightness4Icon />
-        )
-      }
-    >
-      Switch theme
-    </Button>
+        )}
+      </IconButton>
+    </Tooltip>
   );
 }

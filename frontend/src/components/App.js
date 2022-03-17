@@ -3,8 +3,7 @@ import { render } from "react-dom";
 import HomePage from "./HomePage";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
-import styled from "styled-components";
-import { CssBaseline, adaptV4Theme } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import {
   ThemeProvider,
   StyledEngineProvider,
@@ -30,15 +29,21 @@ const App = () => {
 
   const theme = useMemo(
     () =>
-      createTheme(
-        adaptV4Theme({
-          palette: {
-            mode,
-          },
-        })
-      ),
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
     [mode]
   );
+
+  useEffect(() => {
+    const storedMode = localStorage.getItem("mode");
+    if (storedMode !== null) {
+      //in ["light", "dark"]) {
+      setMode(storedMode);
+    }
+  }, []);
 
   useEffect(() => {
     axios
