@@ -49,9 +49,6 @@ const Navbar = () => {
       </div>
       <ul className="app__navbar-links">
         <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
           <Link to="/browse">Browse Recipes</Link>
         </li>
         <li>
@@ -92,14 +89,6 @@ const Navbar = () => {
             />
             <ul className="app__navbar-smallscreen-links">
               <li>
-                {" "}
-                {/* //each li? */}
-                <Link to="/" onClick={() => setToggleMenu(false)}>
-                  <IoIosHome color={iconColor} />
-                  <span className="icon-text"> Home</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/" onClick={() => setToggleMenu(false)}>
                   <IoMdBook color={iconColor} />
                   <span className="icon-text"> Browse Recipes</span>
@@ -112,7 +101,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/profile" onClick={() => setToggleMenu(false)}>
+                <Link to="/me" onClick={() => setToggleMenu(false)}>
                   <IoMdMegaphone color={iconColor} />
                   <span className="icon-text"> Profile</span>
                 </Link>
