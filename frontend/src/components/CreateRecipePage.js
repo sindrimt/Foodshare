@@ -45,19 +45,33 @@ const CreateRecipePage = (props) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [options, setOptions] = useState([]);
-  const [ingredients, setIngredients] = useState([
-    { name: "", amount: 0, unit: "stk." },
-  ]);
-  const [recipe, setRecipe] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [ingredients, setIngredients] = useState([{ name: "", amount: 0, unit: "stk." }]);
+
+  const [recipe, setRecipe] = useState({});
 
   console.log(loggedIn);
+
   const params = useParams();
 
+  let dataTest = {
+    title: "",
+  };
+
+  const [isLoading, setLoading] = useState(true);
+  const fetchRecipe = () => {
+    // GET request i current URL
+    axios.get(`/api/recipes/${params.id.toString()}/`).then((response) => {
+      setRecipe(response.data);
+      setLoading(false);
+    });
+  };
+
   useEffect(() => {
-    API.get("/tags/").then((response) =>
-      setOptions(response.data.map((tag) => tag.name))
-    );
+    fetchRecipe();
+  }, []);
+
+  useEffect(() => {
+    API.get("/tags/").then((response) => setOptions(response.data.map((tag) => tag.name)));
   }, []);
 
   function handleCreateButtonPressed(e) {
@@ -134,28 +148,31 @@ const CreateRecipePage = (props) => {
   };
 
   //TODO Denne må rendes ikke bare på page load fordi get request tar tid
-  useEffect(() => {
+  /*  useEffect(() => {
     fetchRecipe();
-  }, []);
+  }, []); */
 
-  const fetchRecipe = async () => {
+  /*  useEffect(() => {
+    fetchPosts();
+  }, [profileUser]); */
+
+  /* const fetchRecipe = async () => {
     console.log(params.id.toString());
 
     const url = `/api/recipes/${params.id.toString()}/`;
-    const result = await axios.get(url);
-    console.log(result);
-    const data = result.data;
-    console.log(data);
-    setRecipe(data);
-    console.log(recipe);
+    await axios.get(url).then((response) => {
+      setRecipe(response.data);
+      setLoading(false);
+    });
 
     /* const dataRecipe = result.data;
     console.log(dataRecipe);
     setRecipe(dataRecipe); */
-  };
 
   const classes = useStyles();
-
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -190,17 +207,13 @@ const CreateRecipePage = (props) => {
                 onChange={(e) => setSummary(e.target.value)}
                 multiline
                 rows={2}
-                defaultValue={props.summary}
+                defaultValue={recipe.summary}
               />
             </Grid>
             <Grid item xs={12}>
               <IconButton
                 disabled={ingredients.length < 1}
-                onClick={() =>
-                  handleRemoveIngredient(
-                    ingredients[ingredients.length - 1].name
-                  )
-                }
+                onClick={() => handleRemoveIngredient(ingredients[ingredients.length - 1].name)}
               >
                 <RemoveIcon />
               </IconButton>
@@ -230,7 +243,7 @@ const CreateRecipePage = (props) => {
                 onChange={(e) => setContent(e.target.value)}
                 multiline
                 rows={10}
-                defaultValue={props.content}
+                defaultValue={recipe?.content}
               />
             </Grid>
 
@@ -245,7 +258,7 @@ const CreateRecipePage = (props) => {
                 name="prepTime"
                 autoComplete="prepTime"
                 onChange={(e) => setPrepTime(e.target.value)}
-                defaultValue={props.prep_time}
+                defaultValue={recipe?.prep_time}
               />
             </Grid>
 
@@ -257,12 +270,7 @@ const CreateRecipePage = (props) => {
                 options={options}
                 defaultValue={[]}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Tags"
-                    defaultValue={props.tags}
-                  />
+                  <TextField {...params} variant="standard" label="Tags" defaultValue={props.tags} />
                 )}
                 onChange={(e, value) => setTags(value)}
               />

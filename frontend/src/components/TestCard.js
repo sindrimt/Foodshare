@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-} from "@material-ui/core/";
+import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@material-ui/core/";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
@@ -75,11 +68,7 @@ const LikeButton = (props) => {
   if (loggedIn) {
     return (
       <>
-        <Button
-          size="small"
-          color={liked ? "primary" : "secondary"}
-          onClick={handleLikePressed}
-        >
+        <Button size="small" color={liked ? "primary" : "secondary"} onClick={handleLikePressed}>
           <ThumbUpAltIcon fontSize="small" /> {" " + likes}
         </Button>
       </>
@@ -87,12 +76,7 @@ const LikeButton = (props) => {
   } else {
     return (
       <>
-        <Popup
-          open={open}
-          setOpen={setOpen}
-          type="error"
-          message="Not Logged In"
-        />
+        <Popup open={open} setOpen={setOpen} type="error" message="Not Logged In" />
         <Button size="small" onClick={handleErrorLike}>
           <ThumbUpAltIcon fontSize="small" /> {" " + likes}
         </Button>
@@ -152,16 +136,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const TestCard = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const {
-    loggedIn,
-    setLoggedIn,
-    logInSuccess,
-    setLoginSuccess,
-    setCurrentUser,
-    currentUser,
-    isLiked,
-    setIsLiked,
-  } = useContext(UserContext);
+  const { loggedIn, setLoggedIn, logInSuccess, setLoginSuccess, setCurrentUser, currentUser, isLiked, setIsLiked } =
+    useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -194,7 +170,7 @@ const TestCard = (props) => {
 
   const navigateEditCard = () => {
     axios.get(`api/recipes/${props.id}/`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       navigate(`/recipe/${props.id}`);
     });
   };
@@ -204,16 +180,8 @@ const TestCard = (props) => {
   return (
     <AnimateSharedLayout>
       <motion.div layout>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-        >
-          <img
-            style={{ maxWidth: "100%", height: "auto" }}
-            src={props.image}
-            alt="image"
-          />
+        <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
+          <img style={{ maxWidth: "100%", height: "auto" }} src={props.image} alt="image" />
           <DialogTitle>{props.title}</DialogTitle>
           <DialogContent>
             <DialogContentText>{props.author}</DialogContentText>
@@ -248,29 +216,17 @@ const TestCard = (props) => {
               }}
             >
               <div className={classes.underline}>
-                <Typography variant="h6">
-                  {props.author ? props.author : "Author"}
-                </Typography>
+                <Typography variant="h6">{props.author ? props.author : "Author"}</Typography>
                 <Typography variant="body2">{props.created}</Typography>
               </div>
             </div>
           </AuthorContainer>
           {/* HER ER COMPONENTEN  */}
           <CardActionArea onClick={handleClickOpen}>
-            <CardMedia
-              className={classes.media}
-              image={props.image}
-              title={props.title}
-              alt="image"
-            />
+            <CardMedia className={classes.media} image={props.image} title={props.title} alt="image" />
 
             <div className={classes.overlay2}>
-              <Button
-                disabled={true}
-                style={{ color: "white" }}
-                size="small"
-                onClick={() => console.log("clicked")}
-              >
+              <Button disabled={true} style={{ color: "white" }} size="small" onClick={() => console.log("clicked")}>
                 <MoreHorizIcon fontSize="medium" />
               </Button>
             </div>
@@ -280,12 +236,7 @@ const TestCard = (props) => {
                 {/* prepend all elements with a # and display nicely */}
               </Typography>
             </div>
-            <Typography
-              className={classes.title}
-              gutterBottom
-              variant="h5"
-              component="h2"
-            >
+            <Typography className={classes.title} gutterBottom variant="h5" component="h2">
               {props.title}
             </Typography>
             <CardContent>
@@ -312,11 +263,7 @@ const TestCard = (props) => {
               value={props.avgRating}
               readOnly
             />
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={navigateEditCard}
-            >
+            <Button color="primary" variant="contained" onClick={navigateEditCard}>
               <EditIcon />
               Edit recipe
             </Button>
