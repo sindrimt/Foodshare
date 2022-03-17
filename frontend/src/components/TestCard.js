@@ -101,35 +101,28 @@ const RatingComponent = () => {
   }
 };
 
-/*const DeleteButton = (props) => {
-  const { loggedIn } = useContext(UserContext);
-  const [deleted, setDeleted] = useState(false);
-  function handleDeletePressed() {
-    API.delete("recipes/" + props.id).then(
-      (message) => console.log(message),
-      setDeleted(true)
-    );
-  }
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
-  if (loggedIn) {
+const DeleteButton = ({ id, title }) => {
+  const { deletedPost, setDeletedPost, isDeleted, setIsDeleted } = useContext(UserContext);
+
+  function handleDeletePressed() {
+    console.log(id);
+    API.delete("recipes/" + id + "/").then((message) => setDeletedPost(!deletedPost), setIsDeleted(title));
+  }
+  // Sjekker om man er på sin egen profilside
+  if (window.location.href === "http://127.0.0.1:8000/me") {
     return (
-      <Button
-        size="small"
-        color="primary"
-        disabled={deleted ? true : false}
-        onClick={handleDeletePressed}
-      >
+      <Button size="small" color="primary" onClick={handleDeletePressed}>
         <DeleteIcon fontSize="small" /> Delete
       </Button>
     );
   } else {
-    return <div></div>;
+    return "";
   }
-}; */
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+};
 
 const TestCard = (props) => {
   const classes = useStyles();
@@ -231,7 +224,13 @@ const TestCard = (props) => {
               {props.title}
             </Typography>
             <CardContent>
-              <Typography variant="body2" component="p" color="textSecondary" style={{ whiteSpace: "pre-line" }} align="justify">
+              <Typography
+                variant="body2"
+                component="p"
+                color="textSecondary"
+                style={{ whiteSpace: "pre-line" }}
+                align="justify"
+              >
                 {props.summary}
               </Typography>
             </CardContent>
@@ -248,6 +247,8 @@ const TestCard = (props) => {
               value={props.avgRating}
               readOnly
             />
+            {/* //TODO ============================================ */}
+            <DeleteButton id={props.id} title={props.title} />
           </CardActions>
         </Card>
       </motion.div>
