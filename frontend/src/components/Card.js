@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Card from "@material-ui/core/Card";
+import Card from "@mui/material/Card";
 import { motion } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
 
@@ -8,7 +8,7 @@ import {
   CardHeader,
   Typography,
   CardMedia,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const RecipeCard = (props) => {
   const styles = {

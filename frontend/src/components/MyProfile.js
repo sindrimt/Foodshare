@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import API from "../axios";
 import Stack from "@mui/material/Stack";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import RecipeGrid from "../components/RecipeGrid";
 import { UserContext } from "../context/UserContext";
 import EditIcon from "@mui/icons-material/Edit";
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import styled from "styled-components";
 import { MdBookmarkBorder } from "react-icons/md";
-import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Popup from "./Popup";
 
 const MyProfile = () => {

@@ -1,4 +1,4 @@
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
