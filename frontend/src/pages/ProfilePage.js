@@ -22,7 +22,9 @@ const ProfilePage = () => {
 
   const fetchUser = () => {
     // GET request i current URL
-    axios.get(`/api/accounts/${params.id.toString()}/`).then((response) => setProfileUser(response.data));
+    axios
+      .get(`/api/accounts/${params.id.toString()}/`)
+      .then((response) => setProfileUser(response.data));
   };
 
   const fetchPosts = () => {
@@ -47,7 +49,9 @@ const ProfilePage = () => {
   return (
     <>
       <Stack spacing={2} alignItems="center">
-        <Typography variant="h3">{profileUser.username + "'s recipes"}</Typography>
+        <Typography variant="h3">
+          {profileUser.username + "'s recipes"}
+        </Typography>
         <Typography variant="h5">{"@" + profileUser.username}</Typography>
         <Stack spacing={2} direction="row">
           {/* <Button color="primary" variant="contained" to="/profile" component={Link}>

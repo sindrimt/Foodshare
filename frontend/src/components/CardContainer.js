@@ -66,7 +66,10 @@ const CardContainer = () => {
   const filterFunction = (allValue) => {
     const filter = popular?.filter((card) => {
       if (allValue === "All") return card.title.toLowerCase().includes(text);
-      return card.title.toLowerCase().includes(text) && card.tags?.includes(tagFilter);
+      return (
+        card.title.toLowerCase().includes(text) &&
+        card.tags?.includes(tagFilter)
+      );
     });
     setFiltered(filter);
   };
@@ -87,92 +90,96 @@ const CardContainer = () => {
     filterFunction(tagFilter);
   }, [tagFilter]);
 
-  return <>
-    <FormContainer>
-      <FormControl sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="demo-simple-select-autowidth-label">Filter</InputLabel>
-        <Select value={tagFilter} onChange={handleChange} label="Tags">
-          {/* <DropDown> */}
-          <MenuItem value="All" sx={{ width: "100%" }}>
-            All
-          </MenuItem>
-          {/* </DropDown> */}
-
-          {/* Rendrer hver tag i dropdownen */}
-          {tags?.map((tag) => (
-            <MenuItem key={tag.id} value={tag.name} sx={{ width: "100%" }}>
-              {tag.name}
+  return (
+    <>
+      <FormContainer>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-autowidth-label">
+            Filter
+          </InputLabel>
+          <Select value={tagFilter} onChange={handleChange} label="Tags">
+            {/* <DropDown> */}
+            <MenuItem value="All" sx={{ width: "100%" }}>
+              All
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          onChange={(e) => setText(e.target.value)}
-          id="standard-basic"
-          label="Search"
-          variant="standard"
-          type="text"
-        />
-      </form>
-    </FormContainer>
-    <AnimateSharedLayout>
-      <motion.div layout>
-        <GridContainer>
-          {/*  <TestCard /> */}
-          {/* <AnimatePresence> */}
-          {/* {state.recipes?.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              title={recipe.title}
-              description={recipe.content}
-              createdAt={recipe.created}
-              image={recipe.image}
-            />
-          ))} */}
-          {filtered?.map((card) => {
-            return (
-              /* <RecipeCard
-                key={card.id}
-                title={card.title}
-                description={card.content}
-                image={card.image}
-              />*/
-              <TestCard
-                key={card.id}
-                id={card.id}
-                title={card.title}
-                summary={card.summary}
-                prepTime={card.prep_time}
-                author={card.username}
-                tags={card.tags}
-                content={card.content}
-                image={card.image}
-                created={card.created}
-                likes={card.like_count}
-                isLiked={card.is_liked}
-                avgRating={card.avg_rating}
-                user={card.user}
+            {/* </DropDown> */}
+
+            {/* Rendrer hver tag i dropdownen */}
+            {tags?.map((tag) => (
+              <MenuItem key={tag.id} value={tag.name} sx={{ width: "100%" }}>
+                {tag.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            onChange={(e) => setText(e.target.value)}
+            id="standard-basic"
+            label="Search"
+            variant="standard"
+            type="text"
+          />
+        </form>
+      </FormContainer>
+      <AnimateSharedLayout>
+        <motion.div layout>
+          <GridContainer>
+            {/*  <TestCard /> */}
+            {/* <AnimatePresence> */}
+            {/* {state.recipes?.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                title={recipe.title}
+                description={recipe.content}
+                createdAt={recipe.created}
+                image={recipe.image}
               />
-            );
-          })}
-          {/*  </AnimatePresence> */}
-        </GridContainer>
-      </motion.div>
-      <Link to="/recipe">
-        <IconButton
-          style={{
-            position: "fixed",
-            bottom: 20,
-            right: 20,
-            fontSize: 100,
-          }}
-          size="large">
-          <AddBoxIcon color="primary" style={{ fontSize: 100 }} />
-        </IconButton>
-      </Link>
-    </AnimateSharedLayout>
-  </>;
+            ))} */}
+            {filtered?.map((card) => {
+              return (
+                /* <RecipeCard
+                  key={card.id}
+                  title={card.title}
+                  description={card.content}
+                  image={card.image}
+                />*/
+                <TestCard
+                  key={card.id}
+                  id={card.id}
+                  title={card.title}
+                  summary={card.summary}
+                  prepTime={card.prep_time}
+                  author={card.username}
+                  tags={card.tags}
+                  content={card.content}
+                  image={card.image}
+                  created={card.created}
+                  likes={card.like_count}
+                  isLiked={card.is_liked}
+                  avgRating={card.avg_rating}
+                  user={card.user}
+                />
+              );
+            })}
+            {/*  </AnimatePresence> */}
+          </GridContainer>
+        </motion.div>
+        <Link to="/recipe">
+          <IconButton
+            style={{
+              position: "fixed",
+              bottom: 20,
+              right: 20,
+              fontSize: 100,
+            }}
+          >
+            <AddBoxIcon color="primary" style={{ fontSize: 100 }} />
+          </IconButton>
+        </Link>
+      </AnimateSharedLayout>
+    </>
+  );
 };
 
 const GridContainer = styled.section`
