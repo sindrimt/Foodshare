@@ -53,6 +53,9 @@ const Navbar = () => {
           <Link to="/browse">Browse Recipes</Link>
         </li>
         <li>
+          <Link to="/followed">Followed</Link>
+        </li>
+        <li>
           <Link to="recipe">Create Recipe</Link>
         </li>
         {/* <li>

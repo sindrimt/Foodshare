@@ -147,6 +147,8 @@ class UserSerializer(serializers.ModelSerializer):
         source="following.count", default=0, read_only=True
     )
 
+    is_followed = serializers.SerializerMethodField(default=False)
+
     class Meta:
         model = User
         fields = [
@@ -161,7 +163,14 @@ class UserSerializer(serializers.ModelSerializer):
             "recipes",
             "followers",
             "following",
+            "is_followed",
         ]
+
+    def get_is_followed(self, obj):
+        user = self.context["request"].user
+        if user.is_authenticated:
+            return UserFollow.objects.filter(user=user, follows=obj).exists()
+        return False
 
 
 class UserFollowSerializer(serializers.ModelSerializer):
