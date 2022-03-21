@@ -1,40 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import API from "../axios";
+import { UserContext } from "../context/UserContext";
 
 export default function FollowButton(props) {
   const [followed, setFollowed] = useState(false);
   const [user, setUser] = useState(-1);
+  const { loggedIn } = useContext(UserContext);
 
   useEffect(() => {
     setFollowed(props.followed);
     setUser(props.user);
   }, [props]);
 
-  async function HandleFollow() {
-    await API.post(`accounts/${user}/follow/`).then(
+  function HandleFollow() {
+    API.post(`accounts/${user}/follow/`).then(
       (response) => {
         console.log(response);
+        setFollowed(true);
       },
       (error) => {
         console.log(JSON.stringify(error, null, 2));
       }
     );
-    setFollowed(true);
   }
 
-  async function HandleUnfollow() {
-    await API.delete(`accounts/${user}/follow/`).then(
+  function HandleUnfollow() {
+    API.delete(`accounts/${user}/follow/`).then(
       (response) => {
         console.log(response);
+        setFollowed(false);
       },
       (error) => {
         console.log(JSON.stringify(error, null, 2));
       }
     );
-    setFollowed(false);
   }
 
   return followed ? (
@@ -52,6 +54,7 @@ export default function FollowButton(props) {
       startIcon={<PersonAddIcon />}
       onClick={HandleFollow}
       color="primary"
+      disabled={!loggedIn}
     >
       Follow
     </Button>
