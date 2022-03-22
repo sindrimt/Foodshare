@@ -69,7 +69,10 @@ const CardContainer = () => {
   const filterFunction = (allValue) => {
     const filter = popular?.filter((card) => {
       if (allValue === "All") return card.title.toLowerCase().includes(text);
-      return card.title.toLowerCase().includes(text) && card.tags?.includes(tagFilter);
+      return (
+        card.title.toLowerCase().includes(text) &&
+        card.tags?.includes(tagFilter)
+      );
     });
     setFiltered(filter);
   };
@@ -94,7 +97,9 @@ const CardContainer = () => {
     <>
       <FormContainer>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="demo-simple-select-autowidth-label">Filter</InputLabel>
+          <InputLabel id="demo-simple-select-autowidth-label">
+            Filter
+          </InputLabel>
           <Select value={tagFilter} onChange={handleChange} label="Tags">
             {/* <DropDown> */}
             <MenuItem value="All" sx={{ width: "100%" }}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import API from "../axios";
 import Stack from "@mui/material/Stack";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import RecipeGrid from "../components/RecipeGrid";
 import { UserContext } from "../context/UserContext";
 import EditIcon from "@mui/icons-material/Edit";
@@ -10,20 +10,36 @@ import { Link } from "react-router-dom";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import styled from "styled-components";
 import { MdBookmarkBorder } from "react-icons/md";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Popup from "./Popup";
 
 const MyProfile = () => {
   const [posts, setPosts] = useState([]);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, deletedPost, isDeleted, setIsDeleted } = useContext(UserContext);
+  const [open, setOpen] = useState(false);
+  const [initialRender, setInitialRender] = useState(true);
 
   const fetchPosts = () => {
     const url = "recipes/?user=" + currentUser.id;
-    console.log(currentUser);
-    API.get(url).then((response) => setPosts(response.data));
+    //console.log(currentUser);
+    API.get(url).then((response) => {
+      setPosts(response.data);
+    });
   };
 
   useEffect(() => {
+    console.log("============");
+    console.log(isDeleted);
     fetchPosts();
-  }, [currentUser]);
+    if (initialRender) {
+      setInitialRender(false);
+      if (isDeleted === "") {
+        setOpen(false);
+      }
+    } else {
+      setOpen(true);
+    }
+  }, [currentUser, deletedPost]);
 
   return (
     <>
@@ -56,6 +72,7 @@ const MyProfile = () => {
           <MdBookmarkBorder size={45} />
         </SavedIconContainer>
       </Link>
+      <Popup open={open} setOpen={setOpen} type="success" message={`${isDeleted} was deleted!`} />
     </>
   );
 };
