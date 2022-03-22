@@ -159,6 +159,7 @@ const CardContainer = () => {
                   isLiked={card.is_liked}
                   avgRating={card.avg_rating}
                   user={card.user}
+                  ingredients={card.ingredients}
                 />
               );
             })}

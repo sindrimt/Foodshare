@@ -23,7 +23,7 @@ const CommentBox = (props) => {
       content: comment,
       rating: rating,
       recipe: props.recipe,
-    }).then(setOpen(false));
+    }).then(setOpen(false),(error) => console.log(JSON.stringify(error, null, 2)));
   };
 
   const handleClose = () => {

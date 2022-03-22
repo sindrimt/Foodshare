@@ -37,6 +37,9 @@ import { green, lightGreen } from "@mui/material/colors";
 import CommentBox from "./CommentBox";
 import { DialogContentText } from "@mui/material";
 
+import { Grid } from "@mui/material";
+import { List, ListItem, ListItemText } from "@mui/material";
+
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
@@ -196,23 +199,59 @@ const TestCard = (props) => {
           open={open}
           onClose={handleClose}
           TransitionComponent={Transition}
+          scroll="body"
         >
           <img
             style={{ maxWidth: "100%", height: "auto" }}
             src={props.image}
             alt="image"
           />
-          <DialogTitle>{props.title}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{props.author}</DialogContentText>
-            <DialogContentText>{props.summary}</DialogContentText>
-            <Rating
-              /* key={props.id} er denne nødvendig? id={props.id} */
-              value={props.avgRating}
-              readOnly
-            />
-          </DialogContent>
-          <CommentBox />
+          <Grid container>
+            <Grid item xs={8}>
+              <DialogContent>
+                <DialogContentText>{props.tags.map((s) => "#" + s).join(", ")}</DialogContentText>
+              </DialogContent>
+            </Grid>
+            <Grid item xs={4}>
+              <DialogContent>
+                <DialogContentText>Created by: {props.author}</DialogContentText>
+              </DialogContent>
+            </Grid>
+            <Grid item xs={12}>
+              <DialogContent>
+                <DialogTitle>{props.title}</DialogTitle>
+                <DialogContentText>{props.summary}</DialogContentText>
+                <List>
+                  {props.ingredients.map((ingredient, index) => (
+                    <ListItem key={index}>
+                      <ListItemText primary={ingredient.name + ":  " + ingredient.amount + " " + ingredient.unit} />
+                    </ListItem>
+                  ))}
+                </List>
+                <DialogContentText>{props.content}</DialogContentText>
+              </DialogContent>
+            </Grid>
+            <Grid item xs={3}>
+              <DialogContent>
+                <LikeButton
+                  id={props.id}
+                  likes={props.likes}
+                  isLiked={props.isLiked}
+                />
+              </DialogContent>
+            </Grid>
+            <Grid item xs={4}>
+              <DialogContent>
+                <Rating
+                  value={props.avgRating}
+                  readOnly
+                />
+              </DialogContent>
+            </Grid>
+            <Grid item xs={5}>
+              <CommentBox recipe={props.id} />
+            </Grid>
+          </Grid>
         </Dialog>
         <Card
           /* className={classes.card} */
