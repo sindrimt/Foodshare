@@ -50,13 +50,13 @@ const Navbar = () => {
       </div>
       <ul className="app__navbar-links">
         <li>
-          <Link to="/browse">Browse Recipes</Link>
+          <Link to="/browse">Browse</Link>
         </li>
         <li>
           <Link to="/followed">Followed</Link>
         </li>
         <li>
-          <Link to="recipe">Create Recipe</Link>
+          <Link to="recipe">New</Link>
         </li>
         {/* <li>
           <Link to="/">Contact</Link>
