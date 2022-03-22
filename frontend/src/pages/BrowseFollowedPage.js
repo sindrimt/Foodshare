@@ -1,17 +1,8 @@
-import Typography from "@mui/material/Typography";
-import EditIcon from "@mui/icons-material/Edit";
-import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { MdBookmarkBorder } from "react-icons/md";
-import { useParams } from "react-router";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import API from "../axios";
 import RecipeGrid from "../components/RecipeGrid";
-import { UserContext } from "../context/UserContext";
-import FollowButton from "../components/FollowButton";
+import FollowedUsersList from "../components/FollowedUsersList";
 
 export default function BrowseFollowedPage() {
   const [posts, setPosts] = useState([]);
@@ -25,7 +16,7 @@ export default function BrowseFollowedPage() {
   return (
     <>
       <Stack spacing={2} alignItems="center">
-        <Typography variant="h5">{"Recipes by users you follow"}</Typography>
+        <FollowedUsersList />
         <RecipeGrid posts={posts} />
       </Stack>
     </>

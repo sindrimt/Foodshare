@@ -178,6 +178,12 @@ class UserFollowSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(), read_only=True
     )
 
+    follows_username = serializers.CharField(
+        source="follows.username",
+        read_only=True,
+        default="N/A",
+    )
+
     class Meta:
         model = UserFollow
         fields = "__all__"
