@@ -263,10 +263,9 @@ const TestCard = (props) => {
               value={props.avgRating}
               readOnly
             />
-            <Button color="primary" variant="contained" onClick={navigateEditCard}>
-              <EditIcon />
-              Edit recipe
-            </Button>
+            {/* <EditHover>
+              <EditIcon onClick={navigateEditCard} />
+            </EditHover> */}
           </CardActions>
         </Card>
       </motion.div>
@@ -274,6 +273,12 @@ const TestCard = (props) => {
   );
 };
 
+const EditHover = styled.span`
+  &:hover {
+    cursor: pointer;
+    border-bottom: 2px solid gray;
+  }
+`;
 const AuthorContainer = styled.span`
   z-index: 1;
 `;

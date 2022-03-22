@@ -47,25 +47,7 @@ const CreateRecipePage = (props) => {
   const [options, setOptions] = useState([]);
   const [ingredients, setIngredients] = useState([{ name: "", amount: 0, unit: "stk." }]);
 
-  const [recipe, setRecipe] = useState({});
-
-  console.log(loggedIn);
-
-  const params = useParams();
-
-  const [isLoading, setLoading] = useState(true);
-  const fetchRecipe = () => {
-    // GET request i current URL
-    axios.get(`/api/recipes/${params.id.toString()}/`).then((response) => {
-      setRecipe(response.data);
-      console.log(response.data);
-      setLoading(false);
-    });
-  };
-
-  useEffect(() => {
-    fetchRecipe();
-  }, []);
+  //console.log(loggedIn);
 
   useEffect(() => {
     API.get("/tags/").then((response) => setOptions(response.data.map((tag) => tag.name)));
@@ -145,10 +127,7 @@ const CreateRecipePage = (props) => {
   };
 
   const classes = useStyles();
-  // Renders an empty div while waiting for data
-  if (isLoading) {
-    return <div></div>;
-  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -168,7 +147,6 @@ const CreateRecipePage = (props) => {
                 name="title"
                 autoComplete="title"
                 onChange={(e) => setTitle(e.target.value)}
-                defaultValue={recipe.title}
               />
             </Grid>
             <Grid item xs={12}>
@@ -183,7 +161,6 @@ const CreateRecipePage = (props) => {
                 onChange={(e) => setSummary(e.target.value)}
                 multiline
                 rows={2}
-                defaultValue={recipe.summary}
               />
             </Grid>
             <Grid item xs={12}>
@@ -219,7 +196,6 @@ const CreateRecipePage = (props) => {
                 onChange={(e) => setContent(e.target.value)}
                 multiline
                 rows={10}
-                defaultValue={recipe?.content}
               />
             </Grid>
 
@@ -234,7 +210,6 @@ const CreateRecipePage = (props) => {
                 name="prepTime"
                 autoComplete="prepTime"
                 onChange={(e) => setPrepTime(e.target.value)}
-                defaultValue={recipe?.prep_time}
               />
             </Grid>
 
@@ -245,10 +220,7 @@ const CreateRecipePage = (props) => {
                 id="tags"
                 options={options}
                 defaultValue={[]}
-                renderInput={(params) => (
-                  //TODO Hvordan render man tags? xD
-                  <TextField {...params} variant="standard" label="Tags" defaultValue={"Boye pls help"} />
-                )}
+                renderInput={(params) => <TextField {...params} variant="standard" label="Tags" />}
                 onChange={(e, value) => setTags(value)}
               />
             </Grid>
@@ -262,7 +234,6 @@ const CreateRecipePage = (props) => {
               }}
               name="image"
               type="file"
-              //TODO Aksepterer ikke image som er i recipes objektet
               defaultValue={props.image}
             />
           </Grid>

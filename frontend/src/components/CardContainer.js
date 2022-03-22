@@ -24,12 +24,15 @@ const CardContainer = () => {
   const [text, setText] = useState("");
   const [debouncedValue] = useDebounce(text, 300);
   const [debouncedValueTag] = useDebounce(tagFilter, 300);
+
   useEffect(() => {
     fetchData();
   }, []);
+
   useEffect(() => {
     fetchTags();
   }, []);
+
   const fetchTags = () => {
     axios
       .get("/api/tags/")
