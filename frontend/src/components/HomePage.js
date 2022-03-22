@@ -14,7 +14,14 @@ import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
 import EditRecipe from "./EditRecipe";
 
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
+import BrowseFollowedPage from "../pages/BrowseFollowedPage";
 
 const HomePage = () => {
   return (
@@ -32,6 +39,7 @@ const HomePage = () => {
           <Route path="recipe/created" element={<RecipeCreated />} />
           <Route path="register/user-created" element={<UserCreated />} />
           <Route path="/browse" element={<CardContainer />} />
+          <Route path="/followed" element={<BrowseFollowedPage />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/me/:id" element={<ProfilePage />} />

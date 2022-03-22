@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Popup from "./Popup";
@@ -88,7 +88,13 @@ const Profile = () => {
     <>
       <br />
       <form onSubmit={handleSubmit}>
-        <Grid container alignItems="center" justifyContent="center" direction="column" spacing={2}>
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="center"
+          direction="column"
+          spacing={2}
+        >
           <Grid item>
             <TextField
               id="name-input"
@@ -135,7 +141,12 @@ const Profile = () => {
 
           <br />
           <ButtonContainer>
-            <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              onClick={handleSubmit}
+            >
               Update Recipe
             </Button>
           </ButtonContainer>
@@ -145,7 +156,9 @@ const Profile = () => {
           open={open}
           setOpen={setOpen}
           type={error ? "error" : "success"}
-          message={error ? "Error Updating Recipe" : "Recipe Successfully Updated!"}
+          message={
+            error ? "Error Updating Recipe" : "Recipe Successfully Updated!"
+          }
         />
       </form>
     </>
