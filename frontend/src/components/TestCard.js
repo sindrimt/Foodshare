@@ -176,6 +176,18 @@ const TestCard = (props) => {
   };
 
   //TODO Drill props til parent
+  const EditButton = ({ id, title }) => {
+    // Sjekker om man er på sin egen profilside
+    if (window.location.href === "http://127.0.0.1:8000/me") {
+      return (
+        <EditHover>
+          <EditIcon onClick={navigateEditCard} />
+        </EditHover>
+      );
+    } else {
+      return "";
+    }
+  };
 
   return (
     <AnimateSharedLayout>
@@ -266,6 +278,7 @@ const TestCard = (props) => {
             {/* <EditHover>
               <EditIcon onClick={navigateEditCard} />
             </EditHover> */}
+            <EditButton />
           </CardActions>
         </Card>
       </motion.div>

@@ -36,6 +36,12 @@ const Profile = () => {
     axios.get(`/api/recipes/${params.id.toString()}/`).then((response) => {
       setRecipe(response.data);
       console.log(response.data);
+      setFormValues({
+        title: response.data.title,
+        summary: response.data.summary,
+        content: response.data.content,
+        prep_time: response.data.prep_time,
+      });
       setLoading(false);
     });
   };
@@ -52,8 +58,11 @@ const Profile = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
     console.log(formValues);
 
     axios
@@ -65,6 +74,9 @@ const Profile = () => {
       .catch((error) => {
         setError(true);
         setOpen(true);
+      })
+      .finally(() => {
+        navigate("/me");
       });
   };
 
