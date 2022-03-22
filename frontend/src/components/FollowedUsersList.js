@@ -46,7 +46,7 @@ export default function FollowedUsersList(props) {
         <ListIcon sx={{ mr: 1 }} />
         Followed users
       </Fab>
-      <Dialog onClose={() => setOpen(False)} open={open}>
+      <Dialog onClose={() => setOpen(false)} open={open}>
         <List>
           {followedList.map((followedUser, index) => (
             <ListItem

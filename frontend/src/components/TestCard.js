@@ -135,7 +135,10 @@ const DeleteButton = ({ id, title }) => {
     );
   }
   // Sjekker om man er på sin egen profilside
-  if (window.location.href === "http://127.0.0.1:8000/me") {
+  if (
+    window.location.href === "http://127.0.0.1:8000/me" ||
+    window.location.href === "http://localhost:8000/me"
+  ) {
     return (
       <Button size="small" color="primary" onClick={handleDeletePressed}>
         <DeleteIcon fontSize="small" /> Delete
@@ -199,7 +202,10 @@ const TestCard = (props) => {
   //TODO Drill props til parent
   const EditButton = ({ id, title }) => {
     // Sjekker om man er på sin egen profilside
-    if (window.location.href === "http://127.0.0.1:8000/me") {
+    if (
+      window.location.href === "http://127.0.0.1:8000/me" ||
+      window.location.href === "http://localhost:8000/me"
+    ) {
       return (
         <EditHover>
           <EditIcon onClick={navigateEditCard} />
@@ -324,6 +330,7 @@ const TestCard = (props) => {
             {/* <EditHover>
               <EditIcon onClick={navigateEditCard} />
             </EditHover> */}
+            <DeleteButton id={props.id} title={props.title} />
             <EditButton />
           </CardActions>
         </Card>
