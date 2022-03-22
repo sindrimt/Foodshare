@@ -15,6 +15,8 @@ import IngredientField from "./IngredientField";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useParams } from "react-router";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateRecipePage = () => {
+const CreateRecipePage = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -43,15 +45,12 @@ const CreateRecipePage = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [options, setOptions] = useState([]);
-  const [ingredients, setIngredients] = useState([
-    { name: "", amount: 0, unit: "stk." },
-  ]);
-  console.log(loggedIn);
+  const [ingredients, setIngredients] = useState([{ name: "", amount: 0, unit: "stk." }]);
+
+  //console.log(loggedIn);
 
   useEffect(() => {
-    API.get("/tags/").then((response) =>
-      setOptions(response.data.map((tag) => tag.name))
-    );
+    API.get("/tags/").then((response) => setOptions(response.data.map((tag) => tag.name)));
   }, []);
 
   function handleCreateButtonPressed(e) {
@@ -167,12 +166,8 @@ const CreateRecipePage = () => {
             <Grid item xs={12}>
               <IconButton
                 disabled={ingredients.length < 1}
-                onClick={() =>
-                  handleRemoveIngredient(
-                    ingredients[ingredients.length - 1].name
-                  )
-                }
-                size="large">
+                onClick={() => handleRemoveIngredient(ingredients[ingredients.length - 1].name)}
+              >
                 <RemoveIcon />
               </IconButton>
               <IconButton onClick={handleAddIngredient} size="large">
@@ -225,9 +220,7 @@ const CreateRecipePage = () => {
                 id="tags"
                 options={options}
                 defaultValue={[]}
-                renderInput={(params) => (
-                  <TextField {...params} variant="standard" label="Tags" />
-                )}
+                renderInput={(params) => <TextField {...params} variant="standard" label="Tags" />}
                 onChange={(e, value) => setTags(value)}
               />
             </Grid>
@@ -241,6 +234,7 @@ const CreateRecipePage = () => {
               }}
               name="image"
               type="file"
+              defaultValue={props.image}
             />
           </Grid>
           <Button

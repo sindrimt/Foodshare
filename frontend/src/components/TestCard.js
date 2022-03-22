@@ -37,6 +37,8 @@ import { green, lightGreen } from "@mui/material/colors";
 import CommentBox from "./CommentBox";
 import { DialogContentText } from "@mui/material";
 
+import EditIcon from "@mui/icons-material/Edit";
+
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
@@ -187,7 +189,26 @@ const TestCard = (props) => {
     });
   };
 
+  const navigateEditCard = () => {
+    axios.get(`api/recipes/${props.id}/`).then((res) => {
+      // console.log(res.data);
+      navigate(`/recipe/${props.id}`);
+    });
+  };
+
   //TODO Drill props til parent
+  const EditButton = ({ id, title }) => {
+    // Sjekker om man er på sin egen profilside
+    if (window.location.href === "http://127.0.0.1:8000/me") {
+      return (
+        <EditHover>
+          <EditIcon onClick={navigateEditCard} />
+        </EditHover>
+      );
+    } else {
+      return "";
+    }
+  };
 
   return (
     <AnimateSharedLayout>
@@ -300,8 +321,10 @@ const TestCard = (props) => {
               value={props.avgRating}
               readOnly
             />
-            {/* //TODO ============================================ */}
-            <DeleteButton id={props.id} title={props.title} />
+            {/* <EditHover>
+              <EditIcon onClick={navigateEditCard} />
+            </EditHover> */}
+            <EditButton />
           </CardActions>
         </Card>
       </motion.div>
@@ -309,6 +332,12 @@ const TestCard = (props) => {
   );
 };
 
+const EditHover = styled.span`
+  &:hover {
+    cursor: pointer;
+    border-bottom: 2px solid gray;
+  }
+`;
 const AuthorContainer = styled.span`
   z-index: 1;
 `;

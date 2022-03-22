@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
+import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Popup from "./Popup";
@@ -12,24 +12,43 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router";
 
 const defaultValues = {
-  username: "",
-  first_name: "",
-  last_name: "",
-  email: "",
+  title: "",
+  summary: "",
+  content: "",
+  prep_time: 0,
 };
 
 const Profile = () => {
   const [formValues, setFormValues] = useState(defaultValues);
-  const url = "/api/accounts/profile/";
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
 
   const [recipe, setRecipe] = useState({});
 
-  const navigate = useNavigate();
+  const params = useParams();
+
+  const [isLoading, setLoading] = useState(true);
+  const fetchRecipe = () => {
+    // GET request i current URL
+    axios.get(`/api/recipes/${params.id.toString()}/`).then((response) => {
+      setRecipe(response.data);
+      console.log(response.data);
+      setFormValues({
+        title: response.data.title,
+        summary: response.data.summary,
+        content: response.data.content,
+        prep_time: response.data.prep_time,
+      });
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    fetchRecipe();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,12 +58,15 @@ const Profile = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
     console.log(formValues);
 
     axios
-      .patch(url, formValues)
+      .patch(`/api/recipes/${params.id.toString()}/`, formValues)
       .then((response) => {
         setError(false);
         setOpen(true);
@@ -52,26 +74,15 @@ const Profile = () => {
       .catch((error) => {
         setError(true);
         setOpen(true);
+      })
+      .finally(() => {
+        navigate("/me");
       });
   };
 
-  const handleClickOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleDelete = () => {
-    axios.delete("/api/accounts/delete/").then((res) => {
-      console.log(res);
-      console.log("Delete worked");
-    });
-    setOpenDialog(false);
-    navigate("/");
-    window.location.reload();
-  };
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
 
   return (
     <>
@@ -81,10 +92,10 @@ const Profile = () => {
           <Grid item>
             <TextField
               id="name-input"
-              name="username"
-              label="Username"
+              name="title"
+              label="Title"
               type="text"
-              value={formValues.username}
+              defaultValue={recipe.title}
               onChange={handleInputChange}
             />
           </Grid>
@@ -92,30 +103,32 @@ const Profile = () => {
           <Grid item>
             <TextField
               id="first_name-input"
-              name="first_name"
-              label="First Name"
+              name="summary"
+              label="Summary"
               type="text"
-              value={formValues.first_name}
+              defaultValue={recipe.summary}
               onChange={handleInputChange}
             />
           </Grid>
           <Grid item>
             <TextField
               id="last_name-input"
-              name="last_name"
-              label="Last_name"
+              name="content"
+              label="Content"
+              fullWidth
+              multiline
               type="text"
-              value={formValues.last_name}
+              defaultValue={recipe.content}
               onChange={handleInputChange}
             />
           </Grid>
           <Grid item>
             <TextField
               id="email-input"
-              name="email"
-              label="Email"
-              type="text"
-              value={formValues.email}
+              name="prep_time"
+              label="Prep Time"
+              type="number"
+              defaultValue={recipe.prep_time}
               onChange={handleInputChange}
             />
           </Grid>
@@ -123,10 +136,7 @@ const Profile = () => {
           <br />
           <ButtonContainer>
             <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
-              Update Profile
-            </Button>
-            <Button variant="contained" color="error" onClick={handleClickOpenDialog}>
-              Delete Profile
+              Update Recipe
             </Button>
           </ButtonContainer>
         </Grid>
@@ -135,30 +145,8 @@ const Profile = () => {
           open={open}
           setOpen={setOpen}
           type={error ? "error" : "success"}
-          message={error ? "Error Updating Profile" : "Profile Successfully Updated!"}
+          message={error ? "Error Updating Recipe" : "Recipe Successfully Updated!"}
         />
-
-        <Dialog
-          open={openDialog}
-          onClose={handleCloseDialog}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            You are about to <span style={{ color: "red" }}>Delete</span> your Profile
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you want to delete your profile?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Disagree</Button>
-            <Button onClick={handleDelete} autoFocus>
-              Agree
-            </Button>
-          </DialogActions>
-        </Dialog>
       </form>
     </>
   );
