@@ -26,6 +26,7 @@ class TagsView(viewsets.ReadOnlyModelViewSet):
 class CartItemView(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
+    permission_classes = (permissions.IsAuthenticated, IsAuthorOrAdmin)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
