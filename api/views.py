@@ -129,7 +129,7 @@ class RecipeView(viewsets.ModelViewSet):
             status=status.HTTP_200_OK,
         )
 
-    @action(detail=True, methods=["get"])
+    @action(detail=True, methods=["post"])
     def add_to_cart(self, request, pk=None):
         user = request.user
 
