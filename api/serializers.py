@@ -27,11 +27,14 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
 
-    recipe = serializers.IntegerField(source="ingredient__recipe", read_only=True)
+    recipe = serializers.IntegerField(source="ingredient.recipe.id", read_only=True)
+    recipe_title = serializers.CharField(
+        source="ingredient.recipe.title", read_only=True
+    )
 
     class Meta:
         model = CartItem
-        fields = ["id", "ingredient", "recipe"]
+        fields = ["id", "ingredient", "recipe", "recipe_title"]
         read_only_fields = ["user"]
 
 
