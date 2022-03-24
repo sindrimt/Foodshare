@@ -155,6 +155,7 @@ class RecipeView(viewsets.ModelViewSet):
             "like",
             "add_like",
             "del_like",
+            "add_to_cart",
         ]:
             permission_classes = [permissions.IsAuthenticated]
 
