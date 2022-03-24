@@ -31,11 +31,12 @@ class CartItemSerializer(serializers.ModelSerializer):
     recipe_title = serializers.CharField(
         source="ingredient.recipe.title", read_only=True
     )
+    ingredient_detail = IngredientSerializer(source="ingredient", read_only=True)
 
     class Meta:
         model = CartItem
-        fields = ["id", "ingredient", "recipe", "recipe_title"]
-        read_only_fields = ["user"]
+        fields = ["id", "ingredient", "ingredient_detail", "recipe", "recipe_title"]
+        read_only_fields = ["user", "ingredient_detail"]
 
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
