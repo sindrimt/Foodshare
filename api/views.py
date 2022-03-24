@@ -5,9 +5,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from taggit.models import Tag
 
-from .models import Comment, Like, Recipe, UserFollow
+from .models import CartItem, Comment, Like, Recipe, UserFollow
 from .permissions import IsAuthorOrAdmin
 from .serializers import (
+    CartItemSerializer,
     CommentSerializer,
     LikeSerializer,
     RecipeSerializer,
@@ -20,6 +21,17 @@ from .serializers import (
 class TagsView(viewsets.ReadOnlyModelViewSet):
     queryset = Recipe.tags.most_common()
     serializer_class = TagListSerializer
+
+
+class CartItemView(viewsets.ModelViewSet):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        return CartItem.objects.filter(user=self.request.user)
 
 
 class RecipeView(viewsets.ModelViewSet):

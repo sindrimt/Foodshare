@@ -5,7 +5,7 @@ from rest_framework.validators import UniqueTogetherValidator
 from taggit.models import Tag
 from taggit.serializers import TaggitSerializer, TagListSerializerField
 
-from .models import Cart, Comment, Ingredient, Like, Recipe, UserFollow
+from .models import CartItem, Comment, Ingredient, Like, Recipe, UserFollow
 
 
 class TagListSerializer(serializers.ModelSerializer):
@@ -25,20 +25,14 @@ class IngredientSerializer(serializers.ModelSerializer):
         exclude = ("recipe",)
 
 
-class CartSerializer(serializers.ModelSerializer):
+class CartItemSerializer(serializers.ModelSerializer):
 
     recipe = serializers.IntegerField(source="ingredient__recipe", read_only=True)
-    # recipe_name = serializers.CharField(
-    #     source="ingredient__recipe__name", read_only=True
-    # )
-
-    user = serializers.PrimaryKeyRelatedField(
-        default=serializers.CurrentUserDefault(), read_only=True
-    )
 
     class Meta:
-        model = Cart
+        model = CartItem
         fields = "__all__"
+        read_only_fields = ["user"]
 
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):

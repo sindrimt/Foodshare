@@ -86,16 +86,18 @@ class Comment(models.Model):
         return f"{self.user} om {self.recipe}: {content}"
 
 
-class Cart(models.Model):
+class CartItem(models.Model):
 
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="cart",
-        primary_key=True,
+        related_name="cart_item",
     )
 
-    items = models.ManyToManyField(Ingredient)
+    items = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+    )
 
 
 class Like(models.Model):
