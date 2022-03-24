@@ -94,7 +94,7 @@ class CartItem(models.Model):
         related_name="cart_item",
     )
 
-    items = models.ForeignKey(
+    ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
     )

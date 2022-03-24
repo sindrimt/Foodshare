@@ -31,7 +31,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItem
-        fields = "__all__"
+        fields = ["id", "ingredient", "recipe"]
         read_only_fields = ["user"]
 
 
