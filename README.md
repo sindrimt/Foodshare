@@ -6,7 +6,7 @@ Tjenesten tillater registrering av brukerkonti som oppskrifter vil bli tilknytte
 ## Start server
 ### Krav
  - Python 3.10 eller nyere installert
-    - Nødvendige Python pakker (`pip install -r requirements.txt`)
+    - Nødvendige Python-pakker (`pip install -r requirements.txt`)
  - Node.js installert 
 
 ### 1.
