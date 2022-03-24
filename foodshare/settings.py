@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
-from pathlib import Path
-
-import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +37,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "storages",  # AWS image storage
-    "whitenoise.runserver_nostatic",
     "taggit",
     "rest_framework",
     "rest_registration",  # account managemenet
@@ -49,7 +44,6 @@ INSTALLED_APPS = [
     "crispy_forms",  # filters in browsable api
     "api.apps.ApiConfig",
     "frontend",
-    # "django_nose" #test coverage app, currently not working
 ]
 
 # This is settins for test coverage apps, but not currently working
@@ -65,7 +59,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -98,22 +91,6 @@ WSGI_APPLICATION = "foodshare.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
-    # "old": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": "urrhajjk",
-    #     "USER": "urrhajjk",
-    #     "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
-    #     "HOST": "abul.db.elephantsql.com",
-    #     "PORT": "5432",
-    # },
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": "d4hcei9p6hmjv6",
-    #     "USER": "laxodqlycrpphl",
-    #     "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
-    #     "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
-    #     "PORT": "5432",
-    # },
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
@@ -130,29 +107,9 @@ STATICFILES_DIRS = (
 )
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# used by heroku
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
 # User generated media
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
-
-# automatic postgres db on heroku
-import dj_database_url
-
-if bool(dj_database_url.config()):
-    DATABASES["default"] = dj_database_url.config()
-
-    # AWS
-    AWS_ACCESS_KEY_ID = "AKIASOJRONFX76XCEL5R"
-    AWS_SECRET_ACCESS_KEY = "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"
-    AWS_STORAGE_BUCKET_NAME = "foodshare-images"
-    AWS_S3_SIGNATURE_VERSION = "s3v4"
-    AWS_S3_REGION_NAME = "eu-north-1"
-    AWS_S3_FILE_OVERWRITE = False
-    AWS_DEFAULT_ACL = None
-    AWS_S3_VERIFY = True
-    DEFAULT_FILE_STORAGE = "foodshare.storage_backends.AWS"
 
 
 # Password validation
@@ -230,7 +187,3 @@ REST_REGISTRATION = {
     "REGISTER_EMAIL_VERIFICATION_ENABLED": False,
     "RESET_PASSWORD_VERIFICATION_ENABLED": False,
 }
-
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())

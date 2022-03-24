@@ -23,7 +23,6 @@ class Recipe(models.Model):
 
     image = models.ImageField(
         "Image",
-        # upload_to=upload_to,
         default="default.jpeg",
     )
 
