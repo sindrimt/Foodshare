@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from taggit.models import Tag
 
-from .models import CartItem, Comment, Like, Recipe, UserFollow
+from .models import CartItem, Comment, Ingredient, Like, Recipe, UserFollow
 from .permissions import IsAuthorOrAdmin
 from .serializers import (
     CartItemSerializer,
@@ -126,6 +126,20 @@ class RecipeView(viewsets.ModelViewSet):
         old_like.delete()
         return Response(
             data={"message": "Successfully unliked."},
+            status=status.HTTP_200_OK,
+        )
+
+    @action(detail=True, methods=["get"])
+    def add_to_cart(self, request, pk=None):
+        user = request.user
+
+        ingredients = Ingredient.objects.filter(recipe=pk)
+
+        for ingredient in ingredients:
+            CartItem.objects.create(user=user, ingredient=ingredient)
+
+        return Response(
+            data={"message": "Successfully added to cart (if there were any)."},
             status=status.HTTP_200_OK,
         )
 
