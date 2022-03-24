@@ -1,5 +1,6 @@
 # FoodShare
 FoodShare er en applikasjon som lar brukere finne og opprette matoppskrifter som kan deles med andre brukere.
+
 Tjenesten tillater registrering av brukerkonti som oppskrifter vil bli tilknyttet.
 
 ## Start server
@@ -10,11 +11,14 @@ Tjenesten tillater registrering av brukerkonti som oppskrifter vil bli tilknytte
 
 ### 1.
 Naviger til foodshare-mappen med terminal:
+
 I terminal: `python manage.py runserver` for å starte Django-serveren.
 
 ### 2.
 Naviger til frontend-mappen med terminal: 
+
 I terminal: `npm install` 
+
 Deretter, i terminal: `npm run dev` 
 
 ### 3. 
