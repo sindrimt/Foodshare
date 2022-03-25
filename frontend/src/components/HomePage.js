@@ -14,10 +14,8 @@ import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
 import EditRecipe from "./EditRecipe";
 
-<<<<<<< HEAD
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
+
 import AddIngredientsToShopping from "./AddIngredientsToShopping";
-=======
 import {
   BrowserRouter as Router,
   Routes,
@@ -26,7 +24,6 @@ import {
   Redirect,
 } from "react-router-dom";
 import BrowseFollowedPage from "../pages/BrowseFollowedPage";
->>>>>>> Development
 
 const HomePage = () => {
   return (

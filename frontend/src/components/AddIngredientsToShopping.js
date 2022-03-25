@@ -10,15 +10,12 @@ import { Rating } from "@mui/material";
 import API from "../axios";
 
 const AddIngredientsToShopping = (props) => {
-  const [open, setOpen] = useState(false);
-  //const [comment, setComment] = useState("");
-  //const [rating, setRating] = useState(-1);
+  
+  
 
  
   const handleAdd = () => {
-    API.post("/recipes/id/add_to_cart/", {
-      //ingredienser fra den gitte recipe
-    });
+    API.post(`/recipes/${props.id.toString()}/add_to_cart/`);
   };
 
   
