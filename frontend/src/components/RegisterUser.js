@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import styled from "styled-components";
 import Popup from "./Popup";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 const defaultValues = {
   password: "",
@@ -21,7 +21,6 @@ const RegisterUser = () => {
   const url = "/api/accounts/register/";
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,12 +59,18 @@ const RegisterUser = () => {
   };
 
   return (
-    
-        
     <form onSubmit={handleSubmit}>
-      <Grid container alignItems="center" justify="center" direction="column">
-
-        <Grid item>
+      <Grid
+        container
+        alignItems="center"
+        justify="center"
+        direction="column"
+        spacing={2}
+      >
+        <Grid item xs={12}>
+          <Typography variant="h3">Register user</Typography>
+        </Grid>
+        <Grid item xs={12}>
           <TextField
             id="name-input"
             name="username"
@@ -75,7 +80,7 @@ const RegisterUser = () => {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             id="password-input"
             name="password"
@@ -85,7 +90,7 @@ const RegisterUser = () => {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             id="confirm_password-input"
             name="password_confirm"
@@ -95,7 +100,7 @@ const RegisterUser = () => {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             id="first_name-input"
             name="first_name"
@@ -105,7 +110,7 @@ const RegisterUser = () => {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             id="last_name-input"
             name="last_name"
@@ -115,7 +120,7 @@ const RegisterUser = () => {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <TextField
             id="email-input"
             name="email"
@@ -131,12 +136,12 @@ const RegisterUser = () => {
           Submit
         </Button>
       </Grid>
-      <Popup 
-          open={open}
-          setOpen={setOpen}
-          type = {error ? "error" : "success"}
-          message={error ? 'Kunne ikke lage bruker' : 'Bruker opprettet'}
-        /> 
+      <Popup
+        open={open}
+        setOpen={setOpen}
+        type={error ? "error" : "success"}
+        message={error ? "Kunne ikke lage bruker" : "Bruker opprettet"}
+      />
     </form>
   );
 };
