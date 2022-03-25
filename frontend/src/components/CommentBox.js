@@ -6,16 +6,20 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Popup from "./Popup";
 import { Rating } from "@mui/material";
 import API from "../axios";
 
 const CommentBox = (props) => {
+  const [openDialog, setOpenDialog] = useState(false);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(-1);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenDialog(true);
+    console.log("OPen");
   };
 
   const handlePost = () => {
@@ -23,11 +27,20 @@ const CommentBox = (props) => {
       content: comment,
       rating: rating,
       recipe: props.recipe,
-    }).then(setOpen(false));
+    })
+      .then(() => {
+        console.log("posted");
+        setError(false);
+        setOpen(true);
+      })
+      .catch(() => {
+        setError(true);
+        setOpen(true);
+      });
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenDialog(false);
     console.log(comment);
     console.log(rating);
   };
@@ -37,7 +50,7 @@ const CommentBox = (props) => {
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Create review
       </Button>
-      <Dialog open={open} onBackdropClick="false" onClose={handleClose}>
+      <Dialog open={openDialog} onBackdropClick="false" onClose={handleClose}>
         <DialogTitle>New review</DialogTitle>
         <DialogContent>
           <TextField
@@ -51,14 +64,17 @@ const CommentBox = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Rating
-            value={rating}
-            name="comment-rating"
-            onChange={(e, newRating) => setRating(newRating)}
-          />
+          <Rating value={rating} name="comment-rating" onChange={(e, newRating) => setRating(newRating)} />
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handlePost}>Post</Button>
         </DialogActions>
+        <Popup
+          open={open}
+          setOpen={setOpen}
+          type={error ? "error" : "success"}
+          message={error ? "Error commenting" : "Comment posted!"}
+          variant="filled"
+        />
       </Dialog>
     </div>
   );
