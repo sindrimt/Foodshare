@@ -12,8 +12,15 @@ import NotFound from "../pages/NotFound";
 import ProfilePage from "../pages/ProfilePage";
 import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
+import ShoppingList from "./ShoppingList";
 
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -21,7 +28,7 @@ const HomePage = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<CardContainer />} />
+          <Route path="/" element={<ShoppingList />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/recipe" element={<CreateRecipePage />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
