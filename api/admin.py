@@ -1,6 +1,9 @@
 from django.contrib import admin
-from .models import Recipe, Comment
+
+from . import models
 
 # Register your models here.
-admin.site.register(Recipe)
-admin.site.register(Comment)
+admin.site.register(models.Recipe)
+admin.site.register(models.Comment)
+admin.site.register(models.Ingredient)
+admin.site.register(models.CartItem)
