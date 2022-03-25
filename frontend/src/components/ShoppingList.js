@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Checkbox,
   List,
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -47,16 +48,25 @@ const useStyles = makeStyles((theme) => ({
 const ShoppingList = () => {
   const classes = useStyles();
 
-  const handleAdd = () => {
-    console.log("test");
+  const [list, setList] = useState([]);
+
+  const fetchIngredients = async () => {
+    const result = await axios.get(`/api/cart/`);
+    const dataList = result.data;
+    console.log(dataList);
+    setList(dataList);
+  };
+
+  useEffect(() => {
+    fetchIngredients();
+  }, []);
+
+  const handleAdd = (ingredient) => {
+    console.log(ingredient);
   };
 
   const handleDelete = (name) => {
     console.log(name);
-    /*API.delete("recipes/" + id + "/").then(
-      (message) => setDeletedPost(!deletedPost),
-      setIsDeleted(title)
-    );*/
   };
 
   return (
@@ -64,7 +74,7 @@ const ShoppingList = () => {
       <Typography className={classes.text} variant="h5">
         Shopping List
       </Typography>
-      <Grid container spacing={2} >
+      <Grid container spacing={2}>
         <Grid item xs={8}>
           <TextField
             className={classes.input}
@@ -85,38 +95,21 @@ const ShoppingList = () => {
         </Grid>
       </Grid>
       <List className={classes.list}>
-        <ListItem>
-          <FormControlLabel
-            className={classes.item}
-            label="Tomater"
-            control={<Checkbox /*checked={checked} onClick={handleClick}*/ />}
-          />
-          <IconButton onClick={() => handleDelete("Tomater")}>
-            <DeleteIcon className={classes.icon} />
-          </IconButton>
-        </ListItem>
-        <Divider light />
-        <ListItem>
-          <FormControlLabel
-            className={classes.item}
-            label="Melk"
-            control={<Checkbox /*checked={checked}*/ />}
-          />
-          <IconButton onClick={() => handleDelete("Melk")}>
-            <DeleteIcon className={classes.icon} />
-          </IconButton>
-        </ListItem>
-        <Divider light />
-        <ListItem>
-          <FormControlLabel
-            className={classes.item}
-            label="Ost"
-            control={<Checkbox /*checked={checked}*/ />}
-          />
-          <IconButton onClick={() => handleDelete("Ost")}>
-            <DeleteIcon className={classes.icon} />
-          </IconButton>
-        </ListItem>
+        {list.map((ingredient) => (
+          <div>
+            <ListItem>
+              <FormControlLabel
+                className={classes.item}
+                label={ingredient.ingredient_detail.name}
+                control={<Checkbox />}
+              />
+              <IconButton onClick={() => handleDelete("Tomater")}>
+                <DeleteIcon className={classes.icon} />
+              </IconButton>
+            </ListItem>
+            <Divider light />
+          </div>
+        ))}
       </List>
     </Container>
   );
