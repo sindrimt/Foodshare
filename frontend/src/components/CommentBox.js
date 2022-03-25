@@ -33,7 +33,8 @@ const CommentBox = (props) => {
         setError(false);
         setOpen(true);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(JSON.stringify(error, null, 2));
         setError(true);
         setOpen(true);
       });
@@ -64,7 +65,11 @@ const CommentBox = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Rating value={rating} name="comment-rating" onChange={(e, newRating) => setRating(newRating)} />
+          <Rating
+            value={rating}
+            name="comment-rating"
+            onChange={(e, newRating) => setRating(newRating)}
+          />
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handlePost}>Post</Button>
         </DialogActions>
