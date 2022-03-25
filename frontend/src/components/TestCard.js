@@ -29,6 +29,7 @@ import { green, lightGreen } from "@mui/material/colors";
 
 import CommentBox from "./CommentBox";
 import { DialogContentText } from "@mui/material";
+import AddIngredientsToShopping from "./AddIngredientsToShopping";
 
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -197,7 +198,8 @@ const TestCard = (props) => {
               readOnly
             />
           </DialogContent>
-          <CommentBox />
+          <CommentBox />{'  '}
+          <AddIngredientsToShopping id = {props.id}/>
         </Dialog>
         <Card
           /* className={classes.card} */

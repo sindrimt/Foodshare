@@ -14,6 +14,8 @@ import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
 import EditRecipe from "./EditRecipe";
 
+
+import AddIngredientsToShopping from "./AddIngredientsToShopping";
 import {
   BrowserRouter as Router,
   Routes,
@@ -46,6 +48,7 @@ const HomePage = () => {
           <Route path="/me" element={<MyProfile />} />
           <Route path="/me/liked-recipes" element={<LikedRecipes />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/ingredients" element={<AddIngredientsToShopping/>}/>
         </Routes>
       </Router>
     </>
