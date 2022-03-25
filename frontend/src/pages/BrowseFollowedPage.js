@@ -8,10 +8,10 @@ import { Typography } from "@mui/material";
 
 export default function BrowseFollowedPage() {
   const [posts, setPosts] = useState([]);
-  const { isLoggedIn } = useContext(UserContext);
+  const { loggedIn } = useContext(UserContext);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (loggedIn) {
       API.get("recipes/by_followed/").then((response) => {
         setPosts(response.data);
       });
@@ -20,7 +20,7 @@ export default function BrowseFollowedPage() {
 
   return (
     <>
-      {isLoggedIn ? (
+      {loggedIn ? (
         <Stack spacing={2} alignItems="center">
           <FollowedUsersList />
           <RecipeGrid posts={posts} />
