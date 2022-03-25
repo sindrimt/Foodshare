@@ -14,6 +14,7 @@ import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
 
 import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
+import AddIngredientsToShopping from "./AddIngredientsToShopping";
 
 const HomePage = () => {
   return (
@@ -33,6 +34,7 @@ const HomePage = () => {
           <Route path="/me" element={<MyProfile />} />
           <Route path="/me/liked-recipes" element={<LikedRecipes />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/ingredients" element={<AddIngredientsToShopping/>}/>
         </Routes>
       </Router>
     </>

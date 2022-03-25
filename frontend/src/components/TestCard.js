@@ -36,6 +36,7 @@ import { green, lightGreen } from "@mui/material/colors";
 
 import CommentBox from "./CommentBox";
 import { DialogContentText } from "@mui/material";
+import AddIngredientsToShopping from "./AddIngredientsToShopping";
 
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
@@ -212,7 +213,8 @@ const TestCard = (props) => {
               readOnly
             />
           </DialogContent>
-          <CommentBox />
+          <CommentBox />{'  '}
+          <AddIngredientsToShopping id = {props.id}/>
         </Dialog>
         <Card
           /* className={classes.card} */
