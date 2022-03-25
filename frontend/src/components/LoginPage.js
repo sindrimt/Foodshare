@@ -29,13 +29,8 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link
-        color="inherit"
-        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
-      >
-        Foodshare
-      </Link>{" "}
+      {"Copyright © foodshare "}
+
       {new Date().getFullYear()}
       {"."}
     </Typography>
