@@ -2,7 +2,14 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import API from "../axios";
 import { UserContext } from "../context/UserContext";
-import { List, ListItem, Dialog, Fab, ListItemText } from "@mui/material";
+import {
+  List,
+  ListItem,
+  Dialog,
+  Fab,
+  ListItemText,
+  ListSubheader,
+} from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
 
 export default function FollowedUsersList(props) {
@@ -47,7 +54,11 @@ export default function FollowedUsersList(props) {
         Followed users
       </Fab>
       <Dialog onClose={() => setOpen(false)} open={open}>
-        <List>
+        <List
+          subheader={
+            <ListSubheader>Users you are currently following</ListSubheader>
+          }
+        >
           {followedList.map((followedUser, index) => (
             <ListItem
               key={index}
