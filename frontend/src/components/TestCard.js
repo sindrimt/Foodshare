@@ -38,6 +38,8 @@ import CommentBox from "./CommentBox";
 import { DialogContentText } from "@mui/material";
 import AddIngredientsToShopping from "./AddIngredientsToShopping";
 
+import EditIcon from "@mui/icons-material/Edit";
+
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
@@ -134,7 +136,10 @@ const DeleteButton = ({ id, title }) => {
     );
   }
   // Sjekker om man er på sin egen profilside
-  if (window.location.href === "http://127.0.0.1:8000/me") {
+  if (
+    window.location.href === "http://127.0.0.1:8000/me" ||
+    window.location.href === "http://localhost:8000/me"
+  ) {
     return (
       <Button size="small" color="primary" onClick={handleDeletePressed}>
         <DeleteIcon fontSize="small" /> Delete
@@ -188,7 +193,29 @@ const TestCard = (props) => {
     });
   };
 
+  const navigateEditCard = () => {
+    axios.get(`api/recipes/${props.id}/`).then((res) => {
+      // console.log(res.data);
+      navigate(`/recipe/${props.id}`);
+    });
+  };
+
   //TODO Drill props til parent
+  const EditButton = ({ id, title }) => {
+    // Sjekker om man er på sin egen profilside
+    if (
+      window.location.href === "http://127.0.0.1:8000/me" ||
+      window.location.href === "http://localhost:8000/me"
+    ) {
+      return (
+        <EditHover>
+          <EditIcon onClick={navigateEditCard} />
+        </EditHover>
+      );
+    } else {
+      return "";
+    }
+  };
 
   return (
     <AnimateSharedLayout>
@@ -302,8 +329,11 @@ const TestCard = (props) => {
               value={props.avgRating}
               readOnly
             />
-            {/* //TODO ============================================ */}
+            {/* <EditHover>
+              <EditIcon onClick={navigateEditCard} />
+            </EditHover> */}
             <DeleteButton id={props.id} title={props.title} />
+            <EditButton />
           </CardActions>
         </Card>
       </motion.div>
@@ -311,6 +341,12 @@ const TestCard = (props) => {
   );
 };
 
+const EditHover = styled.span`
+  &:hover {
+    cursor: pointer;
+    border-bottom: 2px solid gray;
+  }
+`;
 const AuthorContainer = styled.span`
   z-index: 1;
 `;

@@ -5,6 +5,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import styled from "styled-components";
+import Popup from "./Popup";
+import { Container } from "@mui/material";
 
 const defaultValues = {
   password: "",
@@ -18,6 +20,8 @@ const RegisterUser = () => {
   const [formValues, setFormValues] = useState(defaultValues);
   const url = "/api/accounts/register/";
   const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,22 +43,27 @@ const RegisterUser = () => {
     } else {
       axios.post(url, formValues).then(
         (response) => {
-          navigate("user-created");
+          navigate("/register/user-created");
           console.log("omg it worked");
           console.log(response);
+          setError(false);
+          setOpen(true);
         },
         (error) => {
-          console.log(error.response.data);
+          //console.log(error.response.data);
+          console.log("Ikke funker");
           setError(true);
+          setOpen(true);
         }
       );
     }
   };
 
   return (
+    
+        
     <form onSubmit={handleSubmit}>
-      <Grid container alignItems="center" justifyContent="center" direction="column">
-        {error ? <Error>Not Accepted</Error> : ""}
+      <Grid container alignItems="center" justify="center" direction="column">
 
         <Grid item>
           <TextField
@@ -122,12 +131,18 @@ const RegisterUser = () => {
           Submit
         </Button>
       </Grid>
+      <Popup 
+          open={open}
+          setOpen={setOpen}
+          type = {error ? "error" : "success"}
+          message={error ? 'Kunne ikke lage bruker' : 'Bruker opprettet'}
+        /> 
     </form>
   );
 };
 
 const Error = styled.div`
-  color: red;
+  color: blue;
   padding-top: 12px;
 `;
 

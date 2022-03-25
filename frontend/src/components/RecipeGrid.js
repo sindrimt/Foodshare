@@ -20,6 +20,7 @@ const RecipeGrid = (props) => {
             created={card.created}
             likes={card.like_count}
             isLiked={card.is_liked}
+            user={card.user}
           />
         );
       })}
