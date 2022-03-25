@@ -15,7 +15,8 @@ import Popup from "./Popup";
 
 const MyProfile = () => {
   const [posts, setPosts] = useState([]);
-  const { currentUser, deletedPost, isDeleted, setIsDeleted } = useContext(UserContext);
+  const { currentUser, deletedPost, isDeleted, setIsDeleted } =
+    useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [initialRender, setInitialRender] = useState(true);
 
@@ -51,12 +52,20 @@ const MyProfile = () => {
         <Typography variant="h3">
           {currentUser.first_name === "" || currentUser.last_name === ""
             ? "Your Recipes"
-            : currentUser.first_name + " " + currentUser.last_name + "'s recipes"}
+            : currentUser.first_name +
+              " " +
+              currentUser.last_name +
+              "'s recipes"}
         </Typography>
         <Typography variant="h5">{"@" + currentUser.username}</Typography>
         <Stack spacing={2} direction="row">
-          <Button color="primary" variant="contained" to="/profile" component={Link}>
-            <EditIcon />
+          <Button
+            color="primary"
+            variant="contained"
+            to="/profile"
+            component={Link}
+          >
+            <EditIcon sx={{ mr: 1 }} />
             Edit profile
           </Button>
           {/* <Button
@@ -76,7 +85,13 @@ const MyProfile = () => {
           <MdBookmarkBorder size={45} />
         </SavedIconContainer>
       </Link>
-      <Popup open={open} setOpen={setOpen} type="success" message={`${isDeleted} was deleted!`} variant="filled" />
+      <Popup
+        open={open}
+        setOpen={setOpen}
+        type="success"
+        message={`${isDeleted} was deleted!`}
+        variant="filled"
+      />
     </>
   );
 };
