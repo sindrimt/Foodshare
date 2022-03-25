@@ -136,6 +136,7 @@ const Profile = () => {
           setOpen={setOpen}
           type={error ? "error" : "success"}
           message={error ? "Error Updating Profile" : "Profile Successfully Updated!"}
+          variant="filled"
         />
 
         <Dialog
