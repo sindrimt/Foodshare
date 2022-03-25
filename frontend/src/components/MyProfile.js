@@ -76,7 +76,7 @@ const MyProfile = () => {
           <MdBookmarkBorder size={45} />
         </SavedIconContainer>
       </Link>
-      <Popup open={open} setOpen={setOpen} type="success" message={`${isDeleted} was deleted!`} />
+      <Popup open={open} setOpen={setOpen} type="success" message={`${isDeleted} was deleted!`} variant="filled" />
     </>
   );
 };
