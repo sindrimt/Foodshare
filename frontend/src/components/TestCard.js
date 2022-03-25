@@ -6,6 +6,7 @@ import {
   CardMedia,
   Button,
   Typography,
+  IconButton,
 } from "@mui/material/";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -209,9 +210,9 @@ const TestCard = (props) => {
       window.location.href === "http://localhost:8000/me"
     ) {
       return (
-        <EditHover>
-          <EditIcon onClick={navigateEditCard} />
-        </EditHover>
+        <IconButton onClick={navigateEditCard}>
+          <EditIcon />
+        </IconButton>
       );
     } else {
       return "";
