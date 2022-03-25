@@ -7,8 +7,7 @@ import { motion } from "framer-motion";
 import { AnimateSharedLayout } from "framer-motion";
 import { UserContext } from "../context/UserContext";
 import Popup from "./Popup";
-import {  MdKeyboardArrowLeft } from "react-icons/md";
-
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 const LikedRecipes = () => {
   const [filtered, setFiltered] = useState([]);
@@ -75,12 +74,7 @@ const LikedRecipes = () => {
           </GridContainer>
         </motion.div>
       </AnimateSharedLayout>
-      <Popup
-        open={open}
-        setOpen={setOpen}
-        type="success"
-        message={`${isLiked} was removed`}
-      />
+      <Popup open={open} setOpen={setOpen} type="success" message={`${isLiked} was removed`} variant="filled" />
     </>
   );
 };
@@ -114,6 +108,5 @@ const SavedIconContainer2 = styled.div`
     padding: 5px;
   }
 `;
-
 
 export default LikedRecipes;
