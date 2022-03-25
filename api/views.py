@@ -5,9 +5,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from taggit.models import Tag
 
-from .models import Comment, Like, Recipe, UserFollow
+from .models import CartItem, Comment, Ingredient, Like, Recipe, UserFollow
 from .permissions import IsAuthorOrAdmin
 from .serializers import (
+    CartItemSerializer,
     CommentSerializer,
     LikeSerializer,
     RecipeSerializer,
@@ -20,6 +21,18 @@ from .serializers import (
 class TagsView(viewsets.ReadOnlyModelViewSet):
     queryset = Recipe.tags.most_common()
     serializer_class = TagListSerializer
+
+
+class CartItemView(viewsets.ModelViewSet):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
+    permission_classes = (permissions.IsAuthenticated, IsAuthorOrAdmin)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        return CartItem.objects.filter(user=self.request.user)
 
 
 class RecipeView(viewsets.ModelViewSet):
@@ -117,6 +130,20 @@ class RecipeView(viewsets.ModelViewSet):
             status=status.HTTP_200_OK,
         )
 
+    @action(detail=True, methods=["post"])
+    def add_to_cart(self, request, pk=None):
+        user = request.user
+
+        ingredients = Ingredient.objects.filter(recipe=pk)
+
+        for ingredient in ingredients:
+            CartItem.objects.create(user=user, ingredient=ingredient)
+
+        return Response(
+            data={"message": "Successfully added to cart (if there were any)."},
+            status=status.HTTP_200_OK,
+        )
+
     def get_permissions(self):
 
         if self.action in ["list", "retrieve"]:  # anyone can read
@@ -129,6 +156,7 @@ class RecipeView(viewsets.ModelViewSet):
             "like",
             "add_like",
             "del_like",
+            "add_to_cart",
         ]:
             permission_classes = [permissions.IsAuthenticated]
 

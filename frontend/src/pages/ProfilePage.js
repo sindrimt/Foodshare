@@ -11,6 +11,7 @@ import styled from "styled-components";
 import API from "../axios";
 import RecipeGrid from "../components/RecipeGrid";
 import { UserContext } from "../context/UserContext";
+import FollowButton from "../components/FollowButton";
 
 const ProfilePage = () => {
   const [posts, setPosts] = useState([]);
@@ -67,6 +68,10 @@ const ProfilePage = () => {
             <ThumbUpIcon />
             Liked recipes
           </Button> */}
+          <FollowButton
+            user={profileUser.id}
+            followed={profileUser.is_followed}
+          />
         </Stack>
         <RecipeGrid posts={posts} />
       </Stack>

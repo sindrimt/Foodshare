@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-} from "@mui/material/";
+import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material/";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -36,6 +29,9 @@ import { green, lightGreen } from "@mui/material/colors";
 
 import CommentBox from "./CommentBox";
 import { DialogContentText } from "@mui/material";
+import AddIngredientsToShopping from "./AddIngredientsToShopping";
+
+import EditIcon from "@mui/icons-material/Edit";
 
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
@@ -73,11 +69,7 @@ const LikeButton = (props) => {
   if (loggedIn) {
     return (
       <>
-        <Button
-          size="small"
-          color={liked ? "primary" : "secondary"}
-          onClick={handleLikePressed}
-        >
+        <Button size="small" color={liked ? "primary" : "secondary"} onClick={handleLikePressed}>
           <ThumbUpAltIcon fontSize="small" /> {" " + likes}
         </Button>
       </>
@@ -85,12 +77,7 @@ const LikeButton = (props) => {
   } else {
     return (
       <>
-        <Popup
-          open={open}
-          setOpen={setOpen}
-          type="error"
-          message="Not Logged In"
-        />
+        <Popup open={open} setOpen={setOpen} type="error" message="Not Logged In" variant="filled" />
         <Button size="small" onClick={handleErrorLike}>
           <ThumbUpAltIcon fontSize="small" /> {" " + likes}
         </Button>
@@ -122,18 +109,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const DeleteButton = ({ id, title }) => {
-  const { deletedPost, setDeletedPost, isDeleted, setIsDeleted } =
-    useContext(UserContext);
+  const { deletedPost, setDeletedPost, isDeleted, setIsDeleted } = useContext(UserContext);
 
   function handleDeletePressed() {
     console.log(id);
-    API.delete("recipes/" + id + "/").then(
-      (message) => setDeletedPost(!deletedPost),
-      setIsDeleted(title)
-    );
+    API.delete("recipes/" + id + "/").then((message) => setDeletedPost(!deletedPost), setIsDeleted(title));
   }
   // Sjekker om man er på sin egen profilside
-  if (window.location.href === "http://127.0.0.1:8000/me") {
+  if (window.location.href === "http://127.0.0.1:8000/me" || window.location.href === "http://localhost:8000/me") {
     return (
       <Button size="small" color="primary" onClick={handleDeletePressed}>
         <DeleteIcon fontSize="small" /> Delete
@@ -147,16 +130,8 @@ const DeleteButton = ({ id, title }) => {
 const TestCard = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const {
-    loggedIn,
-    setLoggedIn,
-    logInSuccess,
-    setLoginSuccess,
-    setCurrentUser,
-    currentUser,
-    isLiked,
-    setIsLiked,
-  } = useContext(UserContext);
+  const { loggedIn, setLoggedIn, logInSuccess, setLoginSuccess, setCurrentUser, currentUser, isLiked, setIsLiked } =
+    useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -187,21 +162,32 @@ const TestCard = (props) => {
     });
   };
 
+  const navigateEditCard = () => {
+    axios.get(`api/recipes/${props.id}/`).then((res) => {
+      // console.log(res.data);
+      navigate(`/recipe/${props.id}`);
+    });
+  };
+
   //TODO Drill props til parent
+  const EditButton = ({ id, title }) => {
+    // Sjekker om man er på sin egen profilside
+    if (window.location.href === "http://127.0.0.1:8000/me" || window.location.href === "http://localhost:8000/me") {
+      return (
+        <EditHover>
+          <EditIcon onClick={navigateEditCard} />
+        </EditHover>
+      );
+    } else {
+      return "";
+    }
+  };
 
   return (
     <AnimateSharedLayout>
       <motion.div layout>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-        >
-          <img
-            style={{ maxWidth: "100%", height: "auto" }}
-            src={props.image}
-            alt="image"
-          />
+        <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
+          <img style={{ maxWidth: "100%", height: "auto" }} src={props.image} alt="image" />
           <DialogTitle>{props.title}</DialogTitle>
           <DialogContent>
             <DialogContentText>{props.author}</DialogContentText>
@@ -212,7 +198,8 @@ const TestCard = (props) => {
               readOnly
             />
           </DialogContent>
-          <CommentBox />
+          <CommentBox />{'  '}
+          <AddIngredientsToShopping id = {props.id}/>
         </Dialog>
         <Card
           /* className={classes.card} */
@@ -236,29 +223,17 @@ const TestCard = (props) => {
               }}
             >
               <div className={classes.underline}>
-                <Typography variant="h6">
-                  {props.author ? props.author : "Author"}
-                </Typography>
+                <Typography variant="h6">{props.author ? props.author : "Author"}</Typography>
                 <Typography variant="body2">{props.created}</Typography>
               </div>
             </div>
           </AuthorContainer>
           {/* HER ER COMPONENTEN  */}
           <CardActionArea onClick={handleClickOpen}>
-            <CardMedia
-              className={classes.media}
-              image={props.image}
-              title={props.title}
-              alt="image"
-            />
+            <CardMedia className={classes.media} image={props.image} title={props.title} alt="image" />
 
             <div className={classes.overlay2}>
-              <Button
-                disabled={true}
-                style={{ color: "white" }}
-                size="small"
-                onClick={() => console.log("clicked")}
-              >
+              <Button disabled={true} style={{ color: "white" }} size="small" onClick={() => console.log("clicked")}>
                 <MoreHorizIcon fontSize="medium" />
               </Button>
             </div>
@@ -268,12 +243,7 @@ const TestCard = (props) => {
                 {/* prepend all elements with a # and display nicely */}
               </Typography>
             </div>
-            <Typography
-              className={classes.title}
-              gutterBottom
-              variant="h5"
-              component="h2"
-            >
+            <Typography className={classes.title} gutterBottom variant="h5" component="h2">
               {props.title}
             </Typography>
             <CardContent>
@@ -300,8 +270,11 @@ const TestCard = (props) => {
               value={props.avgRating}
               readOnly
             />
-            {/* //TODO ============================================ */}
+            {/* <EditHover>
+              <EditIcon onClick={navigateEditCard} />
+            </EditHover> */}
             <DeleteButton id={props.id} title={props.title} />
+            <EditButton />
           </CardActions>
         </Card>
       </motion.div>
@@ -309,6 +282,12 @@ const TestCard = (props) => {
   );
 };
 
+const EditHover = styled.span`
+  &:hover {
+    cursor: pointer;
+    border-bottom: 2px solid gray;
+  }
+`;
 const AuthorContainer = styled.span`
   z-index: 1;
 `;

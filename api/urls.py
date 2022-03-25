@@ -1,3 +1,5 @@
+from email.mime import base
+
 from django.urls import include, path
 from rest_framework import routers
 
@@ -19,4 +21,5 @@ router.register("likes", views.LikeView, basename="likes")
 router.register("accounts", views.UserView, basename="accounts")
 router.register("follows", views.UserFollowView, basename="follows")
 router.register("tags", views.TagsView)
+router.register("cart", views.CartItemView, basename="cart")
 urlpatterns += router.urls

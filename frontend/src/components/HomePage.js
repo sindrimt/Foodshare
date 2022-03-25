@@ -12,8 +12,10 @@ import NotFound from "../pages/NotFound";
 import ProfilePage from "../pages/ProfilePage";
 import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
-import ShoppingList from "./ShoppingList";
+import EditRecipe from "./EditRecipe";
 
+
+import AddIngredientsToShopping from "./AddIngredientsToShopping";
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,6 +23,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
+import BrowseFollowedPage from "../pages/BrowseFollowedPage";
 
 const HomePage = () => {
   return (
@@ -30,16 +33,22 @@ const HomePage = () => {
         <Routes>
           <Route path="/" element={<ShoppingList />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/recipe" element={<CreateRecipePage />} />
+          <Route
+            path="/recipe"
+            element={<CreateRecipePage title="test" summary="test" content="tomat" prep_time="1" tags="middag" />}
+          />
+          <Route path="/recipe/:id" element={<EditRecipe title="test" />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
           <Route path="register/user-created" element={<UserCreated />} />
           <Route path="/browse" element={<CardContainer />} />
+          <Route path="/followed" element={<BrowseFollowedPage />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/me/:id" element={<ProfilePage />} />
           <Route path="/me" element={<MyProfile />} />
           <Route path="/me/liked-recipes" element={<LikedRecipes />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/ingredients" element={<AddIngredientsToShopping/>}/>
         </Routes>
       </Router>
     </>

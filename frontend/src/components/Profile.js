@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
@@ -26,6 +26,8 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+
+  const [recipe, setRecipe] = useState({});
 
   const navigate = useNavigate();
 
@@ -75,13 +77,7 @@ const Profile = () => {
     <>
       <br />
       <form onSubmit={handleSubmit}>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="center"
-          direction="column"
-          spacing={2}
-        >
+        <Grid container alignItems="center" justifyContent="center" direction="column" spacing={2}>
           <Grid item>
             <TextField
               id="name-input"
@@ -126,19 +122,10 @@ const Profile = () => {
 
           <br />
           <ButtonContainer>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              onClick={handleSubmit}
-            >
+            <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
               Update Profile
             </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={handleClickOpenDialog}
-            >
+            <Button variant="contained" color="error" onClick={handleClickOpenDialog}>
               Delete Profile
             </Button>
           </ButtonContainer>
@@ -148,9 +135,7 @@ const Profile = () => {
           open={open}
           setOpen={setOpen}
           type={error ? "error" : "success"}
-          message={
-            error ? "Error Updating Profile" : "Profile Successfully Updated!"
-          }
+          message={error ? "Error Updating Profile" : "Profile Successfully Updated!"}
         />
 
         <Dialog
@@ -160,8 +145,7 @@ const Profile = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            You are about to <span style={{ color: "red" }}>Delete</span> your
-            Profile
+            You are about to <span style={{ color: "red" }}>Delete</span> your Profile
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">

@@ -61,6 +61,7 @@ const FullRecpePage = (props) => {
         </DialogActions>
       </Dialog>
     </div>
+    
   );
 };
 

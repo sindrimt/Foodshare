@@ -23,7 +23,6 @@ class Recipe(models.Model):
 
     image = models.ImageField(
         "Image",
-        # upload_to=upload_to,
         default="default.jpeg",
     )
 
@@ -85,6 +84,20 @@ class Comment(models.Model):
         if len(self.content) > 20:
             content += "..."
         return f"{self.user} om {self.recipe}: {content}"
+
+
+class CartItem(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="cart_item",
+    )
+
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+    )
 
 
 class Like(models.Model):

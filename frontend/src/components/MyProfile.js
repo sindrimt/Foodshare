@@ -28,6 +28,10 @@ const MyProfile = () => {
   };
 
   useEffect(() => {
+    fetchPosts();
+  }, [currentUser]);
+
+  useEffect(() => {
     console.log("============");
     console.log(isDeleted);
     fetchPosts();
@@ -39,7 +43,7 @@ const MyProfile = () => {
     } else {
       setOpen(true);
     }
-  }, [currentUser, deletedPost]);
+  }, [deletedPost]);
 
   return (
     <>
