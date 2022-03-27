@@ -175,8 +175,11 @@ const TestCard = (props) => {
   const navigate = useNavigate();
 
   const fetchComments = () => {
-    API.get('api/comments/?recipe=' + props.id).then((response) => setComments(response.data));
-  }
+    API.get(`comments/?recipe=${props.id}`).then((response) => {
+      setComments(response.data);
+      console.log(response.data);
+    });
+  };
 
   useEffect(() => {
     fetchComments();
@@ -234,11 +237,11 @@ const TestCard = (props) => {
   };
 
   const commonStyles = {
-    bgcolor: 'background.paper',
-    borderColor: 'text.primary',
+    bgcolor: "background.paper",
+    borderColor: "text.primary",
     m: 1,
     border: 1,
-    width: '15rem',
+    width: "15rem",
   };
 
   return (
@@ -250,20 +253,24 @@ const TestCard = (props) => {
           TransitionComponent={Transition}
           scroll="body"
         >
-            <img
-            style={{ Width: "600px" , height: "auto"}}
+          <img
+            style={{ Width: "600px", height: "auto" }}
             src={props.image}
             alt="image"
           />
           <Grid container>
             <Grid item xs={8}>
               <DialogContent>
-                <DialogContentText>{props.tags.map((s) => "#" + s).join(", ")}</DialogContentText>
+                <DialogContentText>
+                  {props.tags.map((s) => "#" + s).join(", ")}
+                </DialogContentText>
               </DialogContent>
             </Grid>
             <Grid item xs={4}>
               <DialogContent>
-                <DialogContentText>Created by: {props.author}</DialogContentText>
+                <DialogContentText>
+                  Created by: {props.author}
+                </DialogContentText>
               </DialogContent>
             </Grid>
             <Grid item xs={7}>
@@ -271,22 +278,30 @@ const TestCard = (props) => {
                 <DialogTitle>{props.title}</DialogTitle>
                 <DialogContentText>{props.summary}</DialogContentText>
                 <DialogContent>
-                <DialogContentText>{props.content}</DialogContentText>
+                  <DialogContentText>{props.content}</DialogContentText>
                 </DialogContent>
               </DialogContent>
             </Grid>
             <Grid item xs={5} md={5}>
-              <Box sx={{ ...commonStyles, borderRadius: 1}}>
+              <Box sx={{ ...commonStyles, borderRadius: 1 }}>
                 <List>
-                  Ingredients: 
+                  Ingredients:
                   {props.ingredients.map((ingredient, index) => (
                     <ListItem key={index}>
-                      <ListItemText primary={ingredient.name + ":  " + ingredient.amount + " " + ingredient.unit} />
+                      <ListItemText
+                        primary={
+                          ingredient.name +
+                          ":  " +
+                          ingredient.amount +
+                          " " +
+                          ingredient.unit
+                        }
+                      />
                     </ListItem>
                   ))}
                 </List>
                 <AddIngredientsToShopping id={props.id} />
-                </Box>
+              </Box>
             </Grid>
             <Grid item xs={3}>
               <DialogContent>
@@ -299,20 +314,24 @@ const TestCard = (props) => {
             </Grid>
             <Grid item xs={4}>
               <DialogContent>
-                <Rating
-                  value={props.avgRating}
-                  readOnly
-                />
+                <Rating value={props.avgRating} readOnly />
               </DialogContent>
             </Grid>
             <Grid item xs={5}>
               <CommentBox recipe={props.id} />
             </Grid>
             <Grid item xs={12}>
+              <Typography> Comments </Typography>
               <List>
-                 <ListItem>
-                 <ListItemText primary={comments}/>
-               </ListItem> 
+                {comments.map((comment, index) => (
+                  <ListItem key={comment.id}>
+                    <ListItemText
+                      primary={comment.content}
+                      secondary={comment.username}
+                    />
+                    <Rating edge="end" value={comment.rating} readOnly />
+                  </ListItem>
+                ))}
               </List>
             </Grid>
           </Grid>
