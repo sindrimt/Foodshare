@@ -160,6 +160,7 @@ const DeleteButton = ({ id, title }) => {
 const TestCard = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState([]);
   const {
     loggedIn,
     setLoggedIn,
@@ -172,6 +173,14 @@ const TestCard = (props) => {
   } = useContext(UserContext);
 
   const navigate = useNavigate();
+
+  const fetchComments = () => {
+    API.get('api/comments/?recipe=' + props.id).then((response) => setComments(response.data));
+  }
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
 
   const styles = {
     underline: {
@@ -301,11 +310,9 @@ const TestCard = (props) => {
             </Grid>
             <Grid item xs={12}>
               <List>
-              {API.get('/api/comments/?recipe=' + props.id).map((comment, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={comment.user + " " + comment.content} />
-                </ListItem>
-              ))}
+                 <ListItem>
+                 <ListItemText primary={comments}/>
+               </ListItem> 
               </List>
             </Grid>
           </Grid>
