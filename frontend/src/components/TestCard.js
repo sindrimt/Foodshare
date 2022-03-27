@@ -44,6 +44,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Grid } from "@mui/material";
 import { List, ListItem, ListItemText } from "@mui/material";
 
+import Box from "@mui/material/Box";
+
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
@@ -222,6 +224,14 @@ const TestCard = (props) => {
     }
   };
 
+  const commonStyles = {
+    bgcolor: 'background.paper',
+    borderColor: 'text.primary',
+    m: 1,
+    border: 1,
+    width: '15rem',
+  };
+
   return (
     <AnimateSharedLayout>
       <motion.div layout>
@@ -231,8 +241,8 @@ const TestCard = (props) => {
           TransitionComponent={Transition}
           scroll="body"
         >
-          <img
-            style={{ maxWidth: "100%", height: "auto" }}
+            <img
+            style={{ Width: "600px" , height: "auto"}}
             src={props.image}
             alt="image"
           />
@@ -247,19 +257,27 @@ const TestCard = (props) => {
                 <DialogContentText>Created by: {props.author}</DialogContentText>
               </DialogContent>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={7}>
               <DialogContent>
                 <DialogTitle>{props.title}</DialogTitle>
                 <DialogContentText>{props.summary}</DialogContentText>
+                <DialogContent>
+                <DialogContentText>{props.content}</DialogContentText>
+                </DialogContent>
+              </DialogContent>
+            </Grid>
+            <Grid item xs={5} md={5}>
+              <Box sx={{ ...commonStyles, borderRadius: 1}}>
                 <List>
+                  Ingredients: 
                   {props.ingredients.map((ingredient, index) => (
                     <ListItem key={index}>
                       <ListItemText primary={ingredient.name + ":  " + ingredient.amount + " " + ingredient.unit} />
                     </ListItem>
                   ))}
                 </List>
-                <DialogContentText>{props.content}</DialogContentText>
-              </DialogContent>
+                <AddIngredientsToShopping id={props.id} />
+                </Box>
             </Grid>
             <Grid item xs={3}>
               <DialogContent>
@@ -280,7 +298,15 @@ const TestCard = (props) => {
             </Grid>
             <Grid item xs={5}>
               <CommentBox recipe={props.id} />
-              <AddIngredientsToShopping id={props.id} />
+            </Grid>
+            <Grid item xs={12}>
+              <List>
+              {API.get('/api/comments/?recipe=' + props.id).map((comment, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={comment.user + " " + comment.content} />
+                </ListItem>
+              ))}
+              </List>
             </Grid>
           </Grid>
         </Dialog>
