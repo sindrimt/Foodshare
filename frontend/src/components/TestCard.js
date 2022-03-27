@@ -321,6 +321,7 @@ const TestCard = (props) => {
               <CommentBox recipe={props.id} />
             </Grid>
             <Grid item xs={12}>
+              <Box sx={{borderColor: "text.primary" , borderTop: 1 }}>
               <Typography> Comments </Typography>
               <List>
                 {comments.map((comment, index) => (
@@ -333,6 +334,7 @@ const TestCard = (props) => {
                   </ListItem>
                 ))}
               </List>
+              </Box>
             </Grid>
           </Grid>
         </Dialog>
