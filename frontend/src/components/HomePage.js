@@ -3,7 +3,7 @@ import CreateRecipePage from "./CreateRecipePage";
 import HomePageDisplay from "./HomePageDisplay";
 import RecipeCreated from "./RecipeCreated";
 import Navbar from "./Navbar";
-import CardContainer from "./CardContainer";
+import CardContainer from "../components/CardContainer";
 import LoginPage from "./LoginPage";
 import RegisterUser from "./RegisterUser";
 import UserCreated from "./UserCreated";

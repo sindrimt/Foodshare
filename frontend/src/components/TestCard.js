@@ -107,24 +107,6 @@ const LikeButton = (props) => {
   }
 };
 
-const RatingComponent = () => {
-  const { loggedIn } = useContext(UserContext);
-
-  if (loggedIn) {
-    return (
-      <Rating
-        name="simple-controlled"
-        value={1}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-      />
-    );
-  } else {
-    return <Rating name="simple-controlled" value={2} disabled />;
-  }
-};
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -239,12 +221,16 @@ const TestCard = (props) => {
           <Grid container>
             <Grid item xs={8}>
               <DialogContent>
-                <DialogContentText>{props.tags.map((s) => "#" + s).join(", ")}</DialogContentText>
+                <DialogContentText>
+                  {props.tags.map((s) => "#" + s).join(", ")}
+                </DialogContentText>
               </DialogContent>
             </Grid>
             <Grid item xs={4}>
               <DialogContent>
-                <DialogContentText>Created by: {props.author}</DialogContentText>
+                <DialogContentText>
+                  Created by: {props.author}
+                </DialogContentText>
               </DialogContent>
             </Grid>
             <Grid item xs={12}>
@@ -254,7 +240,15 @@ const TestCard = (props) => {
                 <List>
                   {props.ingredients.map((ingredient, index) => (
                     <ListItem key={index}>
-                      <ListItemText primary={ingredient.name + ":  " + ingredient.amount + " " + ingredient.unit} />
+                      <ListItemText
+                        primary={
+                          ingredient.name +
+                          ":  " +
+                          ingredient.amount +
+                          " " +
+                          ingredient.unit
+                        }
+                      />
                     </ListItem>
                   ))}
                 </List>
@@ -272,10 +266,7 @@ const TestCard = (props) => {
             </Grid>
             <Grid item xs={4}>
               <DialogContent>
-                <Rating
-                  value={props.avgRating}
-                  readOnly
-                />
+                <Rating value={props.avgRating} readOnly />
               </DialogContent>
             </Grid>
             <Grid item xs={5}>
