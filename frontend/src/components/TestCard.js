@@ -7,6 +7,7 @@ import {
   Button,
   Typography,
   IconButton,
+  Stack,
 } from "@mui/material/";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -260,7 +261,11 @@ const TestCard = (props) => {
                 <DialogTitle>{props.title}</DialogTitle>
                 <DialogContentText>{props.summary}</DialogContentText>
                 <DialogContent>
-                  <DialogContentText>{props.content}</DialogContentText>
+                  <DialogContentText
+                    style={{ display: "inline-block", whiteSpace: "pre-line" }}
+                  >
+                    {props.content}
+                  </DialogContentText>
                 </DialogContent>
               </DialogContent>
             </Grid>
@@ -285,37 +290,38 @@ const TestCard = (props) => {
                 <AddIngredientsToShopping id={props.id} />
               </Box>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12}>
               <DialogContent>
-                <LikeButton
-                  id={props.id}
-                  likes={props.likes}
-                  isLiked={props.isLiked}
-                />
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  spacing={2}
+                >
+                  <LikeButton
+                    id={props.id}
+                    likes={props.likes}
+                    isLiked={props.isLiked}
+                  />
+                  <Rating value={props.avgRating} readOnly />
+                  <CommentBox recipe={props.id} />
+                </Stack>
               </DialogContent>
-            </Grid>
-            <Grid item xs={4}>
-              <DialogContent>
-                <Rating value={props.avgRating} readOnly />
-              </DialogContent>
-            </Grid>
-            <Grid item xs={5}>
-              <CommentBox recipe={props.id} />
             </Grid>
             <Grid item xs={12}>
-              <Box sx={{borderColor: "text.primary" , borderTop: 1 }}>
-              <Typography> Comments </Typography>
-              <List>
-                {comments.map((comment, index) => (
-                  <ListItem key={comment.id}>
-                    <ListItemText
-                      primary={comment.content}
-                      secondary={comment.username}
-                    />
-                    <Rating edge="end" value={comment.rating} readOnly />
-                  </ListItem>
-                ))}
-              </List>
+              <Box sx={{ borderColor: "text.primary", borderTop: 1 }}>
+                <Typography> Comments </Typography>
+                <List>
+                  {comments.map((comment, index) => (
+                    <ListItem key={comment.id}>
+                      <ListItemText
+                        primary={comment.content}
+                        secondary={comment.username}
+                      />
+                      <Rating edge="end" value={comment.rating} readOnly />
+                    </ListItem>
+                  ))}
+                </List>
               </Box>
             </Grid>
           </Grid>
