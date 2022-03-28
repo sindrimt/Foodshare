@@ -8,6 +8,7 @@ import {
   Container,
   FormControlLabel,
   IconButton,
+  ListItemText,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -84,15 +85,18 @@ const ShoppingList = () => {
       <List className={classes.list}>
         {list.map((ingredient) => (
           <div>
-            <ListItem key={ingredient.id}>
-              <FormControlLabel
-                className={classes.item}
-                label={ingredient.ingredient_detail.name}
-                control={<Checkbox />}
+            <ListItem
+              key={ingredient.id}
+              secondaryAction={
+                <IconButton onClick={() => handleDelete(ingredient.id)}>
+                  <DeleteIcon className={classes.icon} />
+                </IconButton>
+              }
+            >
+              <ListItemText
+                primary={ingredient.ingredient_detail.name}
+                secondary={`${ingredient.ingredient_detail.amount} ${ingredient.ingredient_detail.unit}`}
               />
-              <IconButton onClick={() => handleDelete(ingredient.id)}>
-                <DeleteIcon className={classes.icon} />
-              </IconButton>
             </ListItem>
             <Divider light />
           </div>
