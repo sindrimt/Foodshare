@@ -46,7 +46,7 @@ class Ingredient(models.Model):
 
     amount = models.PositiveIntegerField(default=1)
 
-    unit = models.CharField(max_length=4, default="stk.")
+    unit = models.CharField(max_length=4, default="pcs.")
 
     recipe = models.ForeignKey(
         Recipe, related_name="ingredients", on_delete=models.CASCADE

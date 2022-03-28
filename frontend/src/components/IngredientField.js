@@ -9,8 +9,8 @@ const units = [
     label: "g",
   },
   {
-    value: "stk.",
-    label: "stk.",
+    value: "pcs.",
+    label: "pcs.",
   },
   {
     value: "ml",

@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Autocomplete from "@mui/material/Autocomplete";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import CssBaseline from "@mui/material/CssBaseline";
 import API from "../axios";
 import { UserContext } from "../context/UserContext";
@@ -45,12 +45,16 @@ const CreateRecipePage = (props) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [options, setOptions] = useState([]);
-  const [ingredients, setIngredients] = useState([{ name: "", amount: 0, unit: "stk." }]);
+  const [ingredients, setIngredients] = useState([
+    { name: "", amount: 0, unit: "g" },
+  ]);
 
   //console.log(loggedIn);
 
   useEffect(() => {
-    API.get("/tags/").then((response) => setOptions(response.data.map((tag) => tag.name)));
+    API.get("/tags/").then((response) =>
+      setOptions(response.data.map((tag) => tag.name))
+    );
   }, []);
 
   function handleCreateButtonPressed(e) {
@@ -166,7 +170,11 @@ const CreateRecipePage = (props) => {
             <Grid item xs={12}>
               <IconButton
                 disabled={ingredients.length < 1}
-                onClick={() => handleRemoveIngredient(ingredients[ingredients.length - 1].name)}
+                onClick={() =>
+                  handleRemoveIngredient(
+                    ingredients[ingredients.length - 1].name
+                  )
+                }
               >
                 <RemoveIcon />
               </IconButton>
@@ -220,7 +228,9 @@ const CreateRecipePage = (props) => {
                 id="tags"
                 options={options}
                 defaultValue={[]}
-                renderInput={(params) => <TextField {...params} variant="standard" label="Tags" />}
+                renderInput={(params) => (
+                  <TextField {...params} variant="standard" label="Tags" />
+                )}
                 onChange={(e, value) => setTags(value)}
               />
             </Grid>
