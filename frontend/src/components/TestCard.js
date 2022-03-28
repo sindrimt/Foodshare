@@ -252,6 +252,9 @@ const TestCard = (props) => {
                 <DialogContentText>
                   Created by: {props.author}
                 </DialogContentText>
+                <DialogContentText>
+                  Prep time: {props.prepTime} minutes
+                </DialogContentText>
                 <Typography>
                   {props.tags.map((s) => "#" + s).join(", ")}
                 </Typography>
