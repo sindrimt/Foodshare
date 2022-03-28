@@ -4,6 +4,7 @@ import API from "../axios";
 
 const AddIngredientsToShopping = (props) => {
   const handleAdd = () => {
+    console.log("add to cart pressed");
     API.post(`/recipes/${props.id.toString()}/add_to_cart/`);
   };
 
