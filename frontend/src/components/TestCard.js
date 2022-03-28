@@ -260,8 +260,9 @@ const TestCard = (props) => {
                 <DialogTitle>{props.title}</DialogTitle>
                 <DialogContentText>{props.summary}</DialogContentText>
                 <DialogContent>
-                  <DialogContentText>{props.content}</DialogContentText>
+                <DialogContentText>Prep time: {props.prepTime} min</DialogContentText>
                 </DialogContent>
+                  <DialogContentText>{props.content}</DialogContentText>
               </DialogContent>
             </Grid>
             <Grid item xs={5} md={5}>
