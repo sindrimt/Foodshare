@@ -44,6 +44,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Grid } from "@mui/material";
 import { List, ListItem, ListItemText } from "@mui/material";
 
+import Box from "@mui/material/Box";
+
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
@@ -140,6 +142,7 @@ const DeleteButton = ({ id, title }) => {
 const TestCard = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState([]);
   const {
     loggedIn,
     setLoggedIn,
@@ -152,6 +155,17 @@ const TestCard = (props) => {
   } = useContext(UserContext);
 
   const navigate = useNavigate();
+
+  const fetchComments = () => {
+    API.get(`comments/?recipe=${props.id}`).then((response) => {
+      setComments(response.data);
+      console.log(response.data);
+    });
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
 
   const styles = {
     underline: {
@@ -204,6 +218,14 @@ const TestCard = (props) => {
     }
   };
 
+  const commonStyles = {
+    bgcolor: "background.paper",
+    borderColor: "text.primary",
+    m: 1,
+    border: 1,
+    width: "15rem",
+  };
+
   return (
     <AnimateSharedLayout>
       <motion.div layout>
@@ -214,7 +236,7 @@ const TestCard = (props) => {
           scroll="body"
         >
           <img
-            style={{ maxWidth: "100%", height: "auto" }}
+            style={{ Width: "600px", height: "auto" }}
             src={props.image}
             alt="image"
           />
@@ -233,11 +255,19 @@ const TestCard = (props) => {
                 </DialogContentText>
               </DialogContent>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={7}>
               <DialogContent>
                 <DialogTitle>{props.title}</DialogTitle>
                 <DialogContentText>{props.summary}</DialogContentText>
+                <DialogContent>
+                  <DialogContentText>{props.content}</DialogContentText>
+                </DialogContent>
+              </DialogContent>
+            </Grid>
+            <Grid item xs={5} md={5}>
+              <Box sx={{ ...commonStyles, borderRadius: 1 }}>
                 <List>
+                  Ingredients:
                   {props.ingredients.map((ingredient, index) => (
                     <ListItem key={index}>
                       <ListItemText
@@ -252,8 +282,8 @@ const TestCard = (props) => {
                     </ListItem>
                   ))}
                 </List>
-                <DialogContentText>{props.content}</DialogContentText>
-              </DialogContent>
+                <AddIngredientsToShopping id={props.id} />
+              </Box>
             </Grid>
             <Grid item xs={3}>
               <DialogContent>
@@ -271,7 +301,22 @@ const TestCard = (props) => {
             </Grid>
             <Grid item xs={5}>
               <CommentBox recipe={props.id} />
-              <AddIngredientsToShopping id={props.id} />
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{borderColor: "text.primary" , borderTop: 1 }}>
+              <Typography> Comments </Typography>
+              <List>
+                {comments.map((comment, index) => (
+                  <ListItem key={comment.id}>
+                    <ListItemText
+                      primary={comment.content}
+                      secondary={comment.username}
+                    />
+                    <Rating edge="end" value={comment.rating} readOnly />
+                  </ListItem>
+                ))}
+              </List>
+              </Box>
             </Grid>
           </Grid>
         </Dialog>

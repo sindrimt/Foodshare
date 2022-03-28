@@ -122,6 +122,13 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+
+    username = serializers.CharField(
+        source="user.username",
+        read_only=True,
+        default="N/A",
+    )
+
     class Meta:
         model = Comment
         fields = "__all__"
