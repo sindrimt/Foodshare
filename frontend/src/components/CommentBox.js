@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -9,6 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Popup from "./Popup";
 import { Rating } from "@mui/material";
 import API from "../axios";
+import { UserContext } from "../context/UserContext";
 
 const CommentBox = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -16,6 +17,8 @@ const CommentBox = (props) => {
   const [error, setError] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(-1);
+
+  const { wasUpdated, setWasUpdated } = useContext(UserContext);
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -30,6 +33,8 @@ const CommentBox = (props) => {
     })
       .then(() => {
         console.log("posted");
+        setWasUpdated(!wasUpdated);
+        setOpenDialog(false);
         setError(false);
         setOpen(true);
       })
@@ -65,11 +70,7 @@ const CommentBox = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Rating
-            value={rating}
-            name="comment-rating"
-            onChange={(e, newRating) => setRating(newRating)}
-          />
+          <Rating value={rating} name="comment-rating" onChange={(e, newRating) => setRating(newRating)} />
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handlePost}>Post</Button>
         </DialogActions>
@@ -81,6 +82,13 @@ const CommentBox = (props) => {
           variant="filled"
         />
       </Dialog>
+      <Popup
+        open={open}
+        setOpen={setOpen}
+        type={error ? "error" : "success"}
+        message={error ? "Error commenting" : "Comment posted!"}
+        variant="filled"
+      />
     </div>
   );
 };
