@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import TestCard from "./TestCard";
 import styled from "styled-components";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,13 +7,12 @@ import { useDebounce } from "use-debounce";
 import { TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Stack from "@mui/material/Stack";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
+import RecipeGrid from "./RecipeGrid";
 
 const CardContainer = () => {
   const [popular, setPopular] = useState([]);
@@ -127,47 +125,7 @@ const CardContainer = () => {
       </FormContainer>
       <AnimateSharedLayout>
         <motion.div layout>
-          <GridContainer>
-            {/*  <TestCard /> */}
-            {/* <AnimatePresence> */}
-            {/* {state.recipes?.map((recipe) => (
-              <RecipeCard
-                key={recipe.id}
-                title={recipe.title}
-                description={recipe.content}
-                createdAt={recipe.created}
-                image={recipe.image}
-              />
-            ))} */}
-            {filtered?.map((card) => {
-              return (
-                /* <RecipeCard
-                  key={card.id}
-                  title={card.title}
-                  description={card.content}
-                  image={card.image}
-                />*/
-                <TestCard
-                  key={card.id}
-                  id={card.id}
-                  title={card.title}
-                  summary={card.summary}
-                  prepTime={card.prep_time}
-                  author={card.username}
-                  tags={card.tags}
-                  content={card.content}
-                  image={card.image}
-                  created={card.created}
-                  likes={card.like_count}
-                  isLiked={card.is_liked}
-                  avgRating={card.avg_rating}
-                  user={card.user}
-                  ingredients={card.ingredients}
-                />
-              );
-            })}
-            {/*  </AnimatePresence> */}
-          </GridContainer>
+          <RecipeGrid posts={filtered} />
         </motion.div>
         <Link to="/recipe">
           <IconButton
@@ -186,23 +144,8 @@ const CardContainer = () => {
   );
 };
 
-const GridContainer = styled.section`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  padding: 3rem;
-  place-items: center;
-  column-gap: 2rem;
-  row-gap: 3rem;
-`;
-
 const FormContainer = styled.div`
   display: flex;
-  justify-content: center;
-`;
-
-const DropDown = styled.span`
-  display: flex;
-  align-items: center;
   justify-content: center;
 `;
 
