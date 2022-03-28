@@ -13,7 +13,7 @@ import ProfilePage from "../pages/ProfilePage";
 import LikedRecipes from "./LikedRecipes";
 import MyProfile from "./MyProfile";
 import EditRecipe from "./EditRecipe";
-
+import ShoppingList from "./ShoppingList";
 
 import AddIngredientsToShopping from "./AddIngredientsToShopping";
 import {
@@ -35,7 +35,15 @@ const HomePage = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route
             path="/recipe"
-            element={<CreateRecipePage title="test" summary="test" content="tomat" prep_time="1" tags="middag" />}
+            element={
+              <CreateRecipePage
+                title="test"
+                summary="test"
+                content="tomat"
+                prep_time="1"
+                tags="middag"
+              />
+            }
           />
           <Route path="/recipe/:id" element={<EditRecipe title="test" />} />
           <Route path="recipe/created" element={<RecipeCreated />} />
@@ -48,7 +56,8 @@ const HomePage = () => {
           <Route path="/me" element={<MyProfile />} />
           <Route path="/me/liked-recipes" element={<LikedRecipes />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/ingredients" element={<AddIngredientsToShopping/>}/>
+          <Route path="/ingredients" element={<AddIngredientsToShopping />} />
+          <Route path="/shopping-list" element={<ShoppingList />} />
         </Routes>
       </Router>
     </>

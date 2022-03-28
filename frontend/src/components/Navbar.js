@@ -58,6 +58,9 @@ const Navbar = () => {
         <li>
           <Link to="recipe">New</Link>
         </li>
+        <li>
+          <Link to="shopping-list">Shopping List</Link>
+        </li>
         {/* <li>
           <Link to="/">Contact</Link>
         </li> */}
