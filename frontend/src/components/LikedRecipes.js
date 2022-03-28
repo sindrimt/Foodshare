@@ -8,6 +8,7 @@ import { AnimateSharedLayout } from "framer-motion";
 import { UserContext } from "../context/UserContext";
 import Popup from "./Popup";
 import { MdKeyboardArrowLeft } from "react-icons/md";
+import RecipeGrid from "./RecipeGrid";
 
 const LikedRecipes = () => {
   const [filtered, setFiltered] = useState([]);
@@ -52,29 +53,16 @@ const LikedRecipes = () => {
       <Header>Your Liked Recipes</Header>
       <AnimateSharedLayout>
         <motion.div layout>
-          <GridContainer>
-            {filtered?.map((card) => {
-              return (
-                <TestCard
-                  key={card.id}
-                  id={card.id}
-                  title={card.title}
-                  summary={card.summary}
-                  prepTime={card.prep_time}
-                  author={card.username}
-                  tags={card.tags}
-                  content={card.content}
-                  image={card.image}
-                  created={card.created}
-                  likes={card.like_count}
-                  isLiked={card.is_liked}
-                />
-              );
-            })}
-          </GridContainer>
+          <RecipeGrid posts={filtered} />
         </motion.div>
       </AnimateSharedLayout>
-      <Popup open={open} setOpen={setOpen} type="success" message={`${isLiked} was removed`} variant="filled" />
+      <Popup
+        open={open}
+        setOpen={setOpen}
+        type="success"
+        message={`${isLiked} was removed`}
+        variant="filled"
+      />
     </>
   );
 };
