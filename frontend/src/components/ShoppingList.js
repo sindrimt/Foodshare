@@ -8,9 +8,6 @@ import {
   Container,
   FormControlLabel,
   IconButton,
-  TextField,
-  Button,
-  Grid,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -61,12 +58,10 @@ const ShoppingList = () => {
     fetchIngredients();
   }, []);
 
-  const handleAdd = (ingredient) => {
-    console.log(ingredient);
-  };
-
-  const handleDelete = (name) => {
-    console.log(name);
+  const handleDelete = (id) => {
+    console.log(id);
+    axios.delete("/api/cart/" + id + "/");
+    fetchIngredients();
   };
 
   return (
@@ -74,26 +69,6 @@ const ShoppingList = () => {
       <Typography className={classes.text} variant="h5">
         Shopping List
       </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <TextField
-            className={classes.input}
-            label="Ingredient name"
-            variant="outlined"
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Button
-            className={classes.addButton}
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={handleAdd}
-          >
-            Add
-          </Button>
-        </Grid>
-      </Grid>
       <List className={classes.list}>
         {list.map((ingredient) => (
           <div>
@@ -103,7 +78,7 @@ const ShoppingList = () => {
                 label={ingredient.ingredient_detail.name}
                 control={<Checkbox />}
               />
-              <IconButton onClick={() => handleDelete("Tomater")}>
+              <IconButton onClick={() => handleDelete(ingredient.id)}>
                 <DeleteIcon className={classes.icon} />
               </IconButton>
             </ListItem>
