@@ -242,38 +242,25 @@ const TestCard = (props) => {
             src={props.image}
             alt="image"
           />
+          <DialogTitle>{props.title}</DialogTitle>
           <Grid container>
-            <Grid item xs={8}>
+            <Grid item xs>
               <DialogContent>
-                <DialogContentText>
-                  {props.tags.map((s) => "#" + s).join(", ")}
+                <DialogContentText sx={{ fontStyle: "italic" }}>
+                  {props.summary}
                 </DialogContentText>
-              </DialogContent>
-            </Grid>
-            <Grid item xs={4}>
-              <DialogContent>
                 <DialogContentText>
                   Created by: {props.author}
                 </DialogContentText>
+                <Typography>
+                  {props.tags.map((s) => "#" + s).join(", ")}
+                </Typography>
               </DialogContent>
             </Grid>
-            <Grid item xs={7}>
-              <DialogContent>
-                <DialogTitle>{props.title}</DialogTitle>
-                <DialogContentText>{props.summary}</DialogContentText>
-                <DialogContent>
-                  <DialogContentText
-                    style={{ display: "inline-block", whiteSpace: "pre-line" }}
-                  >
-                    {props.content}
-                  </DialogContentText>
-                </DialogContent>
-              </DialogContent>
-            </Grid>
-            <Grid item xs={5} md={5}>
-              <Box sx={{ ...commonStyles, borderRadius: 1 }}>
-                <List>
-                  Ingredients:
+            <Grid item xs={4} /*md={5}*/>
+              <Box /*sx={{ ...commonStyles, borderRadius: 1 }} */>
+                Ingredients
+                <List dense={true}>
                   {props.ingredients.map((ingredient, index) => (
                     <ListItem key={index}>
                       <ListItemText
@@ -290,6 +277,17 @@ const TestCard = (props) => {
                 </List>
                 <AddIngredientsToShopping id={props.id} />
               </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <DialogContent>
+                <DialogContent>
+                  <DialogContentText
+                    style={{ display: "inline-block", whiteSpace: "pre-line" }}
+                  >
+                    {props.content}
+                  </DialogContentText>
+                </DialogContent>
+              </DialogContent>
             </Grid>
             <Grid item xs={12}>
               <DialogContent>
