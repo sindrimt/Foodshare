@@ -4,11 +4,7 @@ import HomePage from "./HomePage";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import { CssBaseline } from "@mui/material";
-import {
-  ThemeProvider,
-  StyledEngineProvider,
-  createTheme,
-} from "@mui/material/styles";
+import { ThemeProvider, StyledEngineProvider, createTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../context/ColorModeContext";
 
 const App = () => {
@@ -19,6 +15,7 @@ const App = () => {
   const [deletedPost, setDeletedPost] = useState(true);
   const [isDeleted, setIsDeleted] = useState("");
   const [mode, setMode] = useState("light");
+  const [wasUpdated, setWasUpdated] = useState(false);
 
   const colorMode = useMemo(
     () => ({
@@ -82,6 +79,8 @@ const App = () => {
                 setDeletedPost,
                 isDeleted,
                 setIsDeleted,
+                wasUpdated,
+                setWasUpdated,
               }}
             >
               <CssBaseline />

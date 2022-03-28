@@ -51,7 +51,6 @@ import Box from "@mui/material/Box";
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(props.isLiked);
   const [likes, setLikes] = useState(props.likes);
-
   const [open, setOpen] = useState(false);
 
   const { loggedIn, isLiked, setIsLiked } = useContext(UserContext);
@@ -79,16 +78,10 @@ const LikeButton = (props) => {
     }
   }
 
-  useEffect(() => {}, [liked, likes]);
-
   if (loggedIn) {
     return (
       <>
-        <Button
-          size="small"
-          color={liked ? "primary" : "secondary"}
-          onClick={handleLikePressed}
-        >
+        <Button size="small" color={liked ? "primary" : "secondary"} onClick={handleLikePressed}>
           <ThumbUpAltIcon fontSize="small" /> {" " + likes}
         </Button>
       </>
@@ -96,13 +89,7 @@ const LikeButton = (props) => {
   } else {
     return (
       <>
-        <Popup
-          open={open}
-          setOpen={setOpen}
-          type="error"
-          message="Not Logged In"
-          variant="filled"
-        />
+        <Popup open={open} setOpen={setOpen} type="error" message="Not Logged In" variant="filled" />
         <Button size="small" onClick={handleErrorLike}>
           <ThumbUpAltIcon fontSize="small" /> {" " + likes}
         </Button>
@@ -116,21 +103,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const DeleteButton = ({ id, title }) => {
-  const { deletedPost, setDeletedPost, isDeleted, setIsDeleted } =
-    useContext(UserContext);
+  const { deletedPost, setDeletedPost, isDeleted, setIsDeleted } = useContext(UserContext);
 
   function handleDeletePressed() {
     console.log(id);
-    API.delete("recipes/" + id + "/").then(
-      (message) => setDeletedPost(!deletedPost),
-      setIsDeleted(title)
-    );
+    API.delete("recipes/" + id + "/").then((message) => setDeletedPost(!deletedPost), setIsDeleted(title));
   }
   // Sjekker om man er på sin egen profilside
-  if (
-    window.location.href === "http://127.0.0.1:8000/me" ||
-    window.location.href === "http://localhost:8000/me"
-  ) {
+  if (window.location.href === "http://127.0.0.1:8000/me" || window.location.href === "http://localhost:8000/me") {
     return (
       <Button size="small" color="primary" onClick={handleDeletePressed}>
         <DeleteIcon fontSize="small" /> Delete
@@ -154,6 +134,8 @@ const TestCard = (props) => {
     currentUser,
     isLiked,
     setIsLiked,
+    wasUpdated,
+    setWasUpdated,
   } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -167,7 +149,7 @@ const TestCard = (props) => {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [wasUpdated]);
 
   const styles = {
     underline: {
@@ -206,10 +188,7 @@ const TestCard = (props) => {
   //TODO Drill props til parent
   const EditButton = ({ id, title }) => {
     // Sjekker om man er på sin egen profilside
-    if (
-      window.location.href === "http://127.0.0.1:8000/me" ||
-      window.location.href === "http://localhost:8000/me"
-    ) {
+    if (window.location.href === "http://127.0.0.1:8000/me" || window.location.href === "http://localhost:8000/me") {
       return (
         <IconButton onClick={navigateEditCard}>
           <EditIcon />
@@ -231,33 +210,16 @@ const TestCard = (props) => {
   return (
     <AnimateSharedLayout>
       <motion.div layout>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-          scroll="body"
-        >
-          <img
-            style={{ Width: "600px", height: "auto" }}
-            src={props.image}
-            alt="image"
-          />
+        <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} scroll="body">
+          <img style={{ Width: "600px", height: "auto" }} src={props.image} alt="image" />
           <DialogTitle>{props.title}</DialogTitle>
           <Grid container>
             <Grid item xs>
               <DialogContent>
-                <DialogContentText sx={{ fontStyle: "italic" }}>
-                  {props.summary}
-                </DialogContentText>
-                <DialogContentText>
-                  Created by: {props.author}
-                </DialogContentText>
-                <DialogContentText>
-                  Prep time: {props.prepTime} minutes
-                </DialogContentText>
-                <Typography>
-                  {props.tags.map((s) => "#" + s).join(", ")}
-                </Typography>
+                <DialogContentText sx={{ fontStyle: "italic" }}>{props.summary}</DialogContentText>
+                <DialogContentText>Created by: {props.author}</DialogContentText>
+                <DialogContentText>Prep time: {props.prepTime} minutes</DialogContentText>
+                <Typography>{props.tags.map((s) => "#" + s).join(", ")}</Typography>
               </DialogContent>
             </Grid>
             <Grid item xs={4} /*md={5}*/>
@@ -266,15 +228,7 @@ const TestCard = (props) => {
                 <List dense={true}>
                   {props.ingredients.map((ingredient, index) => (
                     <ListItem key={index}>
-                      <ListItemText
-                        primary={
-                          ingredient.name +
-                          ":  " +
-                          ingredient.amount +
-                          " " +
-                          ingredient.unit
-                        }
-                      />
+                      <ListItemText primary={ingredient.name + ":  " + ingredient.amount + " " + ingredient.unit} />
                     </ListItem>
                   ))}
                 </List>
@@ -284,9 +238,7 @@ const TestCard = (props) => {
             <Grid item xs={12}>
               <DialogContent>
                 <DialogContent>
-                  <DialogContentText
-                    style={{ display: "inline-block", whiteSpace: "pre-line" }}
-                  >
+                  <DialogContentText style={{ display: "inline-block", whiteSpace: "pre-line" }}>
                     {props.content}
                   </DialogContentText>
                 </DialogContent>
@@ -294,17 +246,8 @@ const TestCard = (props) => {
             </Grid>
             <Grid item xs={12}>
               <DialogContent>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  spacing={2}
-                >
-                  <LikeButton
-                    id={props.id}
-                    likes={props.likes}
-                    isLiked={props.isLiked}
-                  />
+                <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                  <LikeButton id={props.id} likes={props.likes} isLiked={props.isLiked} />
                   <Rating value={props.avgRating} readOnly />
                   <CommentBox recipe={props.id} />
                 </Stack>
@@ -321,10 +264,7 @@ const TestCard = (props) => {
                 ) : (
                   comments.map((comment, index) => (
                     <ListItem key={comment.id}>
-                      <ListItemText
-                        primary={comment.content}
-                        secondary={comment.username}
-                      />
+                      <ListItemText primary={comment.content} secondary={comment.username} />
                       <Rating edge="end" value={comment.rating} readOnly />
                     </ListItem>
                   ))
@@ -355,29 +295,17 @@ const TestCard = (props) => {
               }}
             >
               <div className={classes.underline}>
-                <Typography variant="h6">
-                  {props.author ? props.author : "Author"}
-                </Typography>
+                <Typography variant="h6">{props.author ? props.author : "Author"}</Typography>
                 <Typography variant="body2">{props.created}</Typography>
               </div>
             </div>
           </AuthorContainer>
           {/* HER ER COMPONENTEN  */}
           <CardActionArea onClick={handleClickOpen}>
-            <CardMedia
-              className={classes.media}
-              image={props.image}
-              title={props.title}
-              alt="image"
-            />
+            <CardMedia className={classes.media} image={props.image} title={props.title} alt="image" />
 
             <div className={classes.overlay2}>
-              <Button
-                disabled={true}
-                style={{ color: "white" }}
-                size="small"
-                onClick={() => console.log("clicked")}
-              >
+              <Button disabled={true} style={{ color: "white" }} size="small" onClick={() => console.log("clicked")}>
                 <MoreHorizIcon fontSize="medium" />
               </Button>
             </div>
@@ -387,12 +315,7 @@ const TestCard = (props) => {
                 {/* prepend all elements with a # and display nicely */}
               </Typography>
             </div>
-            <Typography
-              className={classes.title}
-              gutterBottom
-              variant="h5"
-              component="h2"
-            >
+            <Typography className={classes.title} gutterBottom variant="h5" component="h2">
               {props.title}
             </Typography>
             <CardContent>
