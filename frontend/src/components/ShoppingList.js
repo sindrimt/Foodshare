@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import {
-  Checkbox,
   List,
   ListItem,
   Divider,
   Typography,
   Container,
-  FormControlLabel,
   IconButton,
   ListItemText,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
+import API from "../axios";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -50,7 +48,7 @@ const ShoppingList = () => {
   const [newList, setNewList] = useState(list);
 
   const fetchIngredients = async () => {
-    const result = await axios.get(`/api/cart/`);
+    const result = await API.get(`cart/`);
     const dataList = result.data;
     console.log(dataList);
     setList(dataList);
@@ -66,7 +64,7 @@ const ShoppingList = () => {
 
   const handleDelete = (id) => {
     console.log(id);
-    axios.delete("/api/cart/" + id + "/");
+    API.delete("cart/" + id + "/");
     const updatedList = list;
     for (let i = 0; i < updatedList.length; i++) {
       if (updatedList[i].id == id) {
@@ -82,6 +80,14 @@ const ShoppingList = () => {
       <Typography className={classes.text} variant="h5">
         Shopping List
       </Typography>
+      {/* inform if list is empty */}
+      {list.length === 0 ? (
+        <Typography>
+          You have no items in your shopping list. Add some!
+        </Typography>
+      ) : (
+        <></>
+      )}
       <List className={classes.list}>
         {list.map((ingredient) => (
           <div>
