@@ -7,6 +7,8 @@ import {
   Button,
   Typography,
   IconButton,
+  Stack,
+  ListSubheader,
 } from "@mui/material/";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -240,35 +242,25 @@ const TestCard = (props) => {
             src={props.image}
             alt="image"
           />
+          <DialogTitle>{props.title}</DialogTitle>
           <Grid container>
-            <Grid item xs={8}>
+            <Grid item xs>
               <DialogContent>
-                <DialogContentText>
-                  {props.tags.map((s) => "#" + s).join(", ")}
+                <DialogContentText sx={{ fontStyle: "italic" }}>
+                  {props.summary}
                 </DialogContentText>
-              </DialogContent>
-            </Grid>
-            <Grid item xs={4}>
-              <DialogContent>
                 <DialogContentText>
                   Created by: {props.author}
                 </DialogContentText>
+                <Typography>
+                  {props.tags.map((s) => "#" + s).join(", ")}
+                </Typography>
               </DialogContent>
             </Grid>
-            <Grid item xs={7}>
-              <DialogContent>
-                <DialogTitle>{props.title}</DialogTitle>
-                <DialogContentText>{props.summary}</DialogContentText>
-                <DialogContent>
-                <DialogContentText>Prep time: {props.prepTime} min</DialogContentText>
-                </DialogContent>
-                  <DialogContentText>{props.content}</DialogContentText>
-              </DialogContent>
-            </Grid>
-            <Grid item xs={5} md={5}>
-              <Box sx={{ ...commonStyles, borderRadius: 1 }}>
-                <List>
-                  Ingredients:
+            <Grid item xs={4} /*md={5}*/>
+              <Box /*sx={{ ...commonStyles, borderRadius: 1 }} */>
+                Ingredients
+                <List dense={true}>
                   {props.ingredients.map((ingredient, index) => (
                     <ListItem key={index}>
                       <ListItemText
@@ -286,38 +278,55 @@ const TestCard = (props) => {
                 <AddIngredientsToShopping id={props.id} />
               </Box>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12}>
               <DialogContent>
-                <LikeButton
-                  id={props.id}
-                  likes={props.likes}
-                  isLiked={props.isLiked}
-                />
+                <DialogContent>
+                  <DialogContentText
+                    style={{ display: "inline-block", whiteSpace: "pre-line" }}
+                  >
+                    {props.content}
+                  </DialogContentText>
+                </DialogContent>
               </DialogContent>
-            </Grid>
-            <Grid item xs={4}>
-              <DialogContent>
-                <Rating value={props.avgRating} readOnly />
-              </DialogContent>
-            </Grid>
-            <Grid item xs={5}>
-              <CommentBox recipe={props.id} />
             </Grid>
             <Grid item xs={12}>
-              <Box sx={{borderColor: "text.primary" , borderTop: 1 }}>
-              <Typography> Comments </Typography>
-              <List>
-                {comments.map((comment, index) => (
-                  <ListItem key={comment.id}>
-                    <ListItemText
-                      primary={comment.content}
-                      secondary={comment.username}
-                    />
-                    <Rating edge="end" value={comment.rating} readOnly />
-                  </ListItem>
-                ))}
+              <DialogContent>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  spacing={2}
+                >
+                  <LikeButton
+                    id={props.id}
+                    likes={props.likes}
+                    isLiked={props.isLiked}
+                  />
+                  <Rating value={props.avgRating} readOnly />
+                  <CommentBox recipe={props.id} />
+                </Stack>
+              </DialogContent>
+            </Grid>
+            <Grid item xs={12}>
+              <List
+                subheader={<ListSubheader>Comments</ListSubheader>}
+                sx={{ width: "100%", bgcolor: "background.paper" }}
+              >
+                {/*inform if no comments*/}
+                {comments.length === 0 ? (
+                  <Typography align="center">No comments yet</Typography>
+                ) : (
+                  comments.map((comment, index) => (
+                    <ListItem key={comment.id}>
+                      <ListItemText
+                        primary={comment.content}
+                        secondary={comment.username}
+                      />
+                      <Rating edge="end" value={comment.rating} readOnly />
+                    </ListItem>
+                  ))
+                )}
               </List>
-              </Box>
             </Grid>
           </Grid>
         </Dialog>

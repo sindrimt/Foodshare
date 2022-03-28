@@ -26,7 +26,9 @@ export default function BrowseFollowedPage() {
           <RecipeGrid posts={posts} />
         </Stack>
       ) : (
-        <Typography> You are not logged in. </Typography>
+        <Typography align="center">
+          You must be logged in to view this page
+        </Typography>
       )}
     </>
   );
