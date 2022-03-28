@@ -8,6 +8,7 @@ import {
   Typography,
   IconButton,
   Stack,
+  ListSubheader,
 } from "@mui/material/";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -309,10 +310,15 @@ const TestCard = (props) => {
               </DialogContent>
             </Grid>
             <Grid item xs={12}>
-              <Box sx={{ borderColor: "text.primary", borderTop: 1 }}>
-                <Typography> Comments </Typography>
-                <List>
-                  {comments.map((comment, index) => (
+              <List
+                subheader={<ListSubheader>Comments</ListSubheader>}
+                sx={{ width: "100%", bgcolor: "background.paper" }}
+              >
+                {/*inform if no comments*/}
+                {comments.length === 0 ? (
+                  <Typography align="center">No comments yet</Typography>
+                ) : (
+                  comments.map((comment, index) => (
                     <ListItem key={comment.id}>
                       <ListItemText
                         primary={comment.content}
@@ -320,9 +326,9 @@ const TestCard = (props) => {
                       />
                       <Rating edge="end" value={comment.rating} readOnly />
                     </ListItem>
-                  ))}
-                </List>
-              </Box>
+                  ))
+                )}
+              </List>
             </Grid>
           </Grid>
         </Dialog>
