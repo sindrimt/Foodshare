@@ -46,6 +46,7 @@ const ShoppingList = () => {
   const classes = useStyles();
 
   const [list, setList] = useState([]);
+  const [newList, setNewList] = useState(list);
 
   const fetchIngredients = async () => {
     const result = await axios.get(`/api/cart/`);
@@ -58,10 +59,21 @@ const ShoppingList = () => {
     fetchIngredients();
   }, []);
 
+  useEffect(() => {
+    fetchIngredients();
+  }, [newList]);
+
   const handleDelete = (id) => {
     console.log(id);
     axios.delete("/api/cart/" + id + "/");
-    fetchIngredients();
+    const updatedList = list;
+    for (let i = 0; i < updatedList.length; i++) {
+      if (updatedList[i].id == id) {
+        updatedList.pop(updatedList[i]);
+        break;
+      }
+    }
+    setNewList(updatedList);
   };
 
   return (
@@ -72,7 +84,7 @@ const ShoppingList = () => {
       <List className={classes.list}>
         {list.map((ingredient) => (
           <div>
-            <ListItem>
+            <ListItem key={ingredient.id}>
               <FormControlLabel
                 className={classes.item}
                 label={ingredient.ingredient_detail.name}
