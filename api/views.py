@@ -43,7 +43,7 @@ class RecipeView(viewsets.ModelViewSet):
     /recipes/by_followed/ for recipes written by people whom the current follow.
 
     NB:
-    - Tags must be formatted as proper JSON lists, e.g. ["frokost", "kjøtt"]
+    - Tags must be formatted as proper JSON lists, e.g. ["breakfast", "meat"]
     - All ingredients are deleted on updates; include all you want to keep.
     """
 
