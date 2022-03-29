@@ -24,13 +24,16 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/icons": "^4.11.2",
+    "@mui/icons-material": "^5.5.0",
     "@mui/material": "^5.4.2",
+    "@mui/styles": "^5.5.1",
     "axios": "^0.26.0",
+    "framer-motion": "^6.2.8",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.1",
     "styled-components": "^5.3.3",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "use-debounce": "^7.0.1",
+    "yup": "^0.32.11"
   }
 }

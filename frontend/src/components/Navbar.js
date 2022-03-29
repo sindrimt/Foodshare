@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import {
   IoMdPerson,
@@ -8,13 +8,37 @@ import {
   IoMdBook,
   IoMdMegaphone,
 } from "react-icons/io";
+import axios from "axios";
 
 import { Link } from "react-router-dom";
 import foodshare from "../../static/images/foodshare.png";
+import { UserContext } from "../context/UserContext";
+import DarkModeButton from "./DarkModeButton";
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const { loggedIn, setLoggedIn } = useContext(UserContext);
+
   const iconColor = "#bff8ff";
+
+  const logOut = () => {
+    console.log("logged out");
+    const url = "/api/accounts/logout/";
+
+    axios
+      .post(url, {
+        revoke_token: false,
+      })
+      .then(
+        (response) => {
+          console.log(response);
+          setLoggedIn(false);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
 
   return (
     <nav className="app__navbar">
@@ -26,26 +50,40 @@ const Navbar = () => {
       </div>
       <ul className="app__navbar-links">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/browse">Browse</Link>
         </li>
         <li>
-          <Link to="/browse-recipes">Browse Recipes</Link>
+          <Link to="/followed">Followed</Link>
         </li>
         <li>
-          <Link to="recipe">Create Recipe</Link>
+          <Link to="recipe">New</Link>
         </li>
         <li>
+          <Link to="shopping-list">Shopping List</Link>
+        </li>
+        {/* <li>
           <Link to="/">Contact</Link>
-        </li>
+        </li> */}
       </ul>
+      <DarkModeButton />
       <div className="app__navbar-login ">
-        <Link to="/login">Log In / Register</Link>
-        <div />
-        <a>
-          {/* <CgProfile size={25} /> */}
-          <Link to="/">
-            <IoMdPerson size={25} />
+        {loggedIn ? (
+          <Link to="/" onClick={() => logOut()}>
+            Sign Out
           </Link>
+        ) : (
+          <Link to="/login">Log In / Register</Link>
+        )}
+        <div />
+
+        <a>
+          {loggedIn ? (
+            <Link to="/me">
+              <IoMdPerson size={25} />
+            </Link>
+          ) : (
+            ""
+          )}
         </a>
       </div>
       <div className="app__navbar-smallscreen">
@@ -59,17 +97,9 @@ const Navbar = () => {
             />
             <ul className="app__navbar-smallscreen-links">
               <li>
-                {" "}
-                {/* //each li? */}
-                <Link to="/" onClick={() => setToggleMenu(false)}>
-                  <IoIosHome color={iconColor} />
-                  <span className="icon-text"> Home</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/" onClick={() => setToggleMenu(false)}>
                   <IoMdBook color={iconColor} />
-                  <span className="icon-text"> About</span>
+                  <span className="icon-text"> Browse Recipes</span>
                 </Link>
               </li>
               <li>
@@ -79,9 +109,9 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/" onClick={() => setToggleMenu(false)}>
+                <Link to="/me" onClick={() => setToggleMenu(false)}>
                   <IoMdMegaphone color={iconColor} />
-                  <span className="icon-text"> Contact</span>
+                  <span className="icon-text"> Profile</span>
                 </Link>
               </li>
             </ul>

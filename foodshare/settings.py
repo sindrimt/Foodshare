@@ -10,12 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -26,7 +25,7 @@ SECRET_KEY = "django-insecure--36vurfs(y+*v0k+#zue-4yw%4pdk^(vrv**x@ru&!4q3-7=r4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,12 +37,25 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "taggit",
     "rest_framework",
-    "django_filters",
-    "crispy_forms",
+    "rest_registration",  # account managemenet
+    "django_filters",  # search and filters
+    "crispy_forms",  # filters in browsable api
     "api.apps.ApiConfig",
     "frontend",
 ]
+
+# This is settins for test coverage apps, but not currently working
+# Need to add "pip install" --> coverage=3.6, django-nose when working
+
+# TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
+#
+# NOSE_ARGS = [
+#    "--with-coverage",
+#    "--cover-package=api"
+# ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -79,27 +91,25 @@ WSGI_APPLICATION = "foodshare.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
-    "old": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "urrhajjk",
-        "USER": "urrhajjk",
-        "PASSWORD": "2gmIFknOvh3qcAAB4RCDwLImqWsqUJoA",
-        "HOST": "abul.db.elephantsql.com",
-        "PORT": "5432",
-    },
-    "new": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "d4hcei9p6hmjv6",
-        "USER": "laxodqlycrpphl",
-        "PASSWORD": "d1f5dfda478bed5b095392b81fa3a7072125c1c0a3933c5875d2f27d7a9c1d80",
-        "HOST": "ec2-52-214-125-106.eu-west-1.compute.amazonaws.com",
-        "PORT": "5432",
-    },
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     },
 }
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "frontend", "static"),
+    # os.path.join(BASE_DIR, "static"),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# User generated media
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 
 # Password validation
@@ -133,15 +143,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_URL = "static/"
-
-# User generated media
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -149,7 +150,40 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Pagination allows you to control how many objects per page are returned.
 REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        # "rest_framework.permissions.AllowAny",
+        # "rest_framework.permissions.IsAuthenticated",
+    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DATETIME_FORMAT": "%Y-%m-%d %H:%M",  # can add :%S for seconds
+    # "DEFAULT_PAGINATION_CLASS":
+    # "rest_framework.pagination.PageNumberPagination",
     # "PAGE_SIZE": 10,
+}
+
+# tags
+TAGGIT_CASE_INSENSITIVE = True
+
+# CRSF settings
+CSRF_COOKIE_SAMESITE = "Strict"
+SESSION_COOKIE_SAMESITE = "Strict"
+CSRF_COOKIE_HTTPONLY = False  # False since will grab it via universal-cookies
+SESSION_COOKIE_HTTPONLY = True
+
+# PROD ONLY
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+
+REST_REGISTRATION = {
+    "REGISTER_VERIFICATION_ENABLED": False,
+    "REGISTER_EMAIL_VERIFICATION_ENABLED": False,
+    "RESET_PASSWORD_VERIFICATION_ENABLED": False,
 }
